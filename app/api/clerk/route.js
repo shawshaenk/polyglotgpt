@@ -1,6 +1,6 @@
 import { Webhook } from "svix";
-import connectDB from "config/db.js";
-import User from "models/user.js";
+import connectDB from "../../../config/db";
+import User from "../../../models/user";
 
 export async function POST(req) {
     const wh = new Webhook(process.env.SIGNING_SECRET)
@@ -23,7 +23,7 @@ export async function POST(req) {
 
     await connectDB();
 
-    switch (key) {
+    switch (type) {
     case 'user.created':
         await User.create(userData)
         break;
