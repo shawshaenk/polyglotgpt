@@ -26,8 +26,13 @@ export async function POST(req) {
     }));
 
     const result = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-flash-lite-preview-06-17",
       contents: formattedMessages,
+      config: {
+        thinkingConfig: {
+          thinkingBudget: 0, // Disables thinking
+        },
+      }
     });
     console.dir(result, { depth: null });
 
