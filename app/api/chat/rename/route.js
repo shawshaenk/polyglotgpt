@@ -1,6 +1,7 @@
 import Chat from "@/models/chat";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import connectDB from '@/config/db';
 
 export async function POST(req) {
     try {
