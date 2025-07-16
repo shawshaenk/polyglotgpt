@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Image from 'next/image'
+import { useAppContext } from "@/context/AppContext";
+import { toast } from 'react-hot-toast';
+import axios from 'axios';
 
 import deepthink_icon from '@/assets/deepthink_icon.svg';
 import search_icon from '@/assets/search_icon.svg';
@@ -17,11 +20,111 @@ const assets = {
 
 const PromptBox = ({setIsLoading, isLoading}) => {
     const [prompt, setPrompt] = useState('');
+    const {user, chats, setChats, selectedChat, setSelectedChat} = useAppContext();
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendPrompt(e);
+        }
+    }
+
+    const sendPrompt = async (e)=> {
+        const promptCopy = prompt;
+
+        try {
+            e.preventDefault();
+            if (!user) return toast.error('Login to Send Message');
+            if (isLoading) return toast.error('Wait for the previous prompt response');
+
+            setIsLoading(true)
+            setPrompt("")
+
+            const userPrompt = {
+                role: "user",
+                content: prompt,
+                timestamp: Date.now()
+            }
+
+            setChats((prevChats)=> prevChats.map((chat)=> chat._id === selectedChat._id ? {
+                ...chat,
+                messages: [...chat.messages, userPrompt]
+            }: chat
+        ))
+
+        setSelectedChat((prev)=> ({
+            ...prev,
+            messages: [...(prev?.messages || []), userPrompt]
+        }))
+
+        const {data} = await axios.post('/api/chat/ai', {
+            chatId: selectedChat._id,
+            prompt
+        })
+
+        if (data.success) {
+            const aiReplyString = data.response;
+
+            // 1. Create the FULL assistant message for persistent storage
+            const fullAssistantMessage = {
+                role: 'model',
+                content: aiReplyString, // This holds the complete response
+                timestamp: Date.now()
+            };
+
+            // 2. Update the 'chats' state with the FULL message (for saving/history)
+            setChats((prevChats) => prevChats.map((chat) => chat._id === selectedChat._id ? {
+                ...chat,
+                messages: [...chat.messages, fullAssistantMessage]
+            } : chat));
+
+            // 3. Create a SEPARATE message object for the typing animation in selectedChat
+            const typingMessageForDisplay = {
+                role: 'model',
+                content: "", // Starts empty for typing effect
+                timestamp: Date.now()
+            };
+
+            // 4. Add the empty typing message to selectedChat for immediate display
+            setSelectedChat((prev) => ({
+                ...prev,
+                messages: [...prev.messages, typingMessageForDisplay],
+            }));
+
+            // 5. Perform the typing animation by updating the 'typingMessageForDisplay'
+            const messageTokens = aiReplyString.split(" ");
+            for (let i = 0; i < messageTokens.length; i++) {
+                setTimeout(() => {
+                    typingMessageForDisplay.content = messageTokens.slice(0, i + 1).join(" ");
+                    setSelectedChat((prev) => {
+                        // Find the last message (which is our typing message) and update it
+                        const updatedMessages = [
+                            ...prev.messages.slice(0, -1), // All messages except the last one
+                            typingMessageForDisplay // The updated typing message
+                        ];
+                        return { ...prev, messages: updatedMessages };
+                    });
+                }, i * 100);
+            }
+        } else {
+            toast.error(data.message)
+            setPrompt(promptCopy);
+        }
+
+        } catch (error) {
+            toast.error(error.message)
+            setPrompt(promptCopy);
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
   return (
-    <form className={`w-full ${false ? "max-w-3xl" : "max-w-2xl"}
+    <form onSubmit={sendPrompt}
+    className={`w-full ${false ? "max-w-3xl" : "max-w-2xl"}
     bg-[#3d3846] p-4 rounded-3xl mt-4 transition-all`}>
         <textarea
+        onKeyDown={handleKeyDown}
         className="outline-none w-full resize-none overflow-hidden
         break-words bg-transparent"
         rows={2}

@@ -41,7 +41,7 @@ export default function Home() {
         )
         }
         <PromptBox isLoading={isLoading} setIsLoading={setIsLoading}/>
-        <p className="text-xs absolute bottom-1 text-gray-500">AI can make mistakes. Check important info.</p>
+        <p className="text-xs absolute bottom-1 text-gray-500">Powered by Gemini 2.5 Flash. Double-check important info.</p>
 
         </div>
       </div>
