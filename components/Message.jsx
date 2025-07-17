@@ -37,7 +37,7 @@ const Message = ({role, content}) => {
     <div className="flex flex-col items-center w-full max-w-3xl text-base">
       <div className={`flex flex-col w-full mb-8 ${role === 'user' && 'items-end'}`}>
         <div className={`group relative flex max-w-2xl py-3 rounded-xl ${role === 'user' ? 'bg-[#2a2a2a] px-5' : 'gap-3'}`}>
-            <div className={`absolute ${role === 'user' ? '-left-6 top-1/2 -translate-y-1/2' : 'left-12.5 -bottom-4'} transition-all`}>
+            <div className={`absolute ${role === 'user' ? '-left-6 top-1/2 -translate-y-1/2' : 'left-12.5 -bottom-3.5'} transition-all`}>
                 <div className="flex items-center gap-2 opacity-70">
                     {
                         role === 'user' ? (
@@ -63,7 +63,7 @@ const Message = ({role, content}) => {
                 (
                     <>
                     <Image src={assets.translate_icon} alt="" className="h-9 w-9 p-1 border border-white/15 rounded-full"/>
-                    <div className="space-y-4 w-full overflow-scroll">
+                    <div className="space-y-4 mt-2 w-full overflow-scroll">
                       <Markdown>{content}</Markdown>
                     </div>
                     </>
