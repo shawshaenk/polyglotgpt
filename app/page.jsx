@@ -1,5 +1,5 @@
 'use client';
-import { assets } from "@/assets/assets";
+// import { assets } from "@/assets/assets";
 import Sidebar from "@/components/sidebar";
 import PromptBox from "@/components/PromptBox";
 import Image from "next/image";
@@ -7,6 +7,18 @@ import React, { useState, useEffect, useRef } from "react";
 import Message from "@/components/Message";
 import { useAppContext } from "@/context/AppContext";
 import { Analytics } from '@vercel/analytics/next';
+
+import menu_icon from '@/assets/menu_icon.svg';
+import chat_icon from '@/assets/chat_icon.svg';
+import translate_icon from '@/assets/translate_icon.svg';
+import logo_icon from '@/assets/logo_icon.svg';
+
+const assets = {
+  menu_icon,
+  chat_icon,
+  translate_icon,
+  logo_icon
+};
 
 export default function Home() {
 
@@ -48,7 +60,7 @@ export default function Home() {
             <>
             <div className="flex items-center gap-3">
               {/* deepseek logo */}
-              <Image src={assets.logo_icon} alt="" className="h-16"/>
+              <Image src={assets.translate_icon} alt="" className="h-18 w-11"/>
               <p className="text-3xl font-medium">PolyglotGPT</p>
             </div>
             <p className="text-base mt-1">What language do you want to learn today?</p>
