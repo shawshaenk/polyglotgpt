@@ -36,6 +36,9 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             e.preventDefault();
             if (!user) return toast.error('Login to Send Message');
             if (isLoading) return toast.error('Wait for the previous prompt response');
+            if (prompt === "") {
+                return toast.error('Enter a Prompt');
+            }
 
             setIsLoading(true)
             setPrompt("")
@@ -99,7 +102,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
   return (
     <form onSubmit={sendPrompt}
     className={`fixed w-full z-10 bottom-10 max-w-2xl
-    bg-[#3d3846] p-4 rounded-3xl mt-4 transition-all`}>
+    bg-[#2a2a2a] p-4 rounded-3xl mt-4 transition-all shadow-2xl`}>
         <textarea
         onKeyDown={handleKeyDown}
         className="outline-none w-full resize-none overflow-hidden
@@ -112,7 +115,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             
 
             <div className="flex items-center gap-2">
-            <button className={`${prompt ? "bg-primary" : "bg-[#77767b]"}
+            <button className={`${prompt ? "bg-primary" : "bg-[#3a3a3a]"}
             rounded-full p-2 cursor-pointer`}>
                 <Image className="w-3.5 aspect-square" src={prompt ? assets.arrow_icon : assets.arrow_icon_dull} alt=''/>
             </button>

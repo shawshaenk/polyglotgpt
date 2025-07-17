@@ -32,10 +32,10 @@ const Message = ({role, content}) => {
   }
 
   return (
-    <div className="flex flex-col items-center w-full max-w-3xl text-sm">
+    <div className="flex flex-col items-center w-full max-w-3xl text-base">
       <div className={`flex flex-col w-full mb-8 ${role === 'user' && 'items-end'}`}>
-        <div className={`group relative flex max-w-2xl py-3 rounded-xl ${role === 'user' ? 'bg-[#3d3846] px-5' : 'gap-3'}`}>
-            <div className={`opacity-0 group-hover:opacity-100 absolute ${role === 'user' ? '-left-16 top-2.5' : 'left-9 -bottom-6'} transition-all`}>
+        <div className={`group relative flex max-w-2xl py-3 rounded-xl ${role === 'user' ? 'bg-[#2a2a2a] px-5' : 'gap-3'}`}>
+            <div className={`absolute ${role === 'user' ? '-left-7 top-1/2 -translate-y-1/2' : 'left-12.5 -bottom-4'} transition-all`}>
                 <div className="flex items-center gap-2 opacity-70">
                     {
                         role === 'user' ? (

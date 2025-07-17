@@ -20,10 +20,18 @@ export async function POST(req) {
     const data = await Chat.findOne({ userId, _id: chatId });
     data.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
 
-    const formattedMessages = data.messages.map(msg => ({
-      role: msg.role,
-      parts: [{ text: msg.content }],
-    }));
+    const systemPrompt = {
+      role: "user",
+      parts: [{ text: "You are PolyglotGPT, a multilingual language tutor. You use Gemini 2.5 Flash Lite."}]
+    };
+
+    const formattedMessages = [
+      systemPrompt,  // Insert system prompt first
+      ...data.messages.map(msg => ({
+        role: msg.role,
+        parts: [{ text: msg.content }],
+      }))
+    ];
 
     const result = await ai.models.generateContent({
       model: "gemini-2.5-flash-lite-preview-06-17",
