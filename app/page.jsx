@@ -6,6 +6,7 @@ import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import Message from "@/components/Message";
 import { useAppContext } from "@/context/AppContext";
+import { Analytics } from '@vercel/analytics/next';
 
 export default function Home() {
 
@@ -32,6 +33,7 @@ export default function Home() {
 
   return (
     <div>
+      <Analytics/>
       <div className="flex h-screen">
         <Sidebar expand={expand} setExpand={setExpand}/>
         {/* background color for website */}
@@ -73,7 +75,6 @@ export default function Home() {
               </div>
             )
           }
-            
           </div>
         )
         }
