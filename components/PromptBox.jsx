@@ -18,8 +18,58 @@ const assets = {
   arrow_icon_dull
 };
 
+const LANGUAGES = [
+  { code: 'ar', label: 'Arabic' },
+  { code: 'bn', label: 'Bengali' },
+  { code: 'bg', label: 'Bulgarian' },
+  { code: 'zh', label: 'Chinese' },
+  { code: 'hr', label: 'Croatian' },
+  { code: 'cs', label: 'Czech' },
+  { code: 'da', label: 'Danish' },
+  { code: 'nl', label: 'Dutch' },
+  { code: 'en', label: 'English' },
+  { code: 'et', label: 'Estonian' },
+  { code: 'fi', label: 'Finnish' },
+  { code: 'fr', label: 'French' },
+  { code: 'de', label: 'German' },
+  { code: 'el', label: 'Greek' },
+  { code: 'gu', label: 'Gujarati' },
+  { code: 'he', label: 'Hebrew' },
+  { code: 'hi', label: 'Hindi' },
+  { code: 'hu', label: 'Hungarian' },
+  { code: 'id', label: 'Indonesian' },
+  { code: 'it', label: 'Italian' },
+  { code: 'ja', label: 'Japanese' },
+  { code: 'kn', label: 'Kannada' },
+  { code: 'ko', label: 'Korean' },
+  { code: 'lv', label: 'Latvian' },
+  { code: 'lt', label: 'Lithuanian' },
+  { code: 'ml', label: 'Malayalam' },
+  { code: 'mr', label: 'Marathi' },
+  { code: 'no', label: 'Norwegian' },
+  { code: 'pl', label: 'Polish' },
+  { code: 'pt', label: 'Portuguese' },
+  { code: 'ro', label: 'Romanian' },
+  { code: 'ru', label: 'Russian' },
+  { code: 'sr', label: 'Serbian' },
+  { code: 'sk', label: 'Slovak' },
+  { code: 'sl', label: 'Slovenian' },
+  { code: 'es', label: 'Spanish' },
+  { code: 'sw', label: 'Swahili' },
+  { code: 'sv', label: 'Swedish' },
+  { code: 'ta', label: 'Tamil' },
+  { code: 'te', label: 'Telugu' },
+  { code: 'th', label: 'Thai' },
+  { code: 'tr', label: 'Turkish' },
+  { code: 'uk', label: 'Ukrainian' },
+  { code: 'ur', label: 'Urdu' },
+  { code: 'vi', label: 'Vietnamese' },
+];
+
 const PromptBox = ({setIsLoading, isLoading}) => {
     const [prompt, setPrompt] = useState('');
+    const [nativeLang, setNativeLang] = useState('en');
+    const [targetLang, setTargetLang] = useState('es');
     const {user, chats, setChats, selectedChat, setSelectedChat} = useAppContext();
 
     const handleKeyDown = (e) => {
@@ -62,7 +112,9 @@ const PromptBox = ({setIsLoading, isLoading}) => {
 
         const {data} = await axios.post('/api/chat/ai', {
             chatId: selectedChat._id,
-            prompt
+            prompt,
+            nativeLang,
+            targetLang
         })
 
         if (data.success) {
@@ -112,14 +164,33 @@ const PromptBox = ({setIsLoading, isLoading}) => {
         onChange={(e)=> setPrompt(e.target.value)} value={prompt}/>
 
         <div className="flex items-center justify-between text-sm">
-            
-
             <div className="flex items-center gap-2">
-            <button className={`${prompt ? "bg-primary" : "bg-[#3a3a3a]"}
-            rounded-full p-2 cursor-pointer`}>
-                <Image className="w-3.5 aspect-square" src={prompt ? assets.arrow_icon : assets.arrow_icon_dull} alt=''/>
-            </button>
+                <div className="flex gap-4 mb-3">
+                    <select
+                    value={nativeLang}
+                    onChange={e => setNativeLang(e.target.value)}
+                    className="bg-[#3a3a3a] text-white p-2 rounded-lg p-2 -mb-1"
+                    >
+                    {LANGUAGES.map(l => (
+                        <option key={l.code} value={l.code}>{l.label}</option>
+                    ))}
+                    </select>
+                    <select
+                    value={targetLang}
+                    onChange={e => setTargetLang(e.target.value)}
+                    className="bg-[#3a3a3a] text-white p-2 rounded-lg -mb-1"
+                    >
+                    {LANGUAGES.map(l => (
+                        <option key={l.code} value={l.code}>{l.label}</option>
+                    ))}
+                    </select>
+                </div>
             </div>
+
+            <button className={` ${prompt ? "bg-primary" : "bg-[#3a3a3a]"}
+                rounded-full p-2 cursor-pointer`}>
+                    <Image className="w-3.5 aspect-square" src={prompt ? assets.arrow_icon : assets.arrow_icon_dull} alt=''/>
+            </button>
         </div>
     </form>
   )

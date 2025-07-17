@@ -63,7 +63,7 @@ const Message = ({role, content}) => {
                 (
                     <>
                     <Image src={assets.translate_icon} alt="" className="h-9 w-9 p-1 border border-white/15 rounded-full"/>
-                    <div className="space-y-4 mt-2 w-full overflow-scroll">
+                    <div className="space-y-4 mt-2 w-full overflow-visible">
                       <Markdown>{content}</Markdown>
                     </div>
                     </>

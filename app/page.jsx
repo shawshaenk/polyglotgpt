@@ -63,7 +63,7 @@ export default function Home() {
               <Image src={assets.translate_icon} alt="" className="h-18 w-11"/>
               <p className="text-3xl font-medium">PolyglotGPT</p>
             </div>
-            <p className="text-base mt-1">What language do you want to learn today?</p>
+            <p className="text-lg mt-1">What language do you want to learn today?</p>
             </>
           ):
           (
@@ -75,7 +75,7 @@ export default function Home() {
           {
             isLoading && (
               <div className="flex gap-4 max-w-3xl w-full py-3">
-                <Image className="h-9 w-9 p-1 border border-white/15 rounded-full" src={assets.logo_icon} alt="Logo"/>
+                <Image className="h-9 w-9 p-1 border border-white/15 rounded-full" src={assets.translate_icon} alt="Logo"/>
                 <div className="loader flex justify-center items-center gap-1">
                   <div className="w-1 h-1 rounded-full bg-white animate-bounce">
                   </div>

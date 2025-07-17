@@ -63,7 +63,7 @@ const Sidebar = ({ expand, setExpand }) => {
           </div>
         </div>
 
-        <button onClick={createNewChat} className={`${expand ? "absolute top-5.5 left-6 bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5" : "mt-6 left-6 group relative flex items-center justify-center hover:bg-gray-500 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer"} flex items-center cursor-pointer`}>
+        <button onClick={createNewChat} className={`${expand ? "absolute top-5.5 left-7 bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5" : "mt-6 left-6 group relative flex items-center justify-center hover:bg-gray-500 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer"} flex items-center cursor-pointer`}>
           <Image className={expand ? 'w-6' : 'w-7'} src={expand ? assets.chat_icon : assets.chat_icon_dull} alt=""/>
           <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none w-23">
             New Chat
@@ -72,8 +72,8 @@ const Sidebar = ({ expand, setExpand }) => {
           {expand && <p className="text-white text font-medium">New Chat</p>}
         </button>
 
-        <div className={`mt-8 text-white/25 text-sm ${expand ? "block" : "hidden"}`}>
-          <p className="my-1">Recents</p>
+        <div className={`mt-8 text-white/25 text-sm ${expand ? "block" : "hidden"} max-h-[85vh] overflow-y-auto`}>
+          <p className="my-1">Chats</p>
           {chats.map((chat, index)=><ChatLabel key={index} name={chat.name} id={chat._id} openMenu={openMenu} setOpenMenu={setOpenMenu}/>)}
         </div>
       </div>

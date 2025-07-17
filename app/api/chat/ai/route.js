@@ -15,27 +15,59 @@ export async function POST(req) {
 
   try {
     const { userId } = getAuth(req);
-    const { chatId, prompt } = await req.json();
+    const { chatId, prompt, nativeLang, targetLang } = await req.json();
 
     if (!userId) {
       return NextResponse.json({ success: false, message: "User not Authenticated" });
     }
+
     const data = await Chat.findOne({ userId, _id: chatId });
     data.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
 
+    // Filter out any previous system prompt
+    const userMessages = data.messages.filter(
+      msg => !(msg.role === "user" && msg.content.includes("You are PolyglotGPT"))
+    );
+
+    // Dynamically generate updated system prompt
     const systemPrompt = {
       role: "user",
-      parts: [{ text: "You are PolyglotGPT, a multilingual language tutor. You use Gemini 2.5 Flash Lite."}]
+      parts: [{
+        text: `
+          You are PolyglotGPT, a multilingual conversationalist designed for language learning. 
+          Ignore any earlier context about the user’s languages. 
+          From now on:
+          - The user’s native language is ${nativeLang}. Assume they only know that language, not English.
+          - The target language (for practice) is ${targetLang}.
+
+          Your task:
+          1. Role‑play as a native speaker of ${targetLang}.
+          2. Converse entirely in ${targetLang}, asking follow-up questions and encouraging dialogue.
+          3. NEVER provide translations of your own messages into ${nativeLang}.
+
+          You should NOT:
+          - Use ${nativeLang} at all.
+          - Give praise or confirm correctness unless the user makes a mistake or asks for help.
+
+          However, you may break the above rules **only in these two cases**:
+          - If the user makes a grammatical or spelling error, begin your response with a brief correction in ${nativeLang}, written in **bold**, then continue the rest of your reply in ${targetLang}.
+          - If the user explicitly asks a question about what you said, helpfully respond to that specific question in ${nativeLang} to help them understand what you said.
+
+          Begin the conversation now. Stay natural and engaging.
+        `.trim()
+      }]
     };
 
+    // Construct message history with updated system prompt at the top
     const formattedMessages = [
-      systemPrompt,  // Insert system prompt first
-      ...data.messages.map(msg => ({
+      systemPrompt,
+      ...userMessages.map(msg => ({
         role: msg.role,
         parts: [{ text: msg.content }],
       }))
     ];
 
+    //gemini-2.5-flash-lite-preview-06-17
     const result = await ai.models.generateContent({
       model: "gemini-2.5-flash-lite-preview-06-17",
       contents: formattedMessages,
