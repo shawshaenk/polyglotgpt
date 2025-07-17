@@ -4,12 +4,15 @@ import Chat from "@/models/chat";
 import { NextResponse } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 import dotenv from "dotenv";
+import connectDB from '@/config/db';
 
 dotenv.config();
 
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
 export async function POST(req) {
+  await connectDB();
+
   try {
     const { userId } = getAuth(req);
     const { chatId, prompt } = await req.json();
