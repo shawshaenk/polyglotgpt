@@ -153,15 +153,24 @@ const PromptBox = ({setIsLoading, isLoading}) => {
 
   return (
     <form onSubmit={sendPrompt}
-    className={`fixed w-full z-10 bottom-10 max-w-2xl
-    bg-[#2a2a2a] p-4 rounded-3xl mt-4 transition-all shadow-2xl`}>
+    className={`fixed w-full z-10 bottom-8 max-w-2xl
+    bg-[#2a2a2a] p-4 pb-2 rounded-3xl mt-4 transition-all shadow-2xl`}>
         <textarea
-        onKeyDown={handleKeyDown}
-        className="outline-none w-full resize-none overflow-hidden
-        break-words bg-transparent"
-        rows={2}
-        placeholder="Message PolyglotGPT" required
-        onChange={(e)=> setPrompt(e.target.value)} value={prompt}/>
+            onKeyDown={handleKeyDown}
+            className="outline-none w-full resize-none overflow-hidden
+            break-words bg-transparent text-white placeholder-white/30 text-base max-h-[20vh]"
+            rows={2}
+            placeholder="Message PolyglotGPT"
+            required
+            onChange={(e) => {
+                setPrompt(e.target.value);
+
+                // Auto-resize logic
+                e.target.style.height = 'auto'; // Reset height
+                e.target.style.height = `${e.target.scrollHeight}px`; // Set to actual content height
+            }}
+            value={prompt}
+        />
 
         <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
