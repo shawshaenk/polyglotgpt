@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image'
 import { useAppContext } from "@/context/AppContext";
 import { toast } from 'react-hot-toast';
@@ -68,9 +68,10 @@ const LANGUAGES = [
 
 const PromptBox = ({setIsLoading, isLoading}) => {
     const [prompt, setPrompt] = useState('');
-    const [nativeLang, setNativeLang] = useState('en');
-    const [targetLang, setTargetLang] = useState('es');
-    const {user, chats, setChats, selectedChat, setSelectedChat} = useAppContext();
+    // const [nativeLang, setNativeLang] = useAppContext();
+    // const [targetLang, setTargetLang] = useAppContext();
+    const {user, chats, setChats, selectedChat, setSelectedChat, nativeLang, setNativeLang, targetLang, setTargetLang} = useAppContext();
+    const textareaRef = useRef(null);
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -92,6 +93,11 @@ const PromptBox = ({setIsLoading, isLoading}) => {
 
             setIsLoading(true)
             setPrompt("")
+
+            if (textareaRef.current) {
+                textareaRef.current.style.height = 'auto';
+                textareaRef.current.rows = 2;
+            }
 
             const userPrompt = {
                 role: "user",
@@ -138,6 +144,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                 ...prev,
                 messages: [...prev.messages, fullAssistantMessage],
             }));
+            
         } else {
             toast.error(data.message)
             setPrompt(promptCopy);
@@ -153,12 +160,13 @@ const PromptBox = ({setIsLoading, isLoading}) => {
 
   return (
     <form onSubmit={sendPrompt}
-    className={`fixed w-full z-10 bottom-8 max-w-2xl
+    className={`fixed w-full z-10 bottom-7 max-w-2xl
     bg-[#2a2a2a] p-4 pb-2 rounded-3xl mt-4 transition-all shadow-2xl`}>
-        <textarea
+        <textarea 
+            ref={textareaRef}
             onKeyDown={handleKeyDown}
             className="outline-none w-full resize-none overflow-hidden
-            break-words bg-transparent text-white placeholder-white/30 text-base max-h-[20vh]"
+            break-words bg-transparent text-white placeholder-white/30 text-base max-h-[20vh] mb-3"
             rows={2}
             placeholder="Message PolyglotGPT"
             required
@@ -178,7 +186,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                     <select
                     value={nativeLang}
                     onChange={e => setNativeLang(e.target.value)}
-                    className="bg-[#3a3a3a] text-white p-2 rounded-lg p-2 -mb-1"
+                    className="bg-[#3a3a3a] text-white p-3 rounded-lg p-2 -mb-1"
                     >
                     {LANGUAGES.map(l => (
                         <option key={l.code} value={l.code}>{l.label}</option>
@@ -187,7 +195,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                     <select
                     value={targetLang}
                     onChange={e => setTargetLang(e.target.value)}
-                    className="bg-[#3a3a3a] text-white p-2 rounded-lg -mb-1"
+                    className="bg-[#3a3a3a] text-white p-3 rounded-lg -mb-1"
                     >
                     {LANGUAGES.map(l => (
                         <option key={l.code} value={l.code}>{l.label}</option>

@@ -16,6 +16,8 @@ export const AppContextProvider = ({children})=>{
 
     const [chats, setChats] = useState([]);
     const [selectedChat, setSelectedChat] = useState(null);
+    const [nativeLang, setNativeLang] = useState('en');
+    const [targetLang, setTargetLang] = useState('es');
 
     const createNewChat = async ()=> {
         try {
@@ -71,7 +73,11 @@ export const AppContextProvider = ({children})=>{
         selectedChat,
         setSelectedChat,
         fetchUsersChats,
-        createNewChat
+        createNewChat, 
+        nativeLang, 
+        setNativeLang, 
+        targetLang, 
+        setTargetLang
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
