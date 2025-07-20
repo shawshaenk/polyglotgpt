@@ -32,6 +32,8 @@ const Message = ({role, content}) => {
   const messageWrapperRef = useRef(null);
   const popupRef = useRef(null);
   const [translatedText, setTranslatedText] = useState(null);
+  const [romanizedText, setRomanizedText] = useState(null);
+  const [aiMessage, setAiMessage] = useState(content);
   const {nativeLang, setNativeLang, targetLang, setTargetLang} = useAppContext();
 
   useEffect(() => {
@@ -73,6 +75,13 @@ const Message = ({role, content}) => {
     return () => document.removeEventListener("mouseup", handleMouseUp);
   }, []);
 
+  //Whenever content changes, reset translated and romanized text
+  useEffect(() => {
+    setAiMessage(content);
+    setTranslatedText(null);
+    setRomanizedText(null);
+  }, [content]);
+
   useEffect(()=>{
     Prism.highlightAll()
   }, [content])
@@ -83,19 +92,56 @@ const Message = ({role, content}) => {
   }
 
   const translateText = async (e)=> {
-    const translatedText = content;
+    if (translatedText) {
+      setAiMessage(translatedText);
+      toast.success("Translated!")
+      return;
+    }
+
+    const translatedTextCopy = content;
 
     const {data} = await axios.post('/api/chat/translate', {
-        translatedText,
+        translatedTextCopy,
+        targetLang,
         nativeLang,
     })
 
     if (data.success) {
       setTranslatedText(data.response);
+      setAiMessage(data.response);
+      toast.success("Translated!")
 
     } else {
         toast.error(data.message)
     }
+  }
+
+  const romanizeText = async (e)=> {
+    if (romanizedText) {
+      setAiMessage(romanizedText);
+      toast.success("Romanized!")
+      return;
+    }
+
+    const romanizedTextCopy = content;
+
+    const {data} = await axios.post('/api/chat/romanize', {
+        romanizedTextCopy
+    })
+
+    if (data.success) {
+      setRomanizedText(data.response);
+      setAiMessage(data.response);
+      toast.success("Romanized!")
+
+    } else {
+        toast.error(data.message)
+    }
+  }
+
+  const showOriginalContent = ()=> {
+    setAiMessage(content);
+    toast.success("Original Message Restored")
   }
 
   return (
@@ -112,10 +158,11 @@ const Message = ({role, content}) => {
                         ):(
                             <>
                             <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4.5 cursor-pointer"/>
-                            <Image src={assets.regenerate_icon} alt="" className="w-4 cursor-pointer"/>
-                            <button className="text-sm" onClick={() => {translateText();}}>Translate</button>
-                            <button className="text-sm">Explain</button>
-                            <button className="text-sm">Romanize</button>
+                            {/* <Image src={assets.regenerate_icon} alt="" className="w-4 cursor-pointer"/> */}
+                            <button className="text-sm cursor-pointer hover:underline" onClick={() => {showOriginalContent();}}>Show Original</button>
+                            <button className="text-sm cursor-pointer hover:underline" onClick={() => {translateText();}}>Translate</button>
+                            <button className="text-sm cursor-pointer hover:underline" onClick={() => {romanizeText();}}>Romanize</button>
+                            <button className="text-sm cursor-pointer hover:underline">Explain</button>
                             </>
                         )
                     }
@@ -131,7 +178,7 @@ const Message = ({role, content}) => {
                     <>
                     <Image src={assets.translate_icon} alt="" className="h-9 w-9 p-1 border border-white/15 rounded-full"/>
                     <div ref={containerRef} className="space-y-4 mt-2 w-full overflow-visible break-words max-w-[60vw]">
-                      <Markdown>{translatedText || content}</Markdown>
+                      <Markdown>{aiMessage}</Markdown>
                     </div>
                     </>
                 )
