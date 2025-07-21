@@ -87,7 +87,7 @@ const Message = ({role, content}) => {
   }, [content])
 
   const copyMessage = ()=> {
-    navigator.clipboard.writeText(content)
+    navigator.clipboard.writeText(aiMessage)
     toast.success("Message Copied to Clipboard")
   }
 
@@ -98,6 +98,7 @@ const Message = ({role, content}) => {
       return;
     }
 
+    const toastId = toast.loading("Translating...");
     const translatedTextCopy = content;
 
     const {data} = await axios.post('/api/chat/translate', {
@@ -109,7 +110,7 @@ const Message = ({role, content}) => {
     if (data.success) {
       setTranslatedText(data.response);
       setAiMessage(data.response);
-      toast.success("Translated!")
+      toast.success("Translated!", { id: toastId });
 
     } else {
         toast.error(data.message)
@@ -123,6 +124,7 @@ const Message = ({role, content}) => {
       return;
     }
 
+    const toastId = toast.loading("Romanizing...");
     const romanizedTextCopy = content;
 
     const {data} = await axios.post('/api/chat/romanize', {
@@ -132,7 +134,7 @@ const Message = ({role, content}) => {
     if (data.success) {
       setRomanizedText(data.response);
       setAiMessage(data.response);
-      toast.success("Romanized!")
+      toast.success("Romanized!", { id: toastId });
 
     } else {
         toast.error(data.message)
@@ -196,7 +198,7 @@ const Message = ({role, content}) => {
               toast.success(`Translating: ${selectionText}`);
               setSelectionText("");
             }}
-            className="hover:underline"
+            className="hover:underline cursor-pointer"
           >
             Translate
           </button>
@@ -205,7 +207,7 @@ const Message = ({role, content}) => {
               toast.success(`Explaining: ${selectionText}`);
               setSelectionText("");
             }}
-            className="hover:underline"
+            className="hover:underline cursor-pointer"
           >
             Explain
           </button>

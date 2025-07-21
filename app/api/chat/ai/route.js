@@ -29,6 +29,10 @@ export async function POST(req) {
       msg => !(msg.role === "user" && msg.content.includes("You are PolyglotGPT"))
     );
 
+    // However, you may break the above rules **only in these two cases**:
+    //       - If the user makes a grammatical or spelling error, begin your response with a correction in ${nativeLang}, written in **bold**, then continue the rest of your reply in ${targetLang}.
+    //       - If the user explicitly asks a question about what you said, helpfully respond to that specific question in ${nativeLang} to help them understand what you said.
+    
     // Dynamically generate updated system prompt
     const systemPrompt = {
       role: "user",
@@ -48,10 +52,6 @@ export async function POST(req) {
           You should NOT:
           - Use ${nativeLang} at all.
           - Give praise or confirm correctness unless the user makes a mistake or asks for help.
-
-          However, you may break the above rules **only in these two cases**:
-          - If the user makes a grammatical or spelling error, begin your response with a correction in ${nativeLang}, written in **bold**, then continue the rest of your reply in ${targetLang}.
-          - If the user explicitly asks a question about what you said, helpfully respond to that specific question in ${nativeLang} to help them understand what you said.
 
           Begin the conversation now. Stay natural and engaging.
         `.trim()
