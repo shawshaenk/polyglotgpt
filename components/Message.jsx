@@ -149,7 +149,7 @@ const Message = ({role, content}) => {
   return (
     <div ref={messageWrapperRef} className="relative flex flex-col items-center w-full max-w-3xl text-base">
       <div className={`flex flex-col w-full mb-8 ${role === 'user' && 'items-end'}`}>
-        <div className={`group relative flex max-w-2xl py-3 rounded-xl ${role === 'user' ? 'bg-[#2a2a2a] px-5 mt-2 max-w-[30vw] break-words break-all' : '-mt-6 gap-3'}`}>
+        <div className={`group relative flex max-w-2xl py-3 rounded-xl ${role === 'user' ? 'bg-[#2a2a2a] px-5 mt-2 max-w-[30vw]' : '-mt-6 gap-3'}`}>
             <div className={`absolute ${role === 'user' ? '-left-6 top-1/2 -translate-y-1/2' : 'left-12.5 -bottom-3.5'} transition-all`}>
                 <div className="flex items-center gap-2 opacity-70">
                     {
@@ -164,7 +164,7 @@ const Message = ({role, content}) => {
                             <button className="text-sm cursor-pointer hover:underline" onClick={() => {showOriginalContent();}}>Show Original</button>
                             <button className="text-sm cursor-pointer hover:underline" onClick={() => {translateText();}}>Translate</button>
                             <button className="text-sm cursor-pointer hover:underline" onClick={() => {romanizeText();}}>Romanize</button>
-                            <button className="text-sm cursor-pointer hover:underline">Explain</button>
+                            {/* <button className="text-sm cursor-pointer hover:underline">Speak</button> */}
                             </>
                         )
                     }
@@ -173,7 +173,7 @@ const Message = ({role, content}) => {
             {
                 role === 'user' ?
                 (
-                    <span className="text-white/90">{content}</span>
+                    <span className={`text-white/90 break-words overflow-hidden`}>{content}</span>
                 )
                 :
                 (
