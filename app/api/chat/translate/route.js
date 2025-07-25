@@ -11,7 +11,10 @@ export async function POST(req) {
 
     const result = await ai.models.generateContent({
           model: "gemini-2.5-flash-lite-preview-06-17",
-          contents: `Translate this to ${nativeLang}: ${translatedTextCopy}. Only give the translation, nothing else.`,
+          contents: `Translate the following text into ${nativeLang} only: "${translatedTextCopy}".
+                      Ignore any parts already in ${nativeLang}—only translate the content not in ${nativeLang}.
+                      Respond with the full text, substituting translated parts accordingly, without any additional explanation, formatting, or changes.
+                    `,
           config: {
             thinkingConfig: {
               thinkingBudget: 0,
