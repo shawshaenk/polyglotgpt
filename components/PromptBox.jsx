@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image'
 import { useAppContext } from "@/context/AppContext";
 import { toast } from 'react-hot-toast';
@@ -158,6 +158,48 @@ const PromptBox = ({setIsLoading, isLoading}) => {
         }
     }
 
+    async function updateChatLanguages({ 
+    langType,
+    value,
+    selectedChat,
+    nativeLang,
+    targetLang,
+    setNativeLang,
+    setTargetLang,
+    setSelectedChat,
+    setChats
+    }) {
+        if (langType === "nativeLang") {
+            setNativeLang(value);
+        } else if (langType === "targetLang") {
+            setTargetLang(value);
+        }
+
+        setSelectedChat(prev => ({
+            ...prev,
+            [langType]: value
+        }));
+
+        setChats(prev =>
+            prev.map(chat =>
+            chat._id === selectedChat._id
+                ? { ...chat, [langType]: value }
+                : chat
+            )
+        );
+
+        // Persist to backend
+        try {
+            await axios.patch('/api/chat/update-langs', {
+                chatId: selectedChat._id,
+                nativeLang: langType === "nativeLang" ? value : nativeLang,
+                targetLang: langType === "targetLang" ? value : targetLang
+            });
+        } catch (error) {
+            console.error(`Failed to update ${langType}:`, error);
+        }
+    }
+
   return (
     <form onSubmit={sendPrompt}
     className={`fixed w-full z-10 bottom-7 max-w-2xl
@@ -173,9 +215,8 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             onChange={(e) => {
                 setPrompt(e.target.value);
 
-                // Auto-resize logic
-                e.target.style.height = 'auto'; // Reset height
-                e.target.style.height = `${e.target.scrollHeight}px`; // Set to actual content height
+                e.target.style.height = 'auto';
+                e.target.style.height = `${e.target.scrollHeight}px`;
             }}
             value={prompt}
         />
@@ -185,16 +226,37 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                 <div className="flex gap-4 mb-3">
                     <select
                     value={nativeLang}
-                    onChange={e => setNativeLang(e.target.value)}
+                    onChange={e => updateChatLanguages({
+                        langType: "nativeLang",
+                        value: e.target.value,
+                        selectedChat,
+                        nativeLang,
+                        targetLang,
+                        setNativeLang,
+                        setTargetLang,
+                        setSelectedChat,
+                        setChats
+                    })}
                     className="bg-[#3a3a3a] text-white p-3 rounded-lg p-2 -mb-1"
                     >
                     {LANGUAGES.map(l => (
                         <option key={l.code} value={l.code}>{l.label}</option>
                     ))}
                     </select>
+
                     <select
                     value={targetLang}
-                    onChange={e => setTargetLang(e.target.value)}
+                    onChange={e => updateChatLanguages({
+                        langType: "targetLang",
+                        value: e.target.value,
+                        selectedChat,
+                        nativeLang,
+                        targetLang,
+                        setNativeLang,
+                        setTargetLang,
+                        setSelectedChat,
+                        setChats
+                    })}
                     className="bg-[#3a3a3a] text-white p-3 rounded-lg -mb-1"
                     >
                     {LANGUAGES.map(l => (

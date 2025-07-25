@@ -11,7 +11,7 @@ export async function POST(req) {
 
     const result = await ai.models.generateContent({
           model: "gemini-2.5-flash-lite-preview-06-17",
-          contents: `Romanize this text: ${romanizedTextCopy}. Only give the romanization, nothing else.`,
+          contents: `Romanize this text: ${romanizedTextCopy}. Only give the romanization, nothing else. If the text is already using the Latin alphabet, just echo the text as is.`,
           config: {
             thinkingConfig: {
               thinkingBudget: 0,

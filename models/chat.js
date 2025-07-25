@@ -11,6 +11,8 @@ const ChatSchema = new mongoose.Schema(
             },
         ],
         userId: {type: String, required: true},
+        nativeLang: { type: String, required: true },
+        targetLang: { type: String, required: true }
     }, 
     {timestamps: true}
 );

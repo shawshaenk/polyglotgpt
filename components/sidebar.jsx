@@ -72,7 +72,7 @@ const Sidebar = ({ expand, setExpand }) => {
           {expand && <p className="text-white text font-medium">New Chat</p>}
         </button>
 
-        <div className={`mt-4 text-white/25 text-sm ${expand ? "block" : "hidden"} max-h-[85vh] overflow-y-auto`}>
+        <div className={`mt-4 text-white/25 text-sm ${expand ? "block" : "hidden"} max-h-[85vh] min-h-[85vh] overflow-y-auto`}>
           <p className="my-1 mb-2">Chats</p>
           {chats.map((chat, index)=><ChatLabel key={index} name={chat.name} id={chat._id} openMenu={openMenu} setOpenMenu={setOpenMenu}/>)}
         </div>

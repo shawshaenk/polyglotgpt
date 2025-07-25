@@ -12,11 +12,26 @@ export async function POST(req) {
             })
         }
 
+    // ✅ Extract nativeLang and targetLang from request body
+        const body = await req.json();
+        const { nativeLang, targetLang } = body;
+
+        if (!nativeLang || !targetLang) {
+            return NextResponse.json({
+                success: false,
+                message: "Missing nativeLang or targetLang",
+            });
+        }
+
+        console.log(nativeLang)
+        console.log(targetLang)
         //Prepare chat database and create new chat
         const chatData = {
             userId, 
             messages: [],
             name: "New Chat",
+            nativeLang,
+            targetLang
         };
 
         //Connect to the database and create a new chat

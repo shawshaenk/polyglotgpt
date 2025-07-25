@@ -19,52 +19,74 @@ export const AppContextProvider = ({children})=>{
     const [nativeLang, setNativeLang] = useState('en');
     const [targetLang, setTargetLang] = useState('es');
 
-    const createNewChat = async ()=> {
+    const createNewChat = async () => {
         try {
-            if (!user) return null;
+            if (!user) return;
 
             const token = await getToken();
 
-            await axios.post('/api/chat/create', {}, {headers:{
-                Authorization: `Bearer ${token}`
-            }});
+            const { data } = await axios.post('/api/chat/create',
+            { nativeLang, targetLang },
+            {
+                headers: {
+                Authorization: `Bearer ${token}`,
+                },
+            }
+            );
 
-            fetchUsersChats();
+            console.log("Chat created:", data);
+
+            // 🧠 Instead of triggering fetch again here,
+            // let the outer useEffect or caller decide
+            // OR trigger it manually from the button/menu
+            await fetchUsersChats();
         } catch (error) {
             toast.error(error.message);
         }
-    }
+    };
 
-    const fetchUsersChats = async()=>{
+    const fetchUsersChats = async () => {
         try {
             const token = await getToken();
-            const {data} = await axios.get('/api/chat/get', {headers:{
+            const { data } = await axios.get('/api/chat/get', {
+            headers: {
                 Authorization: `Bearer ${token}`
-            }});
+            }
+            });
+
             if (data.success) {
-                console.log(data.data);
-                setChats(data.data);
-                if (data.data.length === 0) {
-                    await createNewChat();
-                    return fetchUsersChats();
-                } else {
-                    data.data.sort((a, b)=> new Date(b.updatedAt) - new Date(a.updatedAt));
-                    setSelectedChat(data.data[0])
-                    console.log(data.data[0])
-                }
+            if (data.data.length === 0) {
+                console.log("No chats found. Creating one...");
+                await createNewChat();  // Do not recursively call fetch again here
+                return;
+            }
+
+            const sorted = data.data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+            setChats(sorted);
+            setSelectedChat(sorted[0]);
+            console.log("Chats loaded:", sorted[0]);
             } else {
-                toast.error(data.message)
+            toast.error(data.message);
             }
         } catch (error) {
-            toast.error(error.message)
+            toast.error(error.message);
         }
-    }
+    };
+
 
     useEffect(()=> {
         if (user) {
             fetchUsersChats();
         }
     }, [user])
+
+    useEffect(() => {
+    if (selectedChat) {
+        setNativeLang(selectedChat.nativeLang);
+        setTargetLang(selectedChat.targetLang);
+        console.log("language changed")
+    }
+    }, [selectedChat]);
 
     const value = {
         user,

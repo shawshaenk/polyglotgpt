@@ -25,9 +25,7 @@ export async function POST(req) {
     data.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
 
     // Filter out any previous system prompt
-    const userMessages = data.messages.filter(
-      msg => !(msg.role === "user" && msg.content.includes("You are PolyglotGPT"))
-    );
+    const userMessages = data.messages;
 
     // However, you may break the above rules **only in these two cases**:
     //       - If the user makes a grammatical or spelling error, begin your response with a correction in ${nativeLang}, written in **bold**, then continue the rest of your reply in ${targetLang}.
