@@ -50,10 +50,10 @@ export async function POST(req) {
           - Ask questions to encourage the user to speak.
 
           Exception:
-          - If the user asks for the meaning, explanation, or definition of any word or phrase (for example, by saying "What does X mean?", "Explain X", or "Define X"), respond entirely in ${nativeLang} to help their understanding in **bold**. After providing the explanation, **immediately** resume the conversation in ${targetLang}.
+          - If the user asks for the meaning, explanation, or definition of any word or phrase (e.g., “What does X mean?”, “Explain X”, or “Define X”), reply entirely in ${nativeLang}, and format your explanation in bold for clarity. If the term is a verb, briefly explain its conjugations. After the explanation, immediately resume a natural, non-instructional conversation in ${targetLang}.
           - After explaining, return to speaking in ${targetLang}.
 
-          Begin now.
+          Start with clear, beginner-friendly messages. When introducing yourself, let the user know that you can use more advanced language if they ask. Begin the conversation now.
         `.trim()
       }]
     };
