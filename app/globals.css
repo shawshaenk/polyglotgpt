@@ -14,10 +14,6 @@ html {
   @apply scroll-smooth;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 .loader div:nth-child(2) {
   animation-delay: 0.2s;
 }
