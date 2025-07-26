@@ -15,10 +15,11 @@ export async function POST(req) {
     ABSOLUTE, NON-NEGOTIABLE RULES:
     1.  **Output MUST be an EXACT, COMPLETE copy of the input text.** This means every single character, including all Latin characters, non-Latin characters, punctuation, spaces, line breaks, symbols, quotes, and markdown (like **bold** or italics), must be present in the output in their original order and position.
     2.  The **ONLY** modification allowed is the replacement of each individual non-Latin character with its standard Latin script equivalent.
-    3.  You **MUST NOT** remove, skip, shorten, summarize, or omit ANY part of the input, regardless of its script (Latin or non-Latin).
-    4.  You **MUST NOT** translate, interpret, explain, or add any commentary or additional text. The meaning of the input is completely irrelevant to this task.
-    5.  Maintain all existing formatting (e.g., bolding, line breaks, spacing) exactly as it appears in the input.
-    6.  Existing Latin characters and existing transliterations (if any) must remain untouched. Only perform transliteration on characters that are *currently* non-Latin.
+    3.  When transliterating, preserve all phonetic details, including accents and diacritics (e.g., á, ü, ñ, ī). Do not strip or simplify them.
+    4.  You **MUST NOT** remove, skip, shorten, summarize, or omit ANY part of the input, regardless of its script (Latin or non-Latin).
+    5.  You **MUST NOT** translate, interpret, explain, or add any commentary or additional text. The meaning of the input is completely irrelevant to this task.
+    6.  Maintain all existing formatting (e.g., bolding, line breaks, spacing) exactly as it appears in the input.
+    7.  Existing Latin characters and existing transliterations (if any) must remain untouched. Only perform transliteration on characters that are *currently* non-Latin.
 
     Your final response must be the full original input text, with the *only* change being that all non-Latin characters have been replaced by their Latin equivalents.`
 
