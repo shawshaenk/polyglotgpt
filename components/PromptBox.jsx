@@ -124,12 +124,14 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                         setSelectedChat,
                         setChats
                     })}
-                    className="bg-[#3a3a3a] text-white p-3 rounded-lg p-2 -mb-1"
+                    className="bg-[#3a3a3a] text-white p-3 rounded-lg p-2 -mb-1 focus:outline-none focus:ring-0 focus:border-transparent"
                     >
                     {languageList.map(l => (
                         <option key={l.code} value={l.code}>{l.label}</option>
                     ))}
                     </select>
+
+                    <span className="text-white text-xl mt-2 -ml-1 -mr-1">→</span>
 
                     <select
                     value={targetLang}
@@ -144,7 +146,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                         setSelectedChat,
                         setChats
                     })}
-                    className="bg-[#3a3a3a] text-white p-3 rounded-lg -mb-1"
+                    className="bg-[#3a3a3a] text-white p-3 rounded-lg -mb-1 focus:outline-none focus:ring-0 focus:border-transparent"
                     >
                     {languageList.map(l => (
                         <option key={l.code} value={l.code}>{l.label}</option>
