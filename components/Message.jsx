@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Markdown from "react-markdown";
 import Prism from "prismjs";
 import { useAppContext } from "@/context/AppContext";
+import { sendPromptHandler } from '@/app/utils/sendPromptHandler';
 
 import copy_icon from '@/assets/copy_icon.svg';
 import pencil_icon from '@/assets/pencil_icon.svg';
@@ -24,7 +25,7 @@ const assets = {
   translate_icon
 };
 
-const Message = ({role, content}) => {
+const Message = ({role, content, setIsLoading}) => {
 
   const [selectionText, setSelectionText] = useState("");
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
@@ -34,7 +35,7 @@ const Message = ({role, content}) => {
   const [translatedText, setTranslatedText] = useState(null);
   const [romanizedText, setRomanizedText] = useState(null);
   const [aiMessage, setAiMessage] = useState(content);
-  const {nativeLang, setNativeLang, targetLang, setTargetLang} = useAppContext();
+  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, languageList} = useAppContext();
 
   useEffect(() => {
     Prism.highlightAll();
@@ -80,7 +81,7 @@ const Message = ({role, content}) => {
     setAiMessage(content);
     setTranslatedText(null);
     setRomanizedText(null);
-  }, [content]);
+  }, [content, nativeLang, targetLang]);
 
   useEffect(()=>{
     Prism.highlightAll()
@@ -103,7 +104,6 @@ const Message = ({role, content}) => {
 
     const {data} = await axios.post('/api/chat/translate', {
         translatedTextCopy,
-        targetLang,
         nativeLang,
     })
 
@@ -145,6 +145,22 @@ const Message = ({role, content}) => {
     setAiMessage(content);
     toast.success("Original Message Restored")
   }
+
+  const sendPrompt = (e) => {
+    const languageToExplainIn = languageList.find(lang => lang.code === nativeLang)?.label
+
+    sendPromptHandler({
+      e,
+      prompt: `Explain "${selectionText}" in ${languageToExplainIn}, word by word`,
+      setIsLoading,
+      setChats,
+      setSelectedChat,
+      selectedChat,
+      user,
+      nativeLang,
+      targetLang,
+    });
+  };
 
   return (
     <div ref={messageWrapperRef} className="relative flex flex-col items-center w-full max-w-3xl text-base">
@@ -194,22 +210,10 @@ const Message = ({role, content}) => {
           style={{ top: popupPos.y, left: popupPos.x }}
         >
           <button
-            onClick={() => {
-              toast.success(`Translating: ${selectionText}`);
-              setSelectionText("");
-            }}
+            onClick={(e) => sendPrompt(e)}
             className="hover:underline cursor-pointer"
           >
-            Translate
-          </button>
-          <button
-            onClick={() => {
-              toast.success(`Explaining: ${selectionText}`);
-              setSelectionText("");
-            }}
-            className="hover:underline cursor-pointer"
-          >
-            Explain
+            Translate and Explain
           </button>
         </div>
       )}

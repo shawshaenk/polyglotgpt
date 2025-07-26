@@ -19,6 +19,54 @@ export const AppContextProvider = ({children})=>{
     const [nativeLang, setNativeLang] = useState('en');
     const [targetLang, setTargetLang] = useState('es');
 
+    const languageList = [
+      { code: 'ar', label: 'Arabic' },
+      { code: 'bn', label: 'Bengali' },
+      { code: 'bg', label: 'Bulgarian' },
+      { code: 'zh', label: 'Mandarin' },
+      { code: 'hr', label: 'Croatian' },
+      { code: 'cs', label: 'Czech' },
+      { code: 'da', label: 'Danish' },
+      { code: 'nl', label: 'Dutch' },
+      { code: 'en', label: 'English' },
+      { code: 'et', label: 'Estonian' },
+      { code: 'fi', label: 'Finnish' },
+      { code: 'fr', label: 'French' },
+      { code: 'de', label: 'German' },
+      { code: 'el', label: 'Greek' },
+      { code: 'gu', label: 'Gujarati' },
+      { code: 'he', label: 'Hebrew' },
+      { code: 'hi', label: 'Hindi' },
+      { code: 'hu', label: 'Hungarian' },
+      { code: 'id', label: 'Indonesian' },
+      { code: 'it', label: 'Italian' },
+      { code: 'ja', label: 'Japanese' },
+      { code: 'kn', label: 'Kannada' },
+      { code: 'ko', label: 'Korean' },
+      { code: 'lv', label: 'Latvian' },
+      { code: 'lt', label: 'Lithuanian' },
+      { code: 'ml', label: 'Malayalam' },
+      { code: 'mr', label: 'Marathi' },
+      { code: 'no', label: 'Norwegian' },
+      { code: 'pl', label: 'Polish' },
+      { code: 'pt', label: 'Portuguese' },
+      { code: 'ro', label: 'Romanian' },
+      { code: 'ru', label: 'Russian' },
+      { code: 'sr', label: 'Serbian' },
+      { code: 'sk', label: 'Slovak' },
+      { code: 'sl', label: 'Slovenian' },
+      { code: 'es', label: 'Spanish' },
+      { code: 'sw', label: 'Swahili' },
+      { code: 'sv', label: 'Swedish' },
+      { code: 'ta', label: 'Tamil' },
+      { code: 'te', label: 'Telugu' },
+      { code: 'th', label: 'Thai' },
+      { code: 'tr', label: 'Turkish' },
+      { code: 'uk', label: 'Ukrainian' },
+      { code: 'ur', label: 'Urdu' },
+      { code: 'vi', label: 'Vietnamese' },
+    ];
+
     const createNewChat = async () => {
         try {
             if (!user) return;
@@ -99,7 +147,8 @@ export const AppContextProvider = ({children})=>{
         nativeLang, 
         setNativeLang, 
         targetLang, 
-        setTargetLang
+        setTargetLang, 
+        languageList
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

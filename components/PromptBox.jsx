@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useAppContext } from "@/context/AppContext";
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
+import { sendPromptHandler } from '@/app/utils/sendPromptHandler';
 
 import deepthink_icon from '@/assets/deepthink_icon.svg';
 import search_icon from '@/assets/search_icon.svg';
@@ -18,59 +19,9 @@ const assets = {
   arrow_icon_dull
 };
 
-const LANGUAGES = [
-  { code: 'ar', label: 'Arabic' },
-  { code: 'bn', label: 'Bengali' },
-  { code: 'bg', label: 'Bulgarian' },
-  { code: 'zh', label: 'Chinese' },
-  { code: 'hr', label: 'Croatian' },
-  { code: 'cs', label: 'Czech' },
-  { code: 'da', label: 'Danish' },
-  { code: 'nl', label: 'Dutch' },
-  { code: 'en', label: 'English' },
-  { code: 'et', label: 'Estonian' },
-  { code: 'fi', label: 'Finnish' },
-  { code: 'fr', label: 'French' },
-  { code: 'de', label: 'German' },
-  { code: 'el', label: 'Greek' },
-  { code: 'gu', label: 'Gujarati' },
-  { code: 'he', label: 'Hebrew' },
-  { code: 'hi', label: 'Hindi' },
-  { code: 'hu', label: 'Hungarian' },
-  { code: 'id', label: 'Indonesian' },
-  { code: 'it', label: 'Italian' },
-  { code: 'ja', label: 'Japanese' },
-  { code: 'kn', label: 'Kannada' },
-  { code: 'ko', label: 'Korean' },
-  { code: 'lv', label: 'Latvian' },
-  { code: 'lt', label: 'Lithuanian' },
-  { code: 'ml', label: 'Malayalam' },
-  { code: 'mr', label: 'Marathi' },
-  { code: 'no', label: 'Norwegian' },
-  { code: 'pl', label: 'Polish' },
-  { code: 'pt', label: 'Portuguese' },
-  { code: 'ro', label: 'Romanian' },
-  { code: 'ru', label: 'Russian' },
-  { code: 'sr', label: 'Serbian' },
-  { code: 'sk', label: 'Slovak' },
-  { code: 'sl', label: 'Slovenian' },
-  { code: 'es', label: 'Spanish' },
-  { code: 'sw', label: 'Swahili' },
-  { code: 'sv', label: 'Swedish' },
-  { code: 'ta', label: 'Tamil' },
-  { code: 'te', label: 'Telugu' },
-  { code: 'th', label: 'Thai' },
-  { code: 'tr', label: 'Turkish' },
-  { code: 'uk', label: 'Ukrainian' },
-  { code: 'ur', label: 'Urdu' },
-  { code: 'vi', label: 'Vietnamese' },
-];
-
 const PromptBox = ({setIsLoading, isLoading}) => {
     const [prompt, setPrompt] = useState('');
-    // const [nativeLang, setNativeLang] = useAppContext();
-    // const [targetLang, setTargetLang] = useAppContext();
-    const {user, chats, setChats, selectedChat, setSelectedChat, nativeLang, setNativeLang, targetLang, setTargetLang} = useAppContext();
+    const {user, setChats, selectedChat, setSelectedChat, nativeLang, setNativeLang, targetLang, setTargetLang, languageList} = useAppContext();
     const textareaRef = useRef(null);
 
     const handleKeyDown = (e) => {
@@ -80,83 +31,19 @@ const PromptBox = ({setIsLoading, isLoading}) => {
         }
     }
 
-    const sendPrompt = async (e)=> {
-        const promptCopy = prompt;
-
-        try {
-            e.preventDefault();
-            if (!user) return toast.error('Login to Send Message');
-            if (isLoading) return toast.error('Wait for the previous prompt response');
-            if (prompt === "") {
-                return toast.error('Enter a Prompt');
-            }
-
-            setIsLoading(true)
-            setPrompt("")
-
-            if (textareaRef.current) {
-                textareaRef.current.style.height = 'auto';
-                textareaRef.current.rows = 2;
-            }
-
-            const userPrompt = {
-                role: "user",
-                content: prompt,
-                timestamp: Date.now()
-            }
-
-            setChats((prevChats)=> prevChats.map((chat)=> chat._id === selectedChat._id ? {
-                ...chat,
-                messages: [...chat.messages, userPrompt]
-            }: chat
-        ))
-
-        setSelectedChat((prev)=> ({
-            ...prev,
-            messages: [...(prev?.messages || []), userPrompt]
-        }))
-
-        const {data} = await axios.post('/api/chat/ai', {
-            chatId: selectedChat._id,
+    const sendPrompt = (e) =>
+        sendPromptHandler({
+            e,
             prompt,
+            setPrompt,
+            setIsLoading,
+            setChats,
+            setSelectedChat,
+            selectedChat,
+            user,
             nativeLang,
-            targetLang
-        })
-
-        if (data.success) {
-            const aiReplyString = data.response;
-
-            // Create the FULL assistant message for persistent storage
-            const fullAssistantMessage = {
-                role: 'model',
-                content: aiReplyString, // This holds the complete response
-                timestamp: Date.now()
-            };
-
-            // Update the 'chats' state with the FULL message (for saving/history)
-            setChats((prevChats) => prevChats.map((chat) => chat._id === selectedChat._id ? {
-                ...chat,
-                messages: [...chat.messages, fullAssistantMessage]
-            } : chat));
-
-            // Add the empty typing message to selectedChat for immediate display
-            setSelectedChat((prev) => ({
-                ...prev,
-                messages: [...prev.messages, fullAssistantMessage],
-            }));
-            
-        } else {
-            toast.error(data.message)
-            setPrompt(promptCopy);
-        }
-
-        } catch (error) {
-            toast.error(error.message)
-            setPrompt(promptCopy);
-        } finally {
-            setIsLoading(false);
-        }
-    }
+            targetLang,
+    });
 
     async function updateChatLanguages({ 
     langType,
@@ -239,7 +126,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                     })}
                     className="bg-[#3a3a3a] text-white p-3 rounded-lg p-2 -mb-1"
                     >
-                    {LANGUAGES.map(l => (
+                    {languageList.map(l => (
                         <option key={l.code} value={l.code}>{l.label}</option>
                     ))}
                     </select>
@@ -259,7 +146,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                     })}
                     className="bg-[#3a3a3a] text-white p-3 rounded-lg -mb-1"
                     >
-                    {LANGUAGES.map(l => (
+                    {languageList.map(l => (
                         <option key={l.code} value={l.code}>{l.label}</option>
                     ))}
                     </select>

@@ -69,7 +69,7 @@ export async function POST(req) {
 
     //gemini-2.5-flash-lite-preview-06-17
     const result = await ai.models.generateContent({
-      model: "gemini-2.5-flash-lite-preview-06-17",
+      model: "gemini-2.5-flash",
       contents: formattedMessages,
       config: {
         thinkingConfig: {
