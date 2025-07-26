@@ -151,7 +151,7 @@ const Message = ({role, content, setIsLoading}) => {
 
     sendPromptHandler({
       e,
-      prompt: `Explain "${selectionText}" in ${languageToExplainIn}, word by word`,
+      prompt: `Explain "${selectionText}" in ${languageToExplainIn}, word by word.`,
       setIsLoading,
       setChats,
       setSelectedChat,
@@ -176,11 +176,10 @@ const Message = ({role, content, setIsLoading}) => {
                         ):(
                             <>
                             <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4.5 cursor-pointer"/>
-                            {/* <Image src={assets.regenerate_icon} alt="" className="w-4 cursor-pointer"/> */}
+                            <Image src={assets.regenerate_icon} alt="" className="w-4 cursor-pointer"/>
                             <button className="text-sm cursor-pointer hover:underline" onClick={() => {showOriginalContent();}}>Show Original</button>
                             <button className="text-sm cursor-pointer hover:underline" onClick={() => {translateText();}}>Translate</button>
                             <button className="text-sm cursor-pointer hover:underline" onClick={() => {romanizeText();}}>Romanize</button>
-                            {/* <button className="text-sm cursor-pointer hover:underline">Speak</button> */}
                             </>
                         )
                     }

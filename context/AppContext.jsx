@@ -84,9 +84,6 @@ export const AppContextProvider = ({children})=>{
 
             console.log("Chat created:", data);
 
-            // 🧠 Instead of triggering fetch again here,
-            // let the outer useEffect or caller decide
-            // OR trigger it manually from the button/menu
             await fetchUsersChats();
         } catch (error) {
             toast.error(error.message);
