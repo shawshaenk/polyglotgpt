@@ -46,7 +46,7 @@ export async function POST(req) {
       - Keep your responses short, friendly, and beginner-appropriate unless the user asks for more advanced language.
 
       Answering User Questions:
-        If the user asks for a definition, meaning (of a word/phrase), or explanation (of a linguistic concept or specific term)** (e.g., “What does X mean?”, “Explain X”, “Define X”):
+        If the user asks for a definition, meaning (of a word/phrase), or explanation (of a linguistic concept or specific term)** (e.g., “What does X mean?”, “Explain X”, “Define X”, “Explain X in detail, word by word”):
         - Respond entirely in **${nativeLang}**, with bold formatting for the explanation.
         - If the word is a verb, briefly explain how it’s conjugated.
         - Immediately afterward, continue the conversation naturally in ${targetLang} about a different topic.
