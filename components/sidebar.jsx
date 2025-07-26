@@ -72,7 +72,7 @@ const Sidebar = ({ expand, setExpand }) => {
           {expand && <p className="text-white text font-medium">New Chat</p>}
         </button>
 
-        <div className={`mt-4 text-white/25 text-sm ${expand ? "block" : "hidden"} max-h-[85vh] min-h-[85vh] overflow-y-auto`}>
+        <div className={`mt-4 text-white/25 text-sm ${expand ? "block" : "hidden"} max-h-[82vh] min-h-[82vh] overflow-y-auto`}>
           <p className="my-1 mb-2">Chats</p>
           {chats.map((chat, index)=><ChatLabel key={index} name={chat.name} id={chat._id} openMenu={openMenu} setOpenMenu={setOpenMenu}/>)}
         </div>
@@ -83,7 +83,7 @@ const Sidebar = ({ expand, setExpand }) => {
 
       {/* Profile Button */}
       <div onClick={user ? null : openSignIn}
-      className={`flex items-center ${expand ? 'hover:bg-white/10 rounded-lg' : 'justify-center w-full mb-4'} gap-3 text-white/60 text-sm p-2 mt-2 cursor-pointer`}>
+      className={`flex items-center ${expand ? 'hover:bg-white/10 rounded-lg' : 'justify-center w-full mb-4'} gap-3 text-white/60 text-sm p-2 mb-2 cursor-pointer`}>
         {
           user ? <UserButton/> : <Image src={assets.profile_icon} alt="" className="w-7"/>
         }
