@@ -28,6 +28,10 @@ const PromptBox = ({setIsLoading, isLoading}) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             sendPrompt(e);
+            setPrompt('');
+            if (textareaRef.current) {
+                textareaRef.current.style.height = '5vh';
+            }
         }
     }
 

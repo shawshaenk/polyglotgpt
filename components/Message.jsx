@@ -149,9 +149,14 @@ const Message = ({role, content, setIsLoading}) => {
   const sendPrompt = (e) => {
     const languageToExplainIn = languageList.find(lang => lang.code === nativeLang)?.label
 
+    let promptToSend = `Explain "${selectionText}" in ${languageToExplainIn}`
+    if (selectionText.includes(" ")) {
+      promptToSend = promptToSend + " word by word."
+    }
+
     sendPromptHandler({
       e,
-      prompt: `Explain "${selectionText}" in ${languageToExplainIn}, word by word.`,
+      prompt: promptToSend,
       setIsLoading,
       setChats,
       setSelectedChat,

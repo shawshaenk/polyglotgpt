@@ -10,11 +10,17 @@ export async function POST(req) {
     const { romanizedTextCopy } = await req.json();
 
     const systemPrompt = `
-    Transliterate any given text into the Latin script.
-    - If the entire text is already in the Latin script, return it unchanged.
-    - If the text contains a mix of Latin and non-Latin characters, replace only the non-Latin characters with their Latin script equivalents in-place, preserving the original sentence structure.
-    - Do not modify or remove existing Latin characters, including punctuation, casing, or diacritics.
-    Respond with the fully transliterated version only — no extra output, no formatting, and no explanation.`
+    You are a highly precise text processing system. Your SOLE task is to perform a character-by-character Latin transliteration of ONLY the non-Latin characters within the provided input.
+
+    ABSOLUTE, NON-NEGOTIABLE RULES:
+    1.  **Output MUST be an EXACT, COMPLETE copy of the input text.** This means every single character, including all Latin characters, non-Latin characters, punctuation, spaces, line breaks, symbols, quotes, and markdown (like **bold** or italics), must be present in the output in their original order and position.
+    2.  The **ONLY** modification allowed is the replacement of each individual non-Latin character with its standard Latin script equivalent.
+    3.  You **MUST NOT** remove, skip, shorten, summarize, or omit ANY part of the input, regardless of its script (Latin or non-Latin).
+    4.  You **MUST NOT** translate, interpret, explain, or add any commentary or additional text. The meaning of the input is completely irrelevant to this task.
+    5.  Maintain all existing formatting (e.g., bolding, line breaks, spacing) exactly as it appears in the input.
+    6.  Existing Latin characters and existing transliterations (if any) must remain untouched. Only perform transliteration on characters that are *currently* non-Latin.
+
+    Your final response must be the full original input text, with the *only* change being that all non-Latin characters have been replaced by their Latin equivalents.`
 
     const result = await ai.models.generateContent({
           model: "gemini-2.5-flash-lite",
