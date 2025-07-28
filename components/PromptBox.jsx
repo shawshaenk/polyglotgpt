@@ -99,7 +99,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             ref={textareaRef}
             onKeyDown={handleKeyDown}
             className="outline-none w-full resize-none overflow-hidden
-            break-words bg-transparent text-white placeholder-white/30 text-base max-h-[20vh] mb-3 overflow-y-scroll"
+            break-words bg-transparent text-white placeholder-white/30 text-base max-h-[20vh] mb-3 overflow-y-auto"
             rows={2}
             placeholder="Message PolyglotGPT"
             required
