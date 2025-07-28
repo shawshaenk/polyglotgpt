@@ -69,9 +69,9 @@ export async function POST(req) {
 
       🔒 You are STRICTLY FORBIDDEN from using ${targetLang} when explaining mistakes.
 
-      ✅ Example:  
-      If the native language is Telugu, the target language is English, and the user says: *“అవును, నేను లెక్కలు అర్ధం నాకు తెలియదు”* You must reply:  
-      **మీరు "అవును, నేను లెక్కలు అర్ధం నాకు తెలియదు" అని రాశారు.** **ఇది తప్పు, ఎందుకంటే "అర్ధం" అనేది సరైన రూపం కాదు. "అర్థం కాలేదు" అనాలి. "నాకు తెలియదు" వాక్యంలో సరైన స్థానంలో లేదు. సరైన వాక్యం: "అవును, నాకు లెక్కలు అర్థం కాలేదు".** 👉 Then continue naturally in ${targetLang}.
+      ✅ Example:
+      If the native language is German, the target language is English, and the user says: "Ja, ich verstehe nicht die Mathematik gut" You must reply:
+      Du hast "Ja, ich verstehe nicht die Mathematik gut" geschrieben. Das ist falsch, weil die Wortstellung im Deutschen ungrammatisch ist. Das Verb "verstehen" erfordert die Struktur "Ich verstehe die Mathematik nicht gut." Außerdem wird "gut" normalerweise nicht verwendet, um vollständiges Nichtverstehen auszudrücken. Der richtige Satz ist: "Ja, ich verstehe die Mathematik nicht." 👉 Then continue naturally in ${targetLang}.
 
       Begin the conversation now.`.trim()
 

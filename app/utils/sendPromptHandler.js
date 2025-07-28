@@ -20,7 +20,7 @@ export const sendPromptHandler = async ({
     e.preventDefault();
 
     if (!user) {
-      toast.error('Login to send message');
+      toast.error('Login to send message.');
       clerk.openSignIn();
       return;
     }

@@ -66,8 +66,27 @@ const PromptBox = ({setIsLoading, isLoading}) => {
     setChats
     }) {
         if (!isSignedIn && clerk) {
-            toast.error('Login to change language');
+            toast.error('Login to change language.');
             clerk.openSignIn();
+            return;
+        }
+
+       // Store original values for potential revert
+        const originalNativeLang = selectedChat?.nativeLang || nativeLang;
+        const originalTargetLang = selectedChat?.targetLang || targetLang;
+        
+        // Calculate what the new values would be
+        const newNativeLang = langType === "nativeLang" ? value : nativeLang;
+        const newTargetLang = langType === "targetLang" ? value : targetLang;
+
+        // Check if the new combination would be invalid
+        if (newNativeLang === newTargetLang) {
+            toast.error('Native and target languages must be different.');
+            
+            // Revert to original database values
+            setNativeLang(originalNativeLang);
+            setTargetLang(originalTargetLang);
+            
             return;
         }
 
