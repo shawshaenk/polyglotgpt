@@ -12,12 +12,19 @@ export const sendPromptHandler = async ({
   user,
   nativeLang,
   targetLang,
+  clerk,
 }) => {
   const promptCopy = prompt;
 
   try {
     e.preventDefault();
-    if (!user) return toast.error('Login to Send Message');
+
+    if (!user) {
+      toast.error('Login to send message');
+      clerk.openSignIn();
+      return;
+    }
+
     if (!prompt) return toast.error('Enter a Prompt');
 
     setIsLoading(true);

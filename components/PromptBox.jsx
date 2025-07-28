@@ -4,6 +4,7 @@ import { useAppContext } from "@/context/AppContext";
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { sendPromptHandler } from '@/app/utils/sendPromptHandler';
+import { useAuth, useClerk } from "@clerk/nextjs";
 
 import deepthink_icon from '@/assets/deepthink_icon.svg';
 import search_icon from '@/assets/search_icon.svg';
@@ -35,6 +36,9 @@ const PromptBox = ({setIsLoading, isLoading}) => {
         }
     }
 
+    const { signedIn } = useAuth();
+    const clerk = useClerk();
+
     const sendPrompt = (e) =>
         sendPromptHandler({
             e,
@@ -47,6 +51,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             user,
             nativeLang,
             targetLang,
+            clerk,
     });
 
     async function updateChatLanguages({ 
@@ -60,6 +65,12 @@ const PromptBox = ({setIsLoading, isLoading}) => {
     setSelectedChat,
     setChats
     }) {
+        if (!signedIn) {
+            toast.error('Login to change language');
+            clerk.openSignIn();
+            return;
+        }
+
         if (langType === "nativeLang") {
             setNativeLang(value);
         } else if (langType === "targetLang") {
@@ -81,12 +92,17 @@ const PromptBox = ({setIsLoading, isLoading}) => {
 
         // Persist to backend
         try {
-            await axios.patch('/api/chat/update-langs', {
+            if (user) {
+                await axios.patch('/api/chat/update-langs', {
                 chatId: selectedChat._id,
                 nativeLang: langType === "nativeLang" ? value : nativeLang,
                 targetLang: langType === "targetLang" ? value : targetLang
             });
+            } else {
+                toast.error("Login to send message. Click the profile icon in the bottom left.")
+            }
         } catch (error) {
+            toast.error("Login to send message. Click the profile icon in the bottom left.")
             console.error(`Failed to update ${langType}:`, error);
         }
     }

@@ -1,5 +1,4 @@
 'use client';
-// import { assets } from "@/assets/assets";
 import Sidebar from "@/components/sidebar";
 import PromptBox from "@/components/PromptBox";
 import Image from "next/image";
@@ -7,6 +6,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Message from "@/components/Message";
 import { useAppContext } from "@/context/AppContext";
 import { Analytics } from '@vercel/analytics/next';
+import { useAuth, useClerk } from "@clerk/nextjs";
 
 import menu_icon from '@/assets/menu_icon.svg';
 import chat_icon from '@/assets/chat_icon.svg';
@@ -21,12 +21,20 @@ const assets = {
 };
 
 export default function Home() {
-
   const [expand, setExpand] = useState(false)
   const [messages, setMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const {selectedChat} = useAppContext()
   const containerRef = useRef(null)
+
+  const { isSignedIn } = useAuth();
+  const clerk = useClerk(); // ✅ get the clerk instance
+
+  useEffect(() => {
+    if (!isSignedIn) {
+      clerk.openSignIn();  // ✅ Automatically open the modal
+    }
+  }, [isSignedIn]);
 
   useEffect(()=>{
     if (selectedChat) {
@@ -59,7 +67,6 @@ export default function Home() {
           {messages.length === 0 ? (
             <>
             <div className="flex items-center gap-3">
-              {/* deepseek logo */}
               <Image src={assets.translate_icon} alt="" className="h-18 w-11"/>
               <p className="text-3xl font-medium">PolyglotGPT</p>
             </div>
