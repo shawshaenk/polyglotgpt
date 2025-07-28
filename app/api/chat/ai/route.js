@@ -62,7 +62,7 @@ export async function POST(req) {
       - **Use bold formatting for the entire explanation.**
       - Then respond appropriately to what the user meant, using ${targetLang}. When continuing the conversation, do not use any markdown formatting.
       - Do **not** mix ${targetLang} into the explanation — keep it fully in ${nativeLang}.
-      - Immediately afterward, continue the conversation naturally in ${targetLang} about a different, non-language related topic.
+      - Immediately afterward, continue the conversation by **repeating your previous question in ${targetLang}**, ensuring it shifts to a different, non-language topic. Always ask a question, never just make a statement.
 
       ❗ **If there are no mistakes, do NOT mention that the sentence is correct, do NOT praise the user, and do NOT provide any comments. Simply continue the conversation in ${targetLang} without any error explanation.**
       **NEVER, UNDER ANY CIRCUMSTANCES, SAY "THE USER" IN YOUR RESPONSES.**
