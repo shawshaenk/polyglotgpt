@@ -7,6 +7,7 @@ import Message from "@/components/Message";
 import { useAppContext } from "@/context/AppContext";
 import { Analytics } from '@vercel/analytics/next';
 import { useAuth, useClerk } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 import menu_icon from '@/assets/menu_icon.svg';
 import chat_icon from '@/assets/chat_icon.svg';
@@ -27,14 +28,30 @@ export default function Home() {
   const {selectedChat} = useAppContext()
   const containerRef = useRef(null)
 
-  const { isSignedIn } = useAuth();
-  const clerk = useClerk(); // ✅ get the clerk instance
+  const { isSignedIn, isLoaded } = useAuth();
+  const prevSignedInRef = useRef(null);
+  const clerk = useClerk();
 
   useEffect(() => {
-    if (!isSignedIn) {
-      clerk.openSignIn();  // ✅ Automatically open the modal
+    if (isLoaded && isSignedIn === false && clerk) {
+      clerk.openSignIn();
     }
-  }, [isSignedIn]);
+  }, [isSignedIn, isLoaded, clerk]);
+
+  // Handle sign-out detection and page reload
+  useEffect(() => {
+    // Only start tracking after auth has loaded
+    if (!isLoaded) return;
+
+    // If we have a previous state and user just signed out
+    if (prevSignedInRef.current === true && isSignedIn === false) {
+      window.location.reload();
+      return;
+    }
+
+    // Update the ref only after auth is loaded
+    prevSignedInRef.current = isSignedIn;
+  }, [isSignedIn, isLoaded]);
 
   useEffect(()=>{
     if (selectedChat) {

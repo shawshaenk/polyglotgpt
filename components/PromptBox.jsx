@@ -36,7 +36,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
         }
     }
 
-    const { signedIn } = useAuth();
+    const { isSignedIn } = useAuth();
     const clerk = useClerk();
 
     const sendPrompt = (e) =>
@@ -65,7 +65,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
     setSelectedChat,
     setChats
     }) {
-        if (!signedIn) {
+        if (!isSignedIn && clerk) {
             toast.error('Login to change language');
             clerk.openSignIn();
             return;
