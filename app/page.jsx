@@ -7,7 +7,6 @@ import Message from "@/components/Message";
 import { useAppContext } from "@/context/AppContext";
 import { Analytics } from '@vercel/analytics/next';
 import { useAuth, useClerk } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 
 import menu_icon from '@/assets/menu_icon.svg';
 import chat_icon from '@/assets/chat_icon.svg';

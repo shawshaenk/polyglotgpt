@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "PolyglotGPT",
-  description: "Full Stack Chatbot",
+  description: "Conversational AI to Learn 40+ Languages",
 };
 
 export default function RootLayout({ children }) {
