@@ -71,26 +71,24 @@ const Sidebar = ({ expand, setExpand }) => {
           </div>
           {expand && <p className="text-white text font-medium">New Chat</p>}
         </button>
+      </div>
 
-        <div className={`mt-4 text-white/25 text-sm ${expand ? "block" : "hidden"} max-h-[82vh] min-h-[82vh] overflow-y-auto`}>
-          <p className="my-1 mb-2">Chats</p>
-          {chats.map((chat, index)=><ChatLabel key={index} name={chat.name} id={chat._id} openMenu={openMenu} setOpenMenu={setOpenMenu}/>)}
+      {/* Chat list section - takes up remaining space */}
+      <div className={`flex-1 mt-4 text-white/25 text-sm ${expand ? "block" : "hidden"} overflow-y-auto min-h-0`}>
+        <p className="my-1 mb-2">Chats</p>
+        {chats.map((chat, index)=><ChatLabel key={index} name={chat.name} id={chat._id} openMenu={openMenu} setOpenMenu={setOpenMenu}/>)}
+      </div>
+
+      {/* Profile section - always visible at bottom */}
+      <div className="flex-shrink-0 pb-4">
+        <div onClick={user ? null : openSignIn}
+        className={`flex items-center ${expand ? 'hover:bg-white/10 rounded-lg -mb-4' : 'justify-center w-full'} gap-3 text-white/60 text-sm p-2 cursor-pointer`}>
+          {
+            user ? <UserButton/> : <Image src={assets.profile_icon} alt="" className="w-7"/>
+          }
+          {expand && <span className="mt-1">My Profile</span>}
         </div>
       </div>
-
-    <div>
-      
-
-      {/* Profile Button */}
-      <div onClick={user ? null : openSignIn}
-      className={`flex items-center ${expand ? 'hover:bg-white/10 rounded-lg' : 'justify-center w-full'} gap-3 text-white/60 text-sm p-2 mb-2 cursor-pointer`}>
-        {
-          user ? <UserButton/> : <Image src={assets.profile_icon} alt="" className="w-7"/>
-        }
-        {expand && <span className="mt-1">My Profile</span>}
-      </div>
-
-    </div>
 
     </div>
   );
