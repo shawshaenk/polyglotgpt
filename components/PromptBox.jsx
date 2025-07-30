@@ -135,7 +135,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             onKeyDown={handleKeyDown}
             className="outline-none w-full resize-none overflow-hidden
             break-words bg-transparent text-white placeholder-white/30 text-base max-h-[20vh] min-h-[5vh] mb-3 overflow-y-auto"
-            placeholder="Message PolyglotGPT"
+            placeholder="Start a conversation, or ask what I can do"
             required
             onChange={(e) => {
                 setPrompt(e.target.value);

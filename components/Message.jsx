@@ -200,7 +200,7 @@ const Message = ({role, content, setIsLoading}) => {
   const sendPrompt = (e) => {
     const languageToExplainIn = languageList.find(lang => lang.code === nativeLang)?.label
 
-    let promptToSend = `Explain "${selectionText}" in ${languageToExplainIn} in detail`
+    let promptToSend = `Translate "${selectionText}" to ${languageToExplainIn}, then explain in detail`
     if (selectionText.includes(" ")) {
       promptToSend = promptToSend + ", word by word."
     }
