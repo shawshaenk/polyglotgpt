@@ -100,7 +100,6 @@ export async function POST(req) {
           }
         });
     console.dir(result, { depth: null });
-    console.log(aiReply)
 
     const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!aiReply) throw new Error("No reply from Gemini");
