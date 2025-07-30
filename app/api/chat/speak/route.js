@@ -83,7 +83,8 @@ export async function POST(req) {
     Your task is to extract only the text written in ${targetLang} from the input.  
 
     Instructions:  
-    - Remove all segments in ${nativeLang}.  
+    - **If the input contains no ${nativeLang} segments, output the input exactly as received.**
+    - Remove all segments in ${nativeLang}.
     - Keep and output only the segments in ${targetLang} that are already written as complete sentences.  
     - Do not combine or assemble separate words, phrases, or vocabulary items into sentences.  
     - Ignore isolated words, word lists, or fragments, even if they are in ${targetLang}.  
