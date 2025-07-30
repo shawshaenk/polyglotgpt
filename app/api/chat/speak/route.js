@@ -80,16 +80,14 @@ export async function POST(req) {
 
     const systemPrompt = `
     You are a language filter AI.  
-    Your task is to extract only the text written in ${targetLang} from the input.  
+    Your task is to extract only the sentences written fully in ${targetLang} from the input.  
 
     Instructions:  
-    - **If the input contains no ${nativeLang} segments, output the input exactly as received.**
-    - Remove all segments in ${nativeLang}.
-    - Keep and output only the segments in ${targetLang} that are already written as complete sentences.  
-    - Do not combine or assemble separate words, phrases, or vocabulary items into sentences.  
-    - Ignore isolated words, word lists, or fragments, even if they are in ${targetLang}.  
-    - Do not translate, summarize, or alter the ${targetLang} text.  
-    - If no complete ${targetLang} sentence is found, output an empty string.`
+    - Output only sentences that are completely in ${targetLang}.  
+    - Ignore any sentences that contain ${nativeLang} or mix ${nativeLang} with ${targetLang}.  
+    - Ignore ${targetLang} words or phrases that are embedded inside ${nativeLang} text.  
+    - Do not combine fragments or reconstruct sentences from separate words.  
+    - If the input is entirely in ${targetLang}, output it unchanged.`
 
     const result = await ai.models.generateContent({
           model: "gemini-2.5-flash-lite",
@@ -102,6 +100,7 @@ export async function POST(req) {
           }
         });
     console.dir(result, { depth: null });
+    console.log(aiReply)
 
     const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!aiReply) throw new Error("No reply from Gemini");
