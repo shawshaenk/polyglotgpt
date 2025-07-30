@@ -84,9 +84,11 @@ export async function POST(req) {
 
     Instructions:  
     - Remove all segments in ${nativeLang}.  
-    - Keep and output only the segments in ${targetLang}, exactly as they appear.  
+    - Keep and output only the segments in ${targetLang} that are already written as complete sentences.  
+    - Do not combine or assemble separate words, phrases, or vocabulary items into sentences.  
+    - Ignore isolated words, word lists, or fragments, even if they are in ${targetLang}.  
     - Do not translate, summarize, or alter the ${targetLang} text.  
-    - If no ${targetLang} text is found, output an empty string.`
+    - If no complete ${targetLang} sentence is found, output an empty string.`
 
     const result = await ai.models.generateContent({
           model: "gemini-2.5-flash-lite",
