@@ -142,7 +142,7 @@ const Message = ({role, content, setIsLoading}) => {
   }
 
   const speakText = async (e) => {
-    const toastId = toast.loading("Speaking...");
+    const toastId = toast.loading("Processing...");
     const speakTextCopy = content;
 
     try {
@@ -157,7 +157,7 @@ const Message = ({role, content, setIsLoading}) => {
         const audioSrc = `data:${data.contentType};base64,${data.audioContent}`;
         const audio = new Audio(audioSrc);
         audio.play();
-        toast.success("Playing audio!", { id: toastId });
+        toast.success("Speaking!", { id: toastId });
       } else {
         toast.error(data.message, { id: toastId });
       }

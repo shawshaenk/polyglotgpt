@@ -79,13 +79,14 @@ export async function POST(req) {
     const { speakTextCopy, nativeLang, targetLang } = await req.json();
 
     const systemPrompt = `
-    You are a language filter AI.
-    Your task:
-    - Look at the given text input.
-    - Remove all segments written in ${nativeLang}.
-    - Keep and output only the segments written in ${targetLang}.
-    - Do not translate, summarize, or modify the ${targetLang} text.
-    - If no text in ${targetLang} is found, output an empty string.`
+    You are a language filter AI.  
+    Your task is to extract only the text written in ${targetLang} from the input.  
+
+    Instructions:  
+    - Remove all segments in ${nativeLang}.  
+    - Keep and output only the segments in ${targetLang}, exactly as they appear.  
+    - Do not translate, summarize, or alter the ${targetLang} text.  
+    - If no ${targetLang} text is found, output an empty string.`
 
     const result = await ai.models.generateContent({
           model: "gemini-2.5-flash-lite",
