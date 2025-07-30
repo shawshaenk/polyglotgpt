@@ -60,6 +60,21 @@ export function getTTSLanguageCode(code) {
   return googleTTSLanguageMap[code] || "en-US"; // fallback
 }
 
+function getGoogleCredentials() {
+  const base64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
+  if (!base64) {
+    throw new Error("Missing GOOGLE_APPLICATION_CREDENTIALS_BASE64 environment variable.");
+  }
+
+  try {
+    const decoded = Buffer.from(base64, "base64").toString("utf-8");
+    return JSON.parse(decoded);
+  } catch (error) {
+    console.error("Error parsing Google credentials from base64:", error);
+    throw new Error("Invalid GOOGLE_APPLICATION_CREDENTIALS_BASE64 format.");
+  }
+}
+
 export async function POST(req) {
     const { speakTextCopy, nativeLang, targetLang } = await req.json();
 
@@ -87,8 +102,10 @@ export async function POST(req) {
     const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!aiReply) throw new Error("No reply from Gemini");
 
+    const credentials = getGoogleCredentials();
+
     const client = new TextToSpeechClient({
-      keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+      credentials: credentials, // Pass the credentials object directly
     });
 
     const text = aiReply
