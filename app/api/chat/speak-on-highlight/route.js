@@ -1,0 +1,114 @@
+import dotenv from "dotenv";
+import { NextResponse } from 'next/server';
+import { GoogleGenAI } from "@google/genai";
+import { TextToSpeechClient } from '@google-cloud/text-to-speech';
+
+dotenv.config();
+
+const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
+
+const googleTTSLanguageMap = {
+  ar: "ar-XA",
+  bn: "bn-IN",
+  bg: "bg-BG",
+  "zh-CN": "cmn-CN",      // Mandarin Simplified
+  "zh-TW": "cmn-TW",      // Mandarin Traditional
+  hr: "hr-HR",
+  cs: "cs-CZ",
+  da: "da-DK",
+  nl: "nl-NL",
+  en: "en-US",
+  et: "et-EE",
+  fi: "fi-FI",
+  fr: "fr-FR",
+  de: "de-DE",
+  el: "el-GR",
+  gu: "gu-IN",
+  he: "he-IL",
+  hi: "hi-IN",
+  hu: "hu-HU",
+  id: "id-ID",
+  it: "it-IT",
+  ja: "ja-JP",
+  kn: "kn-IN",
+  ko: "ko-KR",
+  lv: "lv-LV",
+  lt: "lt-LT",
+  ml: "ml-IN",
+  mr: "mr-IN",
+  no: "nb-NO",
+  pl: "pl-PL",
+  pt: "pt-PT",
+  ro: "ro-RO",
+  ru: "ru-RU",
+  sr: "sr-RS",
+  sk: "sk-SK",
+  sl: "sl-SI",
+  es: "es-ES",
+  sw: "sw-KE",
+  sv: "sv-SE",
+  ta: "ta-IN",
+  te: "te-IN",
+  th: "th-TH",
+  tr: "tr-TR",
+  uk: "uk-UA",
+  ur: "ur-IN",
+  vi: "vi-VN",
+};
+
+export function getTTSLanguageCode(code) {
+  return googleTTSLanguageMap[code] || "en-US"; // fallback
+}
+
+function getGoogleCredentials() {
+  const base64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
+  if (!base64) {
+    throw new Error("Missing GOOGLE_APPLICATION_CREDENTIALS_BASE64 environment variable.");
+  }
+
+  try {
+    const decoded = Buffer.from(base64, "base64").toString("utf-8");
+    return JSON.parse(decoded);
+  } catch (error) {
+    console.error("Error parsing Google credentials from base64:", error);
+    throw new Error("Invalid GOOGLE_APPLICATION_CREDENTIALS_BASE64 format.");
+  }
+}
+
+export async function POST(req) {
+    const { speakTextCopy, targetLang } = await req.json();
+
+    const credentials = getGoogleCredentials();
+
+    const client = new TextToSpeechClient({
+      credentials: credentials, // Pass the credentials object directly
+    });
+
+    const text = speakTextCopy
+    const languageCode = getTTSLanguageCode(targetLang);
+
+    const request = {
+      input: { text },
+      voice: {
+        languageCode,
+        ssmlGender: 'NEUTRAL',
+      },
+      audioConfig: {
+        audioEncoding: 'MP3',
+        speakingRate: 1.0,
+        pitch: 0,
+        volumeGainDb: 0,
+      },
+    };
+
+    const [response] = await client.synthesizeSpeech(request);
+    
+    // Convert audio content to base64
+    const audioBase64 = response.audioContent.toString('base64');
+    
+    return NextResponse.json({
+      success: true,
+      audioContent: audioBase64,
+      contentType: 'audio/mp3'
+    });
+}

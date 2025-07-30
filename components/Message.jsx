@@ -167,6 +167,31 @@ const Message = ({role, content, setIsLoading}) => {
     }
   };
 
+  const speakTextHighlighted = async (e) => {
+    const toastId = toast.loading("Speaking...");
+    const speakTextCopy = selectionText;
+
+    try {
+      const { data } = await axios.post('/api/chat/speak-on-highlight', {
+        speakTextCopy,
+        targetLang
+      });
+
+      if (data.success) {
+        // Convert base64 to audio and play it
+        const audioSrc = `data:${data.contentType};base64,${data.audioContent}`;
+        const audio = new Audio(audioSrc);
+        audio.play();
+        toast.success("Playing audio!", { id: toastId });
+      } else {
+        toast.error(data.message, { id: toastId });
+      }
+    } catch (err) {
+      console.error("Speak error:", err);
+      toast.error("Failed to play audio", { id: toastId });
+    }
+  };
+
   const showOriginalContent = ()=> {
     setAiMessage(content);
     toast.success("Original Message Restored")
@@ -244,7 +269,13 @@ const Message = ({role, content, setIsLoading}) => {
             onClick={(e) => sendPrompt(e)}
             className="hover:underline cursor-pointer"
           >
-            Translate and Explain
+            Translate/Explain
+          </button>
+          <button
+            onClick={() => speakTextHighlighted()}
+            className="hover:underline cursor-pointer"
+          >
+            Speak
           </button>
         </div>
       )}
