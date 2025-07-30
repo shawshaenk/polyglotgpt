@@ -102,6 +102,7 @@ export async function POST(req) {
 
     const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!aiReply) throw new Error("No reply from Gemini");
+    console.log(aiReply)
 
     const credentials = getGoogleCredentials();
 

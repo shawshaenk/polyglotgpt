@@ -197,10 +197,15 @@ const Message = ({role, content, setIsLoading}) => {
     toast.success("Original Message Restored")
   }
 
-  const sendPrompt = (e) => {
+  const sendPrompt = (e, action) => {
     const languageToExplainIn = languageList.find(lang => lang.code === nativeLang)?.label
+    let promptToSend = ''
+    if (action === 'translate') {
+      promptToSend = `Translate "${selectionText}" to ${languageToExplainIn}`
+    } else {
+      promptToSend = `Translate "${selectionText}" to ${languageToExplainIn}, then explain in detail`
+    }
 
-    let promptToSend = `Translate "${selectionText}" to ${languageToExplainIn}, then explain in detail`
     if (selectionText.includes(" ")) {
       promptToSend = promptToSend + ", word by word."
     }
@@ -266,10 +271,16 @@ const Message = ({role, content, setIsLoading}) => {
           style={{ top: popupPos.y, left: popupPos.x }}
         >
           <button
-            onClick={(e) => sendPrompt(e)}
+            onClick={(e) => sendPrompt(e, 'translate')}
             className="hover:underline cursor-pointer"
           >
-            Translate/Explain
+            Translate
+          </button>
+          <button
+            onClick={(e) => sendPrompt(e, 'explain')}
+            className="hover:underline cursor-pointer"
+          >
+            Explain
           </button>
           <button
             onClick={() => speakTextHighlighted()}
