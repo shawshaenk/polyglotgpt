@@ -39,7 +39,7 @@ export async function POST(req) {
     8. When in doubt, follow the **ISO 15919** transliteration standard (or equivalent standard for the input language) to ensure diacritics correctly represent the original sounds.`
 
     const result = await ai.models.generateContent({
-          model: "gemini-2.5-flash-lite",
+          model: "gemini-2.5-flash",
           contents: romanizedTextCopy,
           config: {
             thinkingConfig: {
