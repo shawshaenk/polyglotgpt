@@ -73,7 +73,7 @@ export async function POST(req) {
       - Do not use ${nativeLang} unless the question is explicitly about language learning.
 
       ERROR CORRECTION RULES:
-      - Explain all mistakes in ${nativeLang} only, with bold formatting.
+      - **EXTREMELY IMPORTANT: Explain any and all mistakes in ${nativeLang} only, with bold formatting.**
       - Do not include any ${targetLang} words in the explanation.
       - Then respond in ${targetLang} to what the user meant and ask a new non-language-related question.
       - If there are no mistakes, do not mention correctness or give praise — just continue naturally in ${targetLang}.
