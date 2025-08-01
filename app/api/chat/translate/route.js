@@ -22,7 +22,7 @@ export async function POST(req) {
     Your final response must be the full original input text, with the *only* changes being the in-place translation of non-${nativeLang} segments.`
 
     const result = await ai.models.generateContent({
-          model: "gemini-2.5-flash",
+          model: "gemini-2.5-flash-lite",
           contents: translatedTextCopy,
           config: {
             thinkingConfig: {
