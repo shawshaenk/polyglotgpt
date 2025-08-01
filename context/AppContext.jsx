@@ -69,6 +69,7 @@ export const AppContextProvider = ({children})=>{
     ];
 
     const createNewChat = async () => {
+        const toastId = toast.loading("Creating new chat...");
         try {
             if (!user) return;
 
@@ -84,7 +85,7 @@ export const AppContextProvider = ({children})=>{
             );
 
             console.log("Chat created:", data);
-            toast.success('New chat created!')
+            toast.success('New chat created!', { id: toastId })
 
             await fetchUsersChats();
         } catch (error) {
