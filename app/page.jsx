@@ -21,7 +21,7 @@ const assets = {
 };
 
 export default function Home() {
-  const [expand, setExpand] = useState(false)
+  const [expand, setExpand] = useState(true)
   const [messages, setMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const {selectedChat} = useAppContext()
@@ -114,7 +114,7 @@ export default function Home() {
         )
         }
         <PromptBox isLoading={isLoading} setIsLoading={setIsLoading}/>
-        <p className="text-xs absolute bottom-1 text-gray-500">Powered by Gemini 2.5 Flash Lite. Double-check important info.</p>
+        <p className="text-xs absolute bottom-1 text-gray-500">Powered by Gemini 2.5 Flash. Double-check important info.</p>
 
         </div>
       </div>

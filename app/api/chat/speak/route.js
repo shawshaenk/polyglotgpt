@@ -1,11 +1,8 @@
 import dotenv from "dotenv";
 import { NextResponse } from 'next/server';
-import { GoogleGenAI } from "@google/genai";
 import { TextToSpeechClient } from '@google-cloud/text-to-speech';
 
 dotenv.config();
-
-const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
 const googleTTSLanguageMap = {
   ar: "ar-XA",
@@ -76,34 +73,7 @@ function getGoogleCredentials() {
 }
 
 export async function POST(req) {
-    const { speakTextCopy, nativeLang, targetLang } = await req.json();
-
-    const systemPrompt = `
-    You are a language filter AI.  
-    Your task is to extract only the sentences written fully in ${targetLang} from the input.  
-
-    Instructions:  
-    - Output only sentences that are completely in ${targetLang}.  
-    - Ignore any sentences that contain ${nativeLang} or mix ${nativeLang} with ${targetLang}.  
-    - Ignore ${targetLang} words or phrases that are embedded inside ${nativeLang} text.  
-    - Do not combine fragments or reconstruct sentences from separate words.  
-    - If the input is entirely in ${targetLang}, output it unchanged.`
-
-    const result = await ai.models.generateContent({
-          model: "gemini-2.5-flash-lite",
-          contents: speakTextCopy,
-          config: {
-            thinkingConfig: {
-              thinkingBudget: 0,
-            },
-            systemInstruction: systemPrompt,
-          }
-        });
-    console.dir(result, { depth: null });
-
-    const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!aiReply) throw new Error("No reply from Gemini");
-    console.log(aiReply)
+    const { speakTextCopy, targetLang } = await req.json();
 
     const credentials = getGoogleCredentials();
 
@@ -111,7 +81,7 @@ export async function POST(req) {
       credentials: credentials, // Pass the credentials object directly
     });
 
-    const text = aiReply
+    const text = speakTextCopy
     const languageCode = getTTSLanguageCode(targetLang);
 
     const request = {

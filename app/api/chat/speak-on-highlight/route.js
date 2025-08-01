@@ -1,11 +1,8 @@
 import dotenv from "dotenv";
 import { NextResponse } from 'next/server';
-import { GoogleGenAI } from "@google/genai";
 import { TextToSpeechClient } from '@google-cloud/text-to-speech';
 
 dotenv.config();
-
-const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
 const googleTTSLanguageMap = {
   ar: "ar-XA",

@@ -35,6 +35,11 @@ const Message = ({role, content, setIsLoading}) => {
   const [translatedText, setTranslatedText] = useState(null);
   const [romanizedText, setRomanizedText] = useState(null);
   const [aiMessage, setAiMessage] = useState(content);
+  
+  // Audio control states
+  const [currentAudio, setCurrentAudio] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  
   const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, languageList} = useAppContext();
 
   useEffect(() => {
@@ -75,6 +80,17 @@ const Message = ({role, content, setIsLoading}) => {
     document.addEventListener("mouseup", handleMouseUp);
     return () => document.removeEventListener("mouseup", handleMouseUp);
   }, []);
+
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (currentAudio) {
+        currentAudio.pause();
+        setCurrentAudio(null);
+        setIsPlaying(false);
+      }
+    };
+  }, [currentAudio]);
 
   //Whenever content changes, reset translated and romanized text
   useEffect(() => {
@@ -141,7 +157,23 @@ const Message = ({role, content, setIsLoading}) => {
     }
   }
 
+  const stopSpeaking = () => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      setCurrentAudio(null);
+      setIsPlaying(false);
+      toast.success("Stopped speaking");
+    }
+  };
+
   const speakText = async (e) => {
+    // Stop any currently playing audio first
+    if (currentAudio) {
+      stopSpeaking();
+      return;
+    }
+
     const toastId = toast.loading("Processing...");
     const speakTextCopy = content;
 
@@ -156,8 +188,27 @@ const Message = ({role, content, setIsLoading}) => {
         // Convert base64 to audio and play it
         const audioSrc = `data:${data.contentType};base64,${data.audioContent}`;
         const audio = new Audio(audioSrc);
+        
+        // Set up event listeners
+        audio.onplay = () => {
+          setIsPlaying(true);
+          toast.success("Speaking!", { id: toastId });
+        };
+        
+        audio.onended = () => {
+          setCurrentAudio(null);
+          setIsPlaying(false);
+        };
+        
+        audio.onerror = () => {
+          setCurrentAudio(null);
+          setIsPlaying(false);
+          toast.error("Audio playback failed", { id: toastId });
+        };
+        
+        setCurrentAudio(audio);
         audio.play();
-        toast.success("Speaking!", { id: toastId });
+        
       } else {
         toast.error(data.message, { id: toastId });
       }
@@ -181,8 +232,18 @@ const Message = ({role, content, setIsLoading}) => {
         // Convert base64 to audio and play it
         const audioSrc = `data:${data.contentType};base64,${data.audioContent}`;
         const audio = new Audio(audioSrc);
+        
+        // Set up event listeners for highlighted text audio
+        audio.onplay = () => {
+          toast.success("Playing audio!", { id: toastId });
+        };
+        
+        audio.onerror = () => {
+          toast.error("Audio playback failed", { id: toastId });
+        };
+        
         audio.play();
-        toast.success("Playing audio!", { id: toastId });
+        
       } else {
         toast.error(data.message, { id: toastId });
       }
@@ -206,7 +267,7 @@ const Message = ({role, content, setIsLoading}) => {
       promptToSend = `Translate "${selectionText}" to ${languageToExplainIn}, then explain in detail`
     }
 
-    if (selectionText.includes(" ")) {
+    if (selectionText.includes(" ") && action !== 'translate') {
       promptToSend = promptToSend + ", word by word."
     }
 
@@ -241,7 +302,12 @@ const Message = ({role, content, setIsLoading}) => {
                             <button className="text-sm cursor-pointer hover:underline" onClick={() => {showOriginalContent();}}>Show Original</button>
                             <button className="text-sm cursor-pointer hover:underline" onClick={() => {translateText();}}>Translate</button>
                             <button className="text-sm cursor-pointer hover:underline" onClick={() => {romanizeText();}}>Romanize</button>
-                            <button className="text-sm cursor-pointer hover:underline" onClick={() => {speakText();}}>Speak</button>
+                            <button 
+                              className={`text-sm cursor-pointer hover:underline ${isPlaying ? 'text-red-400' : ''}`} 
+                              onClick={() => {speakText();}}
+                            >
+                              {isPlaying ? 'Stop Speaking' : 'Speak'}
+                            </button>
                             </>
                         )
                     }

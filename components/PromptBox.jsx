@@ -28,6 +28,10 @@ const PromptBox = ({setIsLoading, isLoading}) => {
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
+            if (nativeLang === targetLang) {
+                toast.error('Languages must be different.')
+                return;
+            }
             sendPrompt(e);
             setPrompt('');
             if (textareaRef.current) {
@@ -71,30 +75,12 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             return;
         }
 
-       // Store original values for potential revert
-        const originalNativeLang = selectedChat?.nativeLang || nativeLang;
-        const originalTargetLang = selectedChat?.targetLang || targetLang;
-        
-        // Calculate what the new values would be
-        const newNativeLang = langType === "nativeLang" ? value : nativeLang;
-        const newTargetLang = langType === "targetLang" ? value : targetLang;
-
-        // Check if the new combination would be invalid
-        if (newNativeLang === newTargetLang) {
-            toast.error('Native and target languages must be different.');
-            
-            // Revert to original database values
-            setNativeLang(originalNativeLang);
-            setTargetLang(originalTargetLang);
-            
-            return;
-        }
-
         if (langType === "nativeLang") {
             setNativeLang(value);
         } else if (langType === "targetLang") {
             setTargetLang(value);
         }
+        toast.success('Languages updated!')
 
         setSelectedChat(prev => ({
             ...prev,
