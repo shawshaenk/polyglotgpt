@@ -219,7 +219,7 @@ const Message = ({role, content, setIsLoading}) => {
   };
 
   const speakTextHighlighted = async (e) => {
-    const toastId = toast.loading("Speaking...");
+    const toastId = toast.loading("Processing...");
     const speakTextCopy = selectionText;
 
     try {
@@ -235,7 +235,7 @@ const Message = ({role, content, setIsLoading}) => {
         
         // Set up event listeners for highlighted text audio
         audio.onplay = () => {
-          toast.success("Playing audio!", { id: toastId });
+          toast.success("Speaking!", { id: toastId });
         };
         
         audio.onerror = () => {

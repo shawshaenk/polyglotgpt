@@ -122,6 +122,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             className="outline-none w-full resize-none overflow-hidden
             break-words bg-transparent text-white placeholder-white/30 text-base max-h-[20vh] min-h-[5vh] mb-3 overflow-y-auto"
             placeholder="Start a conversation, or ask me what I can do"
+            title=""
             required
             onChange={(e) => {
                 setPrompt(e.target.value);
