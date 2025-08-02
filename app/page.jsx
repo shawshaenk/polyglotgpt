@@ -12,12 +12,14 @@ import menu_icon from '@/assets/menu_icon.svg';
 import chat_icon from '@/assets/chat_icon.svg';
 import translate_icon from '@/assets/translate_icon.svg';
 import logo_icon from '@/assets/logo_icon.svg';
+import polyglotgpt_logo from '@/assets/polyglotgpt_logo.png';
 
 const assets = {
   menu_icon,
   chat_icon,
   translate_icon,
-  logo_icon
+  logo_icon, 
+  polyglotgpt_logo
 };
 
 export default function Home() {
@@ -83,7 +85,7 @@ export default function Home() {
           {messages.length === 0 ? (
             <>
             <div className="flex items-center gap-3">
-              <Image src={assets.translate_icon} alt="" className="h-18 w-11"/>
+              <Image src={assets.polyglotgpt_logo} alt="" className="h-15 w-15 pb-1"/>
               <p className="text-3xl font-medium">PolyglotGPT</p>
             </div>
             <p className="text-lg mt-1">What language do you want to learn today?</p>
