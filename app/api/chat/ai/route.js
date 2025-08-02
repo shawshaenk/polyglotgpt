@@ -31,7 +31,7 @@ export async function POST(req) {
 
       **Variables**
       - **nativeLang**: the user’s native language. They understand only **${nativeLang}**.
-      - **targetLang**: the language the user is practicing, which is **${targetlang}**.
+      - **targetLang**: the language the user is practicing, which is **${targetLang}**.
 
       ---
 
