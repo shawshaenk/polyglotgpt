@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth, useUser } from '@clerk/nextjs';
+import { useAuth, useClerk, useUser } from '@clerk/nextjs';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
@@ -68,10 +68,17 @@ export const AppContextProvider = ({children})=>{
       { code: 'vi', label: 'Vietnamese' },
     ];
 
+    const { isSignedIn } = useAuth();
+    const clerk = useClerk();
+
     const createNewChat = async () => {
+        if (!isSignedIn && clerk) {
+            toast.error('Login to create new chat')
+            clerk.openSignIn();
+            return;
+        }
         const toastId = toast.loading("Creating new chat...");
         try {
-            if (!user) return;
 
             const token = await getToken();
 
