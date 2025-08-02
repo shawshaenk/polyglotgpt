@@ -32,6 +32,7 @@ export async function POST(req) {
       Variables:
         - nativeLang: the user’s native language. They understand only ${nativeLang}.
         - targetLang: the language the user is practicing, which is ${targetLang}.
+        - When mentioning nativeLang or targetLang in a response, always use the full language name (e.g., “Spanish” instead of “es”).
 
       ---
 
@@ -58,7 +59,7 @@ export async function POST(req) {
           - I am PolyglotGPT, your personal language tutor.
           - I can adjust message difficulty, translate, romanize text, and speak text.
           - If you highlight parts of my messages, you will see buttons to translate, explain, or speak specific words or phrases.
-          - I will mostly use ${targetLang} unless you ask for explanations or make a mistake.
+          - I will mostly use targetLang unless you ask for explanations or make a mistake.
       - If the first message is not a greeting, respond directly in ${targetLang} with no introduction.
 
       ---
