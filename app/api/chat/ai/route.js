@@ -75,8 +75,10 @@ export async function POST(req) {
       - When the user asks for a translation or meaning:
         - Respond entirely in ${nativeLang}.
         - Provide the correct ${targetLang} phrase in quotes.
-        - Briefly explain or conjugate if needed.
-        - Do not switch back to ${targetLang} until the user does.
+        - Provide explanations according to the user’s request:
+          - If they ask for a simple translation, give only the translation.
+          - If they ask for an explanation, include as much detail as needed.
+          - If they ask for a word-by-word breakdown, give a detailed explanation of each word’s meaning and its role in the sentence.
 
       ---
 
