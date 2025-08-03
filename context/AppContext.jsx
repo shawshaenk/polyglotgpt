@@ -112,27 +112,30 @@ export const AppContextProvider = ({children})=>{
     };
 
     const fetchUsersChats = async () => {
+        const toastId = toast.loading("Fetching chats...");
+
         try {
             const token = await getToken();
             const { data } = await axios.get('/api/chat/get', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
 
             if (data.success) {
-            if (data.data.length === 0) {
-                console.log("No chats found. Creating one...");
-                await createNewChat();  // Do not recursively call fetch again here
-                return;
-            }
+                if (data.data.length === 0) {
+                    console.log("No chats found. Creating one...");
+                    await createNewChat();  // Do not recursively call fetch again here
+                    return;
+                }
 
-            const sorted = data.data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-            setChats(sorted);
-            setSelectedChat(sorted[0]);
-            console.log("Chats loaded:", sorted[0]);
+                const sorted = data.data.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+                setChats(sorted);
+                setSelectedChat(sorted[0]);
+                console.log("Chats loaded:", sorted[0]);
+                toast.success('Chats fetched!', { id: toastId })
             } else {
-            toast.error(data.message);
+                toast.error(data.message);
             }
         } catch (error) {
             toast.error(error.message);
