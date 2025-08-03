@@ -112,7 +112,7 @@ export const AppContextProvider = ({children})=>{
     };
 
     const fetchUsersChats = async () => {
-        const toastId = toast.loading("Fetching chats...");
+        const toastId = toast.loading("Loading chats...");
 
         try {
             const token = await getToken();
@@ -133,7 +133,7 @@ export const AppContextProvider = ({children})=>{
                 setChats(sorted);
                 setSelectedChat(sorted[0]);
                 console.log("Chats loaded:", sorted[0]);
-                toast.success('Chats fetched!', { id: toastId })
+                toast.success('Chats Loaded!', { id: toastId })
             } else {
                 toast.error(data.message);
             }
