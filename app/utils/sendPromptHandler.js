@@ -19,12 +19,6 @@ export const sendPromptHandler = async ({
   try {
     e.preventDefault();
 
-    if (!user) {
-      toast.error('Login to send message.');
-      clerk.openSignIn();
-      return;
-    }
-
     if (!prompt) return toast.error('Enter a Prompt');
 
     setIsLoading(true);
@@ -49,12 +43,22 @@ export const sendPromptHandler = async ({
       messages: [...(prev?.messages || []), userPrompt],
     }));
 
-    const { data } = await axios.post('/api/chat/ai', {
-      chatId: selectedChat._id,
+    let isLocal = false
+
+    const payload = {
+      chatId:    selectedChat._id,
       prompt,
       nativeLang,
       targetLang,
-    });
+      isLocal
+    };
+    // if this is a local chat, send the full history
+    if (!user) {
+      payload.messages = [...selectedChat.messages, userPrompt]; // ✅ include the latest message
+      payload.isLocal = true;
+    }
+
+    const { data } = await axios.post('/api/chat/ai', payload);
 
     if (data.success) {
       const fullAssistantMessage = {

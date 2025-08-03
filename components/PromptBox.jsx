@@ -69,11 +69,6 @@ const PromptBox = ({setIsLoading, isLoading}) => {
     setSelectedChat,
     setChats
     }) {
-        if (!isSignedIn && clerk) {
-            toast.error('Login to change language.');
-            clerk.openSignIn();
-            return;
-        }
 
         if (langType === "nativeLang") {
             setNativeLang(value);
@@ -96,19 +91,17 @@ const PromptBox = ({setIsLoading, isLoading}) => {
         );
 
         // Persist to backend
-        try {
-            if (user) {
+        if (user) {
+            try {
                 await axios.patch('/api/chat/update-langs', {
-                chatId: selectedChat._id,
-                nativeLang: langType === "nativeLang" ? value : nativeLang,
-                targetLang: langType === "targetLang" ? value : targetLang
-            });
-            } else {
-                toast.error("Login to send message. Click the profile icon in the bottom left.")
+                    chatId: selectedChat._id,
+                    nativeLang: langType === "nativeLang" ? value : nativeLang,
+                    targetLang: langType === "targetLang" ? value : targetLang
+                });
+            } catch (error) {
+                toast.error("Failed to update languages in database.");
+                console.error(`Failed to update ${langType}:`, error);
             }
-        } catch (error) {
-            toast.error("Login to send message. Click the profile icon in the bottom left.")
-            console.error(`Failed to update ${langType}:`, error);
         }
     }
 

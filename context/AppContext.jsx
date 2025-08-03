@@ -18,6 +18,7 @@ export const AppContextProvider = ({children})=>{
     const [selectedChat, setSelectedChat] = useState(null);
     const [nativeLang, setNativeLang] = useState('en');
     const [targetLang, setTargetLang] = useState('es');
+    const [isLocalMode, setIsLocalMode] = useState(false);
 
     const languageList = [
       { code: 'ar', label: 'Arabic' },
@@ -72,11 +73,21 @@ export const AppContextProvider = ({children})=>{
     const clerk = useClerk();
 
     const createNewChat = async () => {
-        if (!isSignedIn && clerk) {
-            toast.error('Login to create new chat')
-            clerk.openSignIn();
-            return;
+        if (!isSignedIn) {
+          // GUEST / LOCAL chat
+          const tempChat = {
+            _id: `temp-local-chat`,
+            name: 'New Chat',
+            messages: [],
+            nativeLang,
+            targetLang,
+            isLocal: true
+          };
+          setChats(prev => [...prev, tempChat]);
+          setSelectedChat(tempChat);
+          return;
         }
+
         const toastId = toast.loading("Creating new chat...");
         try {
 
@@ -128,6 +139,25 @@ export const AppContextProvider = ({children})=>{
         }
     };
 
+    useEffect(() => {
+        if (!isSignedIn) {
+          setIsLocalMode(true);
+          if (chats.length === 0) {
+            const temp = {
+              _id:       'temp-local-chat',
+              name:      'New Chat',
+              messages:  [],
+              nativeLang,
+              targetLang,
+              isLocal:   true
+            };
+            setChats([temp]);
+            setSelectedChat(temp);
+          }
+        } else {
+          setIsLocalMode(false);
+        }
+    }, [isSignedIn]);
 
     useEffect(()=> {
         if (user) {
@@ -155,7 +185,8 @@ export const AppContextProvider = ({children})=>{
         setNativeLang, 
         targetLang, 
         setTargetLang, 
-        languageList
+        languageList,
+        isLocalMode
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

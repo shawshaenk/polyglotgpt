@@ -15,16 +15,16 @@ export async function POST(req) {
 
   try {
     const { userId } = getAuth(req);
-    const { chatId, prompt, nativeLang, targetLang } = await req.json();
+    const { chatId, prompt, nativeLang, targetLang, isLocal, messages } = await req.json();
 
-    if (!userId) {
-      return NextResponse.json({ success: false, message: "User not Authenticated" });
+    let userMessages;
+    if (isLocal || !userId) {
+      userMessages = messages || [{ role: "user", content: prompt, timestamp: Date.now() }];
+    } else {
+      const data = await Chat.findOne({ userId, _id: chatId });
+      data.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
+      userMessages = data.messages;
     }
-
-    const data = await Chat.findOne({ userId, _id: chatId });
-    data.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
-
-    const userMessages = data.messages;
 
     const systemPrompt = `
       You are PolyglotGPT, a multilingual conversational AI tutor.
@@ -98,7 +98,7 @@ export async function POST(req) {
       6. If the user writes in ${nativeLang}, give an explanation (entirely in ${nativeLang}) in **bold** showing how to say their message in ${targetLang}.  
         - Use ${nativeLang} only for the explanation, and include the example phrase only in ${targetLang}.  
         - After this, resume the conversation normally.
-        
+
       ---
 
       ## Strict Rules
@@ -131,12 +131,14 @@ export async function POST(req) {
     const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!aiReply) throw new Error("No reply from Gemini");
 
-    data.messages.push({
-      role: "model",
-      content: aiReply,
-      timestamp: Date.now(),
-    });
-    await data.save();
+    if (!isLocal && userId) {
+      data.messages.push({
+        role: "model",
+        content: aiReply,
+        timestamp: Date.now(),
+      });
+      await data.save();
+    }
 
     return NextResponse.json({ success: true, response: aiReply });
   } catch (err) {
