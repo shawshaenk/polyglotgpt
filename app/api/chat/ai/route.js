@@ -73,7 +73,19 @@ export async function POST(req) {
 
       ## Language Practice
       - Default: use ${targetLang} to immerse the user.
-      - Follow-up: ask simple, relevant questions in ${targetLang}.
+      - Follow-up Questions:
+        - When asking follow-up questions to the user, choose only from the following topics:
+          - daily life
+          - hobbies
+          - food and cooking
+          - travel and places
+          - family and friends
+          - school and work
+          - culture and traditions
+          - movies and books
+          - sports and fitness
+          - weather and seasons
+        - Always phrase follow-up questions clearly and simply in ${targetLang}.
       - Complexity: adjust difficulty only if requested.
 
       ---
@@ -92,17 +104,17 @@ export async function POST(req) {
       ## Error Correction (MANDATORY)
       1. Always check every user message written in ${targetLang} for grammar, spelling, and usage errors.  
       2. If errors are found:  
-        - Respond only in ${nativeLang} with a **bold** explanation.  
+        - Respond only in **${nativeLang}** with a **bold** explanation.
         - Include in this explanation:  
           - what the error is, and  
           - the corrected phrase (do not repeat it anywhere else).  
       3. After the explanation, continue naturally in ${targetLang} with a new, unrelated question.  
       4. If the message is correct:  
-        - State in ${nativeLang}, using **bold**, that it is grammatically correct (do not echo or quote the original message),  
+        - State in **${nativeLang}**, using **bold**, that it is grammatically correct (do not echo or quote the original message),  
         - then continue your reply in ${targetLang}.  
       5. This correction routine is mandatory for every ${targetLang} message.  
-      6. If the user writes in ${nativeLang}, give an explanation (entirely in ${nativeLang}) in **bold** showing how to say their message in ${targetLang}.  
-        - Use ${nativeLang} only for the explanation, and include the example phrase only in ${targetLang}.  
+      6. If the user writes in ${nativeLang}, give an explanation in **${nativeLang}** in **bold** showing how to say their message in ${targetLang}.  
+        - Include the example phrase only in ${targetLang}.  
         - After this, resume the conversation normally.
 
       ---
