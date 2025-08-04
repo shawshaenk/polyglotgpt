@@ -4,7 +4,7 @@ import Chat from "@/models/chat";
 import { NextResponse } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 import dotenv from "dotenv";
-import connectDB from '@/config/db';
+import connectDB from "@/config/db";
 
 dotenv.config();
 
@@ -18,14 +18,20 @@ export async function POST(req) {
     const { chatId, prompt, nativeLang, targetLang, isLocal, messages } = await req.json();
 
     let userMessages;
+    let chatDoc; // ✅ use this instead of `data` for clarity
+
     if (isLocal || !userId) {
+      // Local mode: use messages from request
       userMessages = messages || [{ role: "user", content: prompt, timestamp: Date.now() }];
     } else {
-      const data = await Chat.findOne({ userId, _id: chatId });
-      data.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
-      userMessages = data.messages;
+      // Remote mode: fetch chat from DB
+      chatDoc = await Chat.findOne({ userId, _id: chatId });
+      if (!chatDoc) throw new Error("Chat not found");
+      chatDoc.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
+      userMessages = chatDoc.messages;
     }
 
+    // System prompt stays unchanged
     const systemPrompt = `
       You are PolyglotGPT, a multilingual conversational AI tutor.
 
@@ -106,38 +112,33 @@ export async function POST(req) {
       - Never use languages other than ${nativeLang} or ${targetLang}.
       - Do not add unsolicited comments, confirmations, or acknowledgments.
       - Follow these rules exactly; if any rule conflicts, prioritize error correction and strict rules.
-    `.trim()
+    `.trim();
 
-    const formattedMessages = [
-      ...userMessages.map(msg => ({
-        role: msg.role,
-        parts: [{ text: msg.content }],
-      }))
-    ];
+    const formattedMessages = userMessages.map(msg => ({
+      role: msg.role,
+      parts: [{ text: msg.content }],
+    }));
 
     const result = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: formattedMessages,
       config: {
-        thinkingConfig: {
-          thinkingBudget: 0,
-        },
+        thinkingConfig: { thinkingBudget: 0 },
         systemInstruction: systemPrompt,
-      }
+      },
     });
-    console.dir(result, { depth: null });
 
-    // <-- extract the text here
     const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!aiReply) throw new Error("No reply from Gemini");
 
-    if (!isLocal && userId) {
-      data.messages.push({
+    // ✅ Save the model response to DB only in remote mode
+    if (!isLocal && userId && chatDoc) {
+      chatDoc.messages.push({
         role: "model",
         content: aiReply,
         timestamp: Date.now(),
       });
-      await data.save();
+      await chatDoc.save();
     }
 
     return NextResponse.json({ success: true, response: aiReply });
