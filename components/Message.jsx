@@ -8,9 +8,6 @@ import { sendPromptHandler } from '@/app/utils/sendPromptHandler';
 import copy_icon from '@/assets/copy_icon.svg';
 import pencil_icon from '@/assets/pencil_icon.svg';
 import regenerate_icon from '@/assets/regenerate_icon.svg';
-import like_icon from '@/assets/like_icon.svg';
-import dislike_icon from '@/assets/dislike_icon.svg';
-import logo_icon from '@/assets/logo_icon.svg';
 import translate_icon from '@/assets/translate_icon.svg';
 import toast from "react-hot-toast";
 import axios from 'axios';
@@ -19,9 +16,6 @@ const assets = {
   copy_icon,
   pencil_icon,
   regenerate_icon,
-  like_icon,
-  dislike_icon,
-  logo_icon,
   translate_icon
 };
 

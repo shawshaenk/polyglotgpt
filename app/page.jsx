@@ -11,14 +11,12 @@ import { useAuth, useClerk } from "@clerk/nextjs";
 import menu_icon from '@/assets/menu_icon.svg';
 import chat_icon from '@/assets/chat_icon.svg';
 import translate_icon from '@/assets/translate_icon.svg';
-import logo_icon from '@/assets/logo_icon.svg';
 import polyglotgpt_logo from '@/assets/polyglotgpt_logo.png';
 
 const assets = {
   menu_icon,
   chat_icon,
   translate_icon,
-  logo_icon, 
   polyglotgpt_logo
 };
 

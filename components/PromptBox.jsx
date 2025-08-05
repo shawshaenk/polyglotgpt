@@ -6,16 +6,10 @@ import axios from 'axios';
 import { sendPromptHandler } from '@/app/utils/sendPromptHandler';
 import { useAuth, useClerk } from "@clerk/nextjs";
 
-import deepthink_icon from '@/assets/deepthink_icon.svg';
-import search_icon from '@/assets/search_icon.svg';
-import pin_icon from '@/assets/pin_icon.svg';
 import arrow_icon from '@/assets/arrow_icon.svg';
 import arrow_icon_dull from '@/assets/arrow_icon_dull.svg';
 
 const assets = {
-  deepthink_icon,
-  search_icon,
-  pin_icon,
   arrow_icon,
   arrow_icon_dull
 };
