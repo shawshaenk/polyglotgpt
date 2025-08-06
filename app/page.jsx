@@ -83,7 +83,7 @@ export default function Home() {
           {messages.length === 0 ? (
             <>
             <div className="flex items-center gap-3">
-              <Image src={assets.polyglotgpt_logo} alt="" className="h-15 w-15 pb-1"/>
+              <Image src={assets.polyglotgpt_logo} alt="" className="h-19 w-19 pb-1 -mr-2 -mb-2"/>
               <p className="text-3xl font-medium">PolyglotGPT</p>
             </div>
             <p className="text-lg mt-1">What language do you want to learn today?</p>
