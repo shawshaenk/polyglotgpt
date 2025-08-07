@@ -63,11 +63,11 @@ const ChatLabel = ({openMenu, setOpenMenu, id, name}) => {
             <Image src={assets.three_dots} alt="" className="w-4 cursor-pointer"/>
             <div className={`absolute ${openMenu.id === id && openMenu.open ? 'block' : 'hidden'} -right-0 top-6 bg-[#252525] rounded-xl w-max p-2 z-10`}>
                 <div onClick={renameHandler} className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer">
-                    <Image src={assets.rename_icon} alt="" className="w-4 icon"/>
+                    <Image src={assets.rename_icon} alt="" className="w-4"/>
                     <p>Rename</p>
                 </div>
                 <div onClick={deleteHandler} className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer">
-                    <Image src={assets.delete_icon} alt="" className="w-4 icon"/>
+                    <Image src={assets.delete_icon} alt="" className="w-4"/>
                     <p>Delete</p>
                 </div>
             </div>
