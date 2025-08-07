@@ -7,11 +7,9 @@ import { sendPromptHandler } from '@/app/utils/sendPromptHandler';
 import { useAuth, useClerk } from "@clerk/nextjs";
 
 import arrow_icon from '@/assets/arrow_icon.svg';
-import arrow_icon_dull from '@/assets/arrow_icon_dull.svg';
 
 const assets = {
   arrow_icon,
-  arrow_icon_dull
 };
 
 const PromptBox = ({setIsLoading, isLoading}) => {
@@ -169,7 +167,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
 
             <button className={` ${prompt ? "bg-primary" : "bg-[#3a3a3a]"}
                 rounded-full p-2 cursor-pointer`}>
-                    <Image className="w-3.5 aspect-square" src={prompt ? assets.arrow_icon : assets.arrow_icon_dull} alt=''/>
+                    <Image className="w-3.5 aspect-square" src={assets.arrow_icon} alt=''/>
             </button>
         </div>
     </form>

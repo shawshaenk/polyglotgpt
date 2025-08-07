@@ -6,16 +6,14 @@ import { useAppContext } from "@/context/AppContext";
 import { sendPromptHandler } from '@/app/utils/sendPromptHandler';
 
 import copy_icon from '@/assets/copy_icon.svg';
-import pencil_icon from '@/assets/pencil_icon.svg';
-import regenerate_icon from '@/assets/regenerate_icon.svg';
+import rename_icon from '@/assets/rename_icon.svg';
 import translate_icon from '@/assets/translate_icon.svg';
 import toast from "react-hot-toast";
 import axios from 'axios';
 
 const assets = {
   copy_icon,
-  pencil_icon,
-  regenerate_icon,
+  rename_icon,
   translate_icon
 };
 

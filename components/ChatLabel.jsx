@@ -4,13 +4,13 @@ import { useAppContext } from '@/context/AppContext';
 import axios from 'axios';
 
 import three_dots from '@/assets/three_dots.svg';
-import pencil_icon from '@/assets/pencil_icon.svg';
+import rename_icon from '@/assets/rename_icon.svg';
 import delete_icon from '@/assets/delete_icon.svg';
 import toast from 'react-hot-toast';
 
 const assets = {
   three_dots, 
-  pencil_icon,
+  rename_icon,
   delete_icon
 };
 
@@ -63,11 +63,11 @@ const ChatLabel = ({openMenu, setOpenMenu, id, name}) => {
             <Image src={assets.three_dots} alt="" className="w-4 cursor-pointer"/>
             <div className={`absolute ${openMenu.id === id && openMenu.open ? 'block' : 'hidden'} -right-0 top-6 bg-[#252525] rounded-xl w-max p-2 z-10`}>
                 <div onClick={renameHandler} className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer">
-                    <Image src={assets.pencil_icon} alt="" className="w-4"/>
+                    <Image src={assets.rename_icon} alt="" className="w-4 icon"/>
                     <p>Rename</p>
                 </div>
                 <div onClick={deleteHandler} className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer">
-                    <Image src={assets.delete_icon} alt="" className="w-4"/>
+                    <Image src={assets.delete_icon} alt="" className="w-4 icon"/>
                     <p>Delete</p>
                 </div>
             </div>

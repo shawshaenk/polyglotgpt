@@ -76,8 +76,8 @@ export default function Home() {
         <div className={`flex-1 flex flex-col items-center ${messages.length === 0 ? "justify-center" : "justify-start"} px-4 pb-8 bg-[#1e1e1e] text-white relative`}>
           <div className="md:hidden absolute px-4 top-6 flex items-center justify-between w-full">
             <Image onClick={()=> (expand ? setExpand(false): setExpand(true))}
-              className="rotate-180" src={assets.menu_icon} alt=""/>
-            <Image className="opacity-70" src={assets.chat_icon} alt=""/>
+              className="rotate-180 icon" src={assets.menu_icon} alt=""/>
+            <Image className="opacity-70 icon" src={assets.chat_icon} alt=""/>
           </div>
 
           {messages.length === 0 ? (
@@ -98,7 +98,7 @@ export default function Home() {
           {
             isLoading && (
               <div className="flex gap-4 max-w-3xl w-full py-3">
-                <Image className="h-9 w-9 p-1 border border-white/15 rounded-full" src={assets.translate_icon} alt="Logo"/>
+                <Image className="h-9 w-9 p-1 border border-white/15 rounded-full icon" src={assets.translate_icon} alt="Logo"/>
                 <div className="loader flex justify-center items-center gap-1">
                   <div className="w-1 h-1 rounded-full bg-white animate-bounce">
                   </div>

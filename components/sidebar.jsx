@@ -8,18 +8,14 @@ import { toast } from 'react-hot-toast';
 
 import menu_icon from '@/assets/menu_icon.svg';
 import sidebar_icon from '@/assets/sidebar_icon.svg';
-import sidebar_close_icon from '@/assets/sidebar_close_icon.svg';
 import chat_icon from '@/assets/chat_icon.svg';
-import chat_icon_dull from '@/assets/chat_icon_dull.svg';
 import profile_icon from '@/assets/profile_icon.svg';
 import ChatLabel from './ChatLabel';
 
 const assets = {
   menu_icon,
   sidebar_icon,
-  sidebar_close_icon,
   chat_icon, 
-  chat_icon_dull, 
   profile_icon
 };
 
@@ -53,7 +49,7 @@ const Sidebar = ({ expand, setExpand }) => {
           className="group relative flex items-center justify-center hover:bg-gray-500 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer">
             <Image src={assets.menu_icon} alt="Menu" className="md:hidden" />
             <Image
-              src={expand ? assets.sidebar_close_icon : assets.sidebar_icon}
+              src={assets.sidebar_icon}
               alt="Toggle"
               className="hidden md:block w-7"
             />
@@ -65,7 +61,7 @@ const Sidebar = ({ expand, setExpand }) => {
         </div>
 
         <button onClick={chatButtonAction} className={`${expand ? "absolute top-5.5 left-7 bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5" : "mt-6 left-6 group relative flex items-center justify-center hover:bg-gray-500 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer"} flex items-center cursor-pointer`}>
-          <Image className={expand ? 'w-6' : 'w-7'} src={expand ? assets.chat_icon : assets.chat_icon_dull} alt=""/>
+          <Image className={expand ? 'w-6' : 'w-7'} src={assets.chat_icon} alt=""/>
           <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none w-23">
             New Chat
             <div className="w-3 h-3 absolute bg-black rotate-45 left-1.5 -translate-x-full top-1/2 -translate-y-1/2"></div>
