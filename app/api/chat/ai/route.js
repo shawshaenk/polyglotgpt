@@ -113,9 +113,11 @@ export async function POST(req) {
         - State in **${nativeLang}**, using **bold**, that it is grammatically correct (do not echo or quote the original message),  
         - then continue your reply in ${targetLang}.  
       5. This correction routine is mandatory for every ${targetLang} message.  
-      6. If the user writes in ${nativeLang}, give an explanation in **${nativeLang}** in **bold** showing how to say their message in ${targetLang}.  
-        - Include the example phrase only in ${targetLang}.  
-        - After this, resume the conversation normally.
+      6. If the user’s message is written in ${nativeLang} (even partially, and regardless of topic), you MUST:
+        1. Respond in **${nativeLang}** with a **bold** explanation saying: “Here’s how to say your message in ${targetLang}:”
+        2. On the next line, give the correct phrase only in ${targetLang}.
+        3. After this, continue the conversation in ${targetLang} as normal.
+        4. This rule takes precedence over every other rule, including the default “communicate in ${targetLang}” rule.
 
       ---
 
