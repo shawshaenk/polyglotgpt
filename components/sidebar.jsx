@@ -22,20 +22,11 @@ const assets = {
 const Sidebar = ({ expand, setExpand }) => {
   
   const {openSignIn} = useClerk()
-  const {user, chats, createNewChat} = useAppContext()
+  const {user, chats, createNewChat, chatButtonAction} = useAppContext()
   const [openMenu, setOpenMenu] = useState({id: 0, open: false})
 
   const { isSignedIn } = useAuth();
   const clerk = useClerk();
-
-  const chatButtonAction = () => {
-    if (!isSignedIn && clerk) {
-        toast.error('Login to create new chat')
-        clerk.openSignIn();
-        return;
-    }
-    createNewChat();
-  }
 
   return (
     <div

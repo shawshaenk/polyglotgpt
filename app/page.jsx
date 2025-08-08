@@ -24,7 +24,7 @@ export default function Home() {
   const [expand, setExpand] = useState(true)
   const [messages, setMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const {selectedChat} = useAppContext()
+  const {selectedChat, chatButtonAction} = useAppContext()
   const containerRef = useRef(null)
 
   const { isSignedIn, isLoaded } = useAuth();
@@ -77,7 +77,7 @@ export default function Home() {
           <div className="md:hidden absolute px-4 top-6 flex items-center justify-between w-full">
             <Image onClick={()=> (expand ? setExpand(false): setExpand(true))}
               className="rotate-180 icon" src={assets.menu_icon} alt=""/>
-            <Image className="opacity-70 icon" src={assets.chat_icon} alt=""/>
+            <Image onClick={chatButtonAction} className="opacity-70 icon" src={assets.chat_icon} alt=""/>
           </div>
 
           {messages.length === 0 ? (

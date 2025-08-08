@@ -72,6 +72,15 @@ export const AppContextProvider = ({children})=>{
     const { isSignedIn } = useAuth();
     const clerk = useClerk();
 
+    const chatButtonAction = () => {
+        if (!isSignedIn && clerk) {
+            toast.error('Login to create new chat')
+            clerk.openSignIn();
+            return;
+        }
+        createNewChat();
+    }
+
     const userJustSignedUpRef = useRef(false);
 
     useEffect(() => {
@@ -205,6 +214,7 @@ export const AppContextProvider = ({children})=>{
         setSelectedChat,
         fetchUsersChats,
         createNewChat, 
+        chatButtonAction, 
         nativeLang, 
         setNativeLang, 
         targetLang, 
