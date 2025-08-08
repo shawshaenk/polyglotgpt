@@ -4,7 +4,7 @@ import { useAppContext } from "@/context/AppContext";
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { sendPromptHandler } from '@/app/utils/sendPromptHandler';
-import { useAuth, useClerk } from "@clerk/nextjs";
+import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 
 import arrow_icon from '@/assets/arrow_icon.svg';
 
@@ -62,7 +62,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
     setSelectedChat,
     setChats
     }) {
-        if (selectedChat.messages.length > 0) {
+        if (selectedChat.messages.length > 0 && user) {
             toast.error('Create new chat to change languages')
             return;
         }
