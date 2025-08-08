@@ -14,7 +14,7 @@ const assets = {
 
 const PromptBox = ({setIsLoading, isLoading}) => {
     const [prompt, setPrompt] = useState('');
-    const {user, setChats, selectedChat, setSelectedChat, nativeLang, setNativeLang, targetLang, setTargetLang, languageList} = useAppContext();
+    const {user, setChats, selectedChat, setSelectedChat, nativeLang, setNativeLang, targetLang, setTargetLang, languageList, fetchUsersChats} = useAppContext();
     const textareaRef = useRef(null);
 
     const handleKeyDown = (e) => {
@@ -48,6 +48,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             nativeLang,
             targetLang,
             clerk,
+            fetchUsersChats
     });
 
     async function updateChatLanguages({ 

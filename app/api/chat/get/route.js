@@ -15,7 +15,7 @@ export async function GET(req) {
         }
 
         await connectDB();
-        const data = await Chat.find({userId});
+        const data = await Chat.find({userId}).sort({updatedAt: -1});
 
         return NextResponse.json({success: true, data})
     } catch (error) {

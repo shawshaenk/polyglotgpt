@@ -13,6 +13,7 @@ export const sendPromptHandler = async ({
   nativeLang,
   targetLang,
   clerk,
+  fetchUsersChats
 }) => {
   const promptCopy = prompt;
 
@@ -79,6 +80,10 @@ export const sendPromptHandler = async ({
         ...prev,
         messages: [...prev.messages, fullAssistantMessage],
       }));
+
+      if (user) {
+        fetchUsersChats();
+      }
     } else {
       toast.error(data.message);
       setPrompt(promptCopy);
