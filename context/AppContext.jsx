@@ -72,7 +72,22 @@ export const AppContextProvider = ({children})=>{
     const { isSignedIn } = useAuth();
     const clerk = useClerk();
 
+    const userJustSignedUpRef = useRef(false);
+
+    useEffect(() => {
+        if (user && new Date() - new Date(user.createdAt) < 10000) {
+            // account created within last 10s
+            userJustSignedUpRef.current = true;
+        }
+    }, [user]);
+
     const createNewChat = async () => {
+        let toastId;
+
+        if (!userJustSignedUpRef.current && showLoading) {
+            toastId = toast.loading("Creating new chat...");
+        }
+
         if (!isSignedIn) {
           // GUEST / LOCAL chat
           const tempChat = {
@@ -88,7 +103,6 @@ export const AppContextProvider = ({children})=>{
           return;
         }
 
-        const toastId = toast.loading("Creating new chat...");
         try {
 
             const token = await getToken();
@@ -111,19 +125,10 @@ export const AppContextProvider = ({children})=>{
         }
     };
 
-    const userJustSignedUpRef = useRef(false);
-
-    useEffect(() => {
-        if (user && new Date() - new Date(user.createdAt) < 10000) {
-            // account created within last 10s
-            userJustSignedUpRef.current = true;
-        }
-    }, [user]);
-
     const fetchUsersChats = async (showLoading = false) => {
         let toastId;
 
-        if (!userJustSignedUpRef && showLoading) {
+        if (!userJustSignedUpRef.current && showLoading) {
             toastId = toast.loading("Loading Chats...");
         }
 
