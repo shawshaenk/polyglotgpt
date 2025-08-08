@@ -160,7 +160,6 @@ const Message = ({role, content, setIsLoading}) => {
   };
 
   const speakText = async (e) => {
-    // Stop any currently playing audio first
     if (currentAudio) {
       stopSpeaking();
       return;
@@ -211,6 +210,11 @@ const Message = ({role, content, setIsLoading}) => {
   };
 
   const speakTextHighlighted = async (e) => {
+    if (currentAudio) {
+      stopSpeaking();
+      return;
+    }
+
     const toastId = toast.loading("Processing...");
     const speakTextCopy = selectionText;
 
@@ -225,15 +229,24 @@ const Message = ({role, content, setIsLoading}) => {
         const audioSrc = `data:${data.contentType};base64,${data.audioContent}`;
         const audio = new Audio(audioSrc);
         
-        // Set up event listeners for highlighted text audio
+        // Set up event listeners
         audio.onplay = () => {
+          setIsPlaying(true);
           toast.success("Speaking!", { id: toastId });
         };
         
+        audio.onended = () => {
+          setCurrentAudio(null);
+          setIsPlaying(false);
+        };
+        
         audio.onerror = () => {
+          setCurrentAudio(null);
+          setIsPlaying(false);
           toast.error("Audio playback failed", { id: toastId });
         };
         
+        setCurrentAudio(audio);
         audio.play();
         
       } else {
