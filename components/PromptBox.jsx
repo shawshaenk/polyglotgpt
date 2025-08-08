@@ -61,6 +61,10 @@ const PromptBox = ({setIsLoading, isLoading}) => {
     setSelectedChat,
     setChats
     }) {
+        if (selectedChat.messages.length > 0) {
+            toast.error('Create new chat to change languages')
+            return;
+        }
 
         if (langType === "nativeLang") {
             setNativeLang(value);
@@ -134,7 +138,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                         setSelectedChat,
                         setChats
                     })}
-                    className="bg-[#3a3a3a] text-white p-3 rounded-lg p-2 -mb-1 focus:outline-none focus:ring-0 focus:border-transparent"
+                    className="bg-[#3a3a3a] text-white rounded-lg -mb-1 w-40 sm:w-48 focus:outline-none focus:ring-0 focus:border-transparent p-3"
                     >
                     {languageList.map(l => (
                         <option key={l.code} value={l.code}>{l.label}</option>
@@ -156,7 +160,7 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                         setSelectedChat,
                         setChats
                     })}
-                    className="bg-[#3a3a3a] text-white p-3 rounded-lg -mb-1 focus:outline-none focus:ring-0 focus:border-transparent"
+                    className="bg-[#3a3a3a] text-white rounded-lg -mb-1 w-40 sm:w-48 focus:outline-none focus:ring-0 focus:border-transparent p-3"
                     >
                     {languageList.map(l => (
                         <option key={l.code} value={l.code}>{l.label}</option>

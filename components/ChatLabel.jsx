@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image';
 import { useAppContext } from '@/context/AppContext';
+import { useUser } from '@clerk/nextjs';
 import axios from 'axios';
 
 import three_dots from '@/assets/three_dots.svg';
@@ -16,6 +17,7 @@ const assets = {
 
 const ChatLabel = ({openMenu, setOpenMenu, id, name}) => {
 
+  const {user} = useUser()
   const {fetchUsersChats, chats, setSelectedChat, selectedChat} = useAppContext()
 
   const selectChat = ()=> {
@@ -30,7 +32,7 @@ const ChatLabel = ({openMenu, setOpenMenu, id, name}) => {
       if (!newName) return
       const {data} = await axios.post("/api/chat/rename", {chatId: id, name: newName})
       if (data.success) {
-        fetchUsersChats()
+        fetchUsersChats(false)
         setOpenMenu({id: 0, open: false})
         toast.success(data.message)
       } else {
@@ -47,7 +49,7 @@ const ChatLabel = ({openMenu, setOpenMenu, id, name}) => {
       if (!confirm) return
       const {data} = await axios.post("/api/chat/delete", {chatId: id})
       if (data.success) {
-        fetchUsersChats()
+        fetchUsersChats(false)
         setOpenMenu({id: 0, open:false})
         toast.success(data.message)
       }
@@ -59,19 +61,28 @@ const ChatLabel = ({openMenu, setOpenMenu, id, name}) => {
   return (
     <div onClick={selectChat} className={`flex items-center justify-between p-2 text-white/80 hover:bg-white/10 rounded-lg text-sm cursor-pointer mb-2 ${(openMenu.id === id && openMenu.open) || selectedChat?._id === id ? 'bg-white/10' : ''}`}>
         <p className="group-hover:max-w-5/6 truncate cursor-pointer">{name}</p>
-        <div onClick={e=>{e.stopPropagation();setOpenMenu({id: id, open: !openMenu.open})}} className={`group relative flex items-center justify-center h-6 w-6 aspect-square hover:bg-black/30 rounded-lg ${openMenu.id === id && openMenu.open ? 'bg-black/30' : ''}`}>
+        {user && (
+          <div 
+            onClick={e => {
+              e.stopPropagation();
+              setOpenMenu({ id: id, open: !openMenu.open });
+            }} 
+            className={`group relative flex items-center justify-center h-6 w-6 aspect-square hover:bg-black/30 rounded-lg ${openMenu.id === id && openMenu.open ? 'bg-black/30' : ''}`}
+          >
             <Image src={assets.three_dots} alt="" className="w-4 cursor-pointer"/>
+            
             <div className={`absolute ${openMenu.id === id && openMenu.open ? 'block' : 'hidden'} -right-0 top-6 bg-[#252525] rounded-xl w-max p-2 z-10`}>
-                <div onClick={renameHandler} className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer">
-                    <Image src={assets.rename_icon} alt="" className="w-4"/>
-                    <p>Rename</p>
-                </div>
-                <div onClick={deleteHandler} className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer">
-                    <Image src={assets.delete_icon} alt="" className="w-4"/>
-                    <p>Delete</p>
-                </div>
+              <div onClick={renameHandler} className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer">
+                <Image src={assets.rename_icon} alt="" className="w-4"/>
+                <p>Rename</p>
+              </div>
+              <div onClick={deleteHandler} className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer">
+                <Image src={assets.delete_icon} alt="" className="w-4"/>
+                <p>Delete</p>
+              </div>
             </div>
-        </div>
+          </div>
+        )}
     </div>
   )
 }

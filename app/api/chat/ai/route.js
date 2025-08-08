@@ -64,7 +64,7 @@ export async function POST(req) {
         1. Respond with one greeting word in ${targetLang}.
         2. Then switch to ${nativeLang} and introduce yourself:
           - I am PolyglotGPT, your personal language tutor.
-          - I can adjust message difficulty, translate, romanize text, and speak text.
+          - I can adjust message difficulty, translate text, romanize text, and speak text.
           - If you highlight parts of my messages, you will see buttons to translate, explain, or speak specific words or phrases.
           - I will mostly use targetLang unless you ask for explanations or make a mistake.
       - If the first message is not a greeting, respond directly in ${targetLang} with no introduction.

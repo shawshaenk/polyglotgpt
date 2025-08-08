@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useAuth, useClerk, useUser } from '@clerk/nextjs';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
@@ -105,14 +105,27 @@ export const AppContextProvider = ({children})=>{
             console.log("Chat created:", data);
 
             await fetchUsersChats();
-            toast.success('New chat created!', { id: toastId })
+            toast.success('New Chat Created!', { id: toastId })
         } catch (error) {
             toast.error(error.message);
         }
     };
 
-    const fetchUsersChats = async () => {
-        const toastId = toast.loading("Loading chats...");
+    const userJustSignedUpRef = useRef(false);
+
+    useEffect(() => {
+        if (user && new Date() - new Date(user.createdAt) < 10000) {
+            // account created within last 10s
+            userJustSignedUpRef.current = true;
+        }
+    }, [user]);
+
+    const fetchUsersChats = async (showLoading = false) => {
+        let toastId;
+
+        if (!userJustSignedUpRef && showLoading) {
+            toastId = toast.loading("Loading Chats...");
+        }
 
         try {
             const token = await getToken();
@@ -125,7 +138,7 @@ export const AppContextProvider = ({children})=>{
             if (data.success) {
                 if (data.data.length === 0) {
                     console.log("No chats found. Creating one...");
-                    await createNewChat();  // Do not recursively call fetch again here
+                    await createNewChat();
                     return;
                 }
 
@@ -133,7 +146,10 @@ export const AppContextProvider = ({children})=>{
                 setChats(sorted);
                 setSelectedChat(sorted[0]);
                 console.log("Chats loaded:", sorted[0]);
-                toast.success('Chats Loaded!', { id: toastId })
+
+                if (toastId) {
+                    toast.success("Chats Loaded!", { id: toastId });
+                }
             } else {
                 toast.error(data.message);
             }
@@ -164,7 +180,7 @@ export const AppContextProvider = ({children})=>{
 
     useEffect(()=> {
         if (user) {
-            fetchUsersChats();
+            fetchUsersChats(true);
         }
     }, [user])
 
