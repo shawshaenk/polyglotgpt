@@ -61,10 +61,10 @@ const PromptBox = ({setIsLoading, isLoading}) => {
     setSelectedChat,
     setChats
     }) {
-        // if (selectedChat.messages.length > 0) {
-        //     toast.error('Create new chat to change languages')
-        //     return;
-        // }
+        if (selectedChat.messages.length > 0) {
+            toast.error('Create new chat to change languages')
+            return;
+        }
 
         if (langType === "nativeLang") {
             setNativeLang(value);
