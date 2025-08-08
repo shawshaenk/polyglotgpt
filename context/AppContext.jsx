@@ -84,7 +84,7 @@ export const AppContextProvider = ({children})=>{
     const createNewChat = async () => {
         let toastId;
 
-        if (!userJustSignedUpRef.current && showLoading) {
+        if (!userJustSignedUpRef.current) {
             toastId = toast.loading("Creating new chat...");
         }
 
