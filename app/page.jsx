@@ -32,6 +32,23 @@ export default function Home() {
   const clerk = useClerk();
 
   useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setExpand(true);
+      } else {
+        setExpand(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     if (isLoaded && isSignedIn === false && clerk) {
       clerk.openSignIn();
     }
@@ -81,13 +98,13 @@ export default function Home() {
           </div>
 
           {messages.length === 0 ? (
-            <>
-            <div className="flex items-center gap-3">
-              <Image src={assets.polyglotgpt_logo} alt="" className="h-19 w-19 pb-1 -mr-2 -mb-2"/>
-              <p className="text-3xl font-medium">PolyglotGPT</p>
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-center gap-3">
+                <Image src={assets.polyglotgpt_logo} alt="" className="h-19 w-19 pb-1 -mr-2 -mb-2"/>
+                <p className="text-3xl font-medium">PolyglotGPT</p>
+              </div>
+              <p className="text-lg mt-1">What language do you want to learn today?</p>
             </div>
-            <p className="text-lg mt-1">What language do you want to learn today?</p>
-            </>
           ):
           (
           <div className="relative flex flex-col items-center justify-start w-full mt-20 max-h-screen overflow-y-auto pb-35" ref={containerRef}>
