@@ -32,7 +32,7 @@ const Message = ({role, content, setIsLoading}) => {
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   
-  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, languageList} = useAppContext();
+  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, languageList, fetchUsersChats} = useAppContext();
 
   useEffect(() => {
     Prism.highlightAll();
@@ -70,7 +70,11 @@ const Message = ({role, content, setIsLoading}) => {
     };
 
     document.addEventListener("mouseup", handleMouseUp);
-    return () => document.removeEventListener("mouseup", handleMouseUp);
+    document.addEventListener("touchend", handleMouseUp);
+    return () => {
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("touchend", handleMouseUp);
+    };
   }, []);
 
   // Cleanup audio on unmount
@@ -286,13 +290,14 @@ const Message = ({role, content, setIsLoading}) => {
       user,
       nativeLang,
       targetLang,
+      fetchUsersChats,
     });
   };
 
   return (
     <div ref={messageWrapperRef} className="relative flex flex-col items-center w-full max-w-3xl text-base">
       <div className={`flex flex-col w-full mb-8 ${role === 'user' && 'items-end'}`}>
-        <div className={`group relative flex max-w-2xl py-3 rounded-xl ${role === 'user' ? 'bg-[#2a2a2a] px-5 mt-2 max-w-[30vw]' : '-mt-6 gap-3'}`}>
+        <div className={`group relative flex max-w-2xl py-3 rounded-xl ${role === 'user' ? 'bg-[#2a2a2a] px-5 mt-2 max-w-[80vw] sm:max-w-[30vw]' : '-mt-6 gap-3'}`}>
             <div className={`absolute ${role === 'user' ? '-left-6 top-1/2 -translate-y-1/2' : 'left-12.5 -bottom-3.5'} transition-all`}>
                 <div className="flex items-center gap-2 opacity-70">
                     {
@@ -304,11 +309,11 @@ const Message = ({role, content, setIsLoading}) => {
                             <>
                             <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4.5 cursor-pointer"/>
                             {/* <Image src={assets.regenerate_icon} alt="" className="w-4 cursor-pointer"/> */}
-                            <button className="text-sm cursor-pointer hover:underline" onClick={() => {showOriginalContent();}}>Show Original</button>
-                            <button className="text-sm cursor-pointer hover:underline" onClick={() => {translateText();}}>Translate</button>
-                            <button className="text-sm cursor-pointer hover:underline" onClick={() => {romanizeText();}}>Romanize</button>
+                            <button className="text-xs sm:text-sm cursor-pointer hover:underline" onClick={() => {showOriginalContent();}}>Show Original</button>
+                            <button className="text-xs sm:text-sm cursor-pointer hover:underline" onClick={() => {translateText();}}>Translate</button>
+                            <button className="text-xs sm:text-sm cursor-pointer hover:underline" onClick={() => {romanizeText();}}>Romanize</button>
                             <button 
-                              className={`text-sm cursor-pointer hover:underline ${isPlaying ? 'text-red-400' : ''}`} 
+                              className={`text-xs sm:text-sm cursor-pointer hover:underline ${isPlaying ? 'text-red-400' : ''}`} 
                               onClick={() => {speakText();}}
                             >
                               {isPlaying ? 'Stop Speaking' : 'Speak'}
