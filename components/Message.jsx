@@ -38,6 +38,10 @@ const Message = ({role, content, setIsLoading}) => {
     Prism.highlightAll();
 
     const handleMouseUp = (e) => {
+      if (popupRef.current?.contains(e.target)) {
+        return;
+      }
+
       const selection = window.getSelection();
       const selectedText = selection.toString().trim();
 
@@ -307,7 +311,7 @@ const Message = ({role, content, setIsLoading}) => {
                             </>
                         ):(
                             <>
-                            <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4.5 cursor-pointer"/>
+                            <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer"/>
                             {/* <Image src={assets.regenerate_icon} alt="" className="w-4 cursor-pointer"/> */}
                             <button className="text-xs sm:text-sm cursor-pointer hover:underline" onClick={() => {showOriginalContent();}}>Show Original</button>
                             <button className="text-xs sm:text-sm cursor-pointer hover:underline" onClick={() => {translateText();}}>Translate</button>
@@ -316,7 +320,7 @@ const Message = ({role, content, setIsLoading}) => {
                               className={`text-xs sm:text-sm cursor-pointer hover:underline ${isPlaying ? 'text-red-400' : ''}`} 
                               onClick={() => {speakText();}}
                             >
-                              {isPlaying ? 'Stop Speaking' : 'Speak'}
+                              {isPlaying ? 'Stop' : 'Speak'}
                             </button>
                             </>
                         )
