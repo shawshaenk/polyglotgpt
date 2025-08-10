@@ -16,7 +16,9 @@ export const AppContextProvider = ({children})=>{
 
     const [chats, setChats] = useState([]);
     const [selectedChat, setSelectedChat] = useState(null);
+    const [prevNativeLang, setPrevNativeLang] = useState('en');
     const [nativeLang, setNativeLang] = useState('en');
+    const [prevTargetLang, setPrevTargetLang] = useState('es');
     const [targetLang, setTargetLang] = useState('es');
     const [isLocalMode, setIsLocalMode] = useState(false);
 
@@ -74,7 +76,7 @@ export const AppContextProvider = ({children})=>{
 
     const chatButtonAction = () => {
         if (!isSignedIn && clerk) {
-            toast.error('Login to create new chat')
+            toast.error('Login to Create New Chat')
             clerk.openSignIn();
             return;
         }
@@ -94,7 +96,7 @@ export const AppContextProvider = ({children})=>{
         let toastId;
 
         if (!userJustSignedUpRef.current) {
-            toastId = toast.loading("Creating new chat...");
+            toastId = toast.loading("Creating New Chat...");
         }
 
         if (!isSignedIn) {
@@ -215,8 +217,12 @@ export const AppContextProvider = ({children})=>{
         fetchUsersChats,
         createNewChat, 
         chatButtonAction, 
+        prevNativeLang,
+        setPrevNativeLang,
         nativeLang, 
         setNativeLang, 
+        prevTargetLang,
+        setPrevTargetLang,
         targetLang, 
         setTargetLang, 
         languageList,

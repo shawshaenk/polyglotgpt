@@ -12,16 +12,16 @@ const assets = {
   arrow_icon,
 };
 
-const PromptBox = ({setIsLoading, isLoading}) => {
+const PromptBox = ({setIsLoading}) => {
     const [prompt, setPrompt] = useState('');
-    const {user, setChats, selectedChat, setSelectedChat, nativeLang, setNativeLang, targetLang, setTargetLang, languageList, fetchUsersChats} = useAppContext();
+    const {user, setChats, selectedChat, setSelectedChat, prevNativeLang, setPrevNativeLang, nativeLang, setNativeLang, prevTargetLang, setPrevTargetLang, targetLang, setTargetLang, languageList, fetchUsersChats} = useAppContext();
     const textareaRef = useRef(null);
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             if (nativeLang === targetLang) {
-                toast.error('Languages must be different.')
+                toast.error('Languages Must Be Different')
                 return;
             }
             sendPrompt(e);
@@ -45,6 +45,8 @@ const PromptBox = ({setIsLoading, isLoading}) => {
             setSelectedChat,
             selectedChat,
             user,
+            prevNativeLang,
+            prevTargetLang,
             nativeLang,
             targetLang,
             clerk,
@@ -55,6 +57,8 @@ const PromptBox = ({setIsLoading, isLoading}) => {
     langType,
     value,
     selectedChat,
+    setPrevNativeLang,
+    setPrevTargetLang,
     nativeLang,
     targetLang,
     setNativeLang,
@@ -68,11 +72,13 @@ const PromptBox = ({setIsLoading, isLoading}) => {
         // }
 
         if (langType === "nativeLang") {
+            setPrevNativeLang(nativeLang);
             setNativeLang(value);
         } else if (langType === "targetLang") {
+            setPrevTargetLang(targetLang);
             setTargetLang(value);
         }
-        toast.success('Languages updated!')
+        toast.success('Languages Updated!')
 
         setSelectedChat(prev => ({
             ...prev,
@@ -96,8 +102,8 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                     targetLang: langType === "targetLang" ? value : targetLang
                 });
             } catch (error) {
-                toast.error("Failed to update languages in database.");
-                console.error(`Failed to update ${langType}:`, error);
+                toast.error("Failed to Update Languages in Database");
+                console.error(`Failed to Update ${langType}:`, error);
             }
         }
     }
@@ -132,6 +138,8 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                         langType: "nativeLang",
                         value: e.target.value,
                         selectedChat,
+                        setPrevNativeLang,
+                        setPrevTargetLang,
                         nativeLang,
                         targetLang,
                         setNativeLang,
@@ -154,6 +162,8 @@ const PromptBox = ({setIsLoading, isLoading}) => {
                         langType: "targetLang",
                         value: e.target.value,
                         selectedChat,
+                        setPrevNativeLang,
+                        setPrevTargetLang,
                         nativeLang,
                         targetLang,
                         setNativeLang,

@@ -163,7 +163,7 @@ const Message = ({role, content, setIsLoading}) => {
       currentAudio.currentTime = 0;
       setCurrentAudio(null);
       setIsPlaying(false);
-      toast.success("Stopped speaking");
+      toast.success("Stopped Speaking");
     }
   };
 
@@ -202,7 +202,7 @@ const Message = ({role, content, setIsLoading}) => {
         audio.onerror = () => {
           setCurrentAudio(null);
           setIsPlaying(false);
-          toast.error("Audio playback failed", { id: toastId });
+          toast.error("Audio Playback Failed", { id: toastId });
         };
         
         setCurrentAudio(audio);
@@ -213,7 +213,7 @@ const Message = ({role, content, setIsLoading}) => {
       }
     } catch (err) {
       console.error("Speak error:", err);
-      toast.error("Failed to play audio", { id: toastId });
+      toast.error("Failed to Play Audio", { id: toastId });
     }
   };
 
@@ -251,7 +251,7 @@ const Message = ({role, content, setIsLoading}) => {
         audio.onerror = () => {
           setCurrentAudio(null);
           setIsPlaying(false);
-          toast.error("Audio playback failed", { id: toastId });
+          toast.error("Audio Playback Failed", { id: toastId });
         };
         
         setCurrentAudio(audio);
@@ -262,7 +262,7 @@ const Message = ({role, content, setIsLoading}) => {
       }
     } catch (err) {
       console.error("Speak error:", err);
-      toast.error("Failed to play audio", { id: toastId });
+      toast.error("Failed to Play Audio", { id: toastId });
     }
   };
 

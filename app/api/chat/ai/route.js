@@ -15,7 +15,7 @@ export async function POST(req) {
 
   try {
     const { userId } = getAuth(req);
-    const { chatId, prompt, nativeLang, targetLang, isLocal, messages } = await req.json();
+    const { chatId, prompt, prevNativeLang, nativeLang, prevTargetLang, targetLang, isLocal, messages } = await req.json();
 
     let userMessages;
     let chatDoc; // ✅ use this instead of `data` for clarity
@@ -29,6 +29,11 @@ export async function POST(req) {
       if (!chatDoc) throw new Error("Chat not found");
       chatDoc.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
       userMessages = chatDoc.messages;
+    }
+
+    let languagesUpdated = false;
+    if (prevNativeLang != nativeLang || prevTargetLang != targetLang) {
+      languagesUpdated = true;
     }
 
     // System prompt stays unchanged
@@ -131,7 +136,20 @@ export async function POST(req) {
       - Follow these rules exactly; if any rule conflicts, prioritize error correction and strict rules.
     `.trim();
 
-    const formattedMessages = userMessages.map(msg => ({
+    let messagesForGemini = [...chatDoc.messages, { role: "user", content: prompt, timestamp: Date.now() }];
+    if (languagesUpdated) {
+      const languageChangeMessage = {
+        role: "user",
+        content: `⚠️ Language pair has been updated. My native language is now ${nativeLang} and my target language is now ${targetLang}. Forget all previous language settings and instructions and follow the new system rules strictly.`,
+        timestamp: Date.now()
+      };
+      
+      const lastUserPrompt = messagesForGemini.pop(); 
+      messagesForGemini.push(languageChangeMessage);
+      messagesForGemini.push(lastUserPrompt);
+    }
+
+    const formattedMessages = messagesForGemini.map(msg => ({
       role: msg.role,
       parts: [{ text: msg.content }],
     }));

@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useClerk, useAuth, UserButton } from "@clerk/nextjs";
 import { useAppContext } from '@/context/AppContext';
-import { toast } from 'react-hot-toast';
 
 import menu_icon from '@/assets/menu_icon.svg';
 import sidebar_icon from '@/assets/sidebar_icon.svg';
