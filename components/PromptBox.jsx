@@ -47,9 +47,10 @@ const PromptBox = ({setIsLoading}) => {
             user,
             prevNativeLang,
             prevTargetLang,
+            setPrevNativeLang,
+            setPrevTargetLang,
             nativeLang,
             targetLang,
-            clerk,
             fetchUsersChats
     });
 

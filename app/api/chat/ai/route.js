@@ -15,7 +15,7 @@ export async function POST(req) {
 
   try {
     const { userId } = getAuth(req);
-    const { chatId, prompt, prevNativeLang, nativeLang, prevTargetLang, targetLang, isLocal, messages } = await req.json();
+    const { chatId, prompt, nativeLang, targetLang, isLocal, languagesUpdated, messages } = await req.json();
 
     let userMessages;
     let chatDoc; // ✅ use this instead of `data` for clarity
@@ -29,11 +29,6 @@ export async function POST(req) {
       if (!chatDoc) throw new Error("Chat not found");
       chatDoc.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
       userMessages = chatDoc.messages;
-    }
-
-    let languagesUpdated = false;
-    if (prevNativeLang != nativeLang || prevTargetLang != targetLang) {
-      languagesUpdated = true;
     }
 
     // System prompt stays unchanged

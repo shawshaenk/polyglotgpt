@@ -10,9 +10,12 @@ export const sendPromptHandler = async ({
   setSelectedChat,
   selectedChat,
   user,
+  setPrevNativeLang,
+  prevNativeLang,
+  prevTargetLang,
   nativeLang,
+  setPrevTargetLang,
   targetLang,
-  clerk,
   fetchUsersChats
 }) => {
   const promptCopy = prompt;
@@ -44,18 +47,25 @@ export const sendPromptHandler = async ({
       messages: [...(prev?.messages || []), userPrompt],
     }));
 
-    let isLocal = false
+    let isLocal = false;
+    let languagesUpdated = false;
+    if (prevNativeLang != nativeLang || prevTargetLang != targetLang) {
+      languagesUpdated = true;
+      setPrevNativeLang(nativeLang);
+      setPrevTargetLang(targetLang);
+    }
 
     const payload = {
       chatId:    selectedChat._id,
       prompt,
       nativeLang,
       targetLang,
-      isLocal
+      isLocal,
+      languagesUpdated
     };
     // if this is a local chat, send the full history
     if (!user) {
-      payload.messages = [...selectedChat.messages, userPrompt]; // ✅ include the latest message
+      payload.messages = [...selectedChat.messages, userPrompt]; // include the latest message
       payload.isLocal = true;
     }
 
