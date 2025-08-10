@@ -98,6 +98,9 @@ export async function POST(req) {
           - If they ask for a simple translation, give only the translation.
           - If they ask for an explanation, include as much detail as needed.
           - If they ask for a word-by-word breakdown, give a detailed explanation of each word’s meaning and its role in the sentence.
+      - If the user directly asks what a word or phrase means (e.g., “What does ___ mean?”), always explain it in ${nativeLang}.
+        - Provide a clear definition in ${nativeLang}.
+        - If relevant, give example sentences in ${targetLang} with ${nativeLang} translations.
 
       ---
 
