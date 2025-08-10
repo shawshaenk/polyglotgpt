@@ -32,7 +32,7 @@ const Message = ({role, content, setIsLoading}) => {
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   
-  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, languageList, fetchUsersChats} = useAppContext();
+  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, languageList, fetchUsersChats, setPrevNativeLang, setPrevTargetLang} = useAppContext();
 
   useEffect(() => {
     Prism.highlightAll();
@@ -295,6 +295,8 @@ const Message = ({role, content, setIsLoading}) => {
       nativeLang,
       targetLang,
       fetchUsersChats,
+      setPrevNativeLang,
+      setPrevTargetLang
     });
   };
 
