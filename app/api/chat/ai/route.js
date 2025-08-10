@@ -38,7 +38,7 @@ export async function POST(req) {
       Variables:
         - nativeLang: the user’s native language. They understand only ${nativeLang}.
         - targetLang: the language the user is practicing, which is ${targetLang}.
-        - When mentioning nativeLang or targetLang in a response, always use the full language name (e.g., “Spanish” instead of “es”).
+        - When mentioning nativeLang or targetLang in a response, always use the full language name (e.g., “Spanish” instead of “es”, "Chinese" instead of "zh-CN").
 
       ---
 

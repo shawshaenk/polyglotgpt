@@ -56,7 +56,7 @@ export const sendPromptHandler = async ({
     }
 
     const payload = {
-      chatId:    selectedChat._id,
+      chatId: selectedChat._id,
       prompt,
       nativeLang,
       targetLang,
