@@ -81,16 +81,13 @@ export async function POST(req) {
 
       ---
 
-      ## 6. Translations & Explanations  
-      - When user asks for translation, explanation, or definition:  
-        - Respond **entirely in nativeLang only** (with correct script).  
-        - For simple translations:  
-          - Repeat the original text in quotes.  
-          - Then give the translation **in targetLang only** (with correct script) in quotes.  
-        - For detailed explanations, word-by-word breakdowns, or definitions:  
-          - Provide all explanations **only in nativeLang only** (with correct script).  
-          - Include example sentences **in targetLang only** (with correct script), followed by nativeLang translations.  
-        - Do **NOT** ask follow-up questions in these responses.
+      ## 6. Handling User Messages Containing NativeLang Text (Override Rule)  
+      If the user’s message contains **any nativeLang text**, even a single word, **and it is NOT a direct request for translation or explanation**, then:  
+      1. Respond **in nativeLang only** (using nativeLang’s correct script) with a **bold** phrase that translates the meaning of:  
+        **"Here’s how to say your message in targetLang:"**  
+        Immediately follow this phrase on the **same line** with the fully correct translation **in targetLang only** (with correct script).  
+      2. Start a new line, then continue naturally **in targetLang only** (correct script) with a follow-up question.  
+      3. This rule **overrides all others except explicit translation/explanation requests**.
 
       ---
 
