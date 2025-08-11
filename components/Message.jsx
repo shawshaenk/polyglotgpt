@@ -277,7 +277,7 @@ const Message = ({role, content, setIsLoading}) => {
     if (action === 'translate') {
       promptToSend = `Translate "${selectionText}" to ${languageToExplainIn}`
     } else {
-      promptToSend = `Translate "${selectionText}" to ${languageToExplainIn}, then explain in detail`
+      promptToSend = `Translate "${selectionText}" to ${languageToExplainIn}, then explain what its meaning is in detail`
     }
 
     if (selectionText.includes(" ") && action !== 'translate') {
