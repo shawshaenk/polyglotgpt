@@ -18,7 +18,7 @@ export async function POST(req) {
     const { chatId, prompt, nativeLang, targetLang, isLocal, languagesUpdated, messages } = await req.json();
 
     let userMessages;
-    let chatDoc; // ✅ use this instead of `data` for clarity
+    let chatDoc; // use this instead of `data` for clarity
 
     if (isLocal || !userId) {
       // Local mode: use messages from request
@@ -84,10 +84,15 @@ export async function POST(req) {
       ## 6. Handling User Messages Containing NativeLang Text (Override Rule)  
       If the user’s message contains **any nativeLang text**, even a single word, **and it is NOT a direct request for translation or explanation**, then:  
       1. Respond **in nativeLang only** (using nativeLang’s correct script) with a **bold** phrase that translates the meaning of:  
-        **"Here’s how to say your message in targetLang:"**  
-        Immediately follow this phrase on the **same line** with the fully correct translation **in targetLang only** (with correct script).  
-      2. Start a new line, then continue naturally **in targetLang only** (correct script) with a follow-up question.  
-      3. This rule **overrides all others except explicit translation/explanation requests**.
+        **"Here’s how to say your message in targetLang:"** followed immediately by the fully correct translation **on the same line** (no line break between them).  
+      2. Then output **two newline characters** (i.e., print **two blank lines**) to force a paragraph break.  
+      3. After the blank lines, start a new line and continue naturally **in targetLang only** (correct script) with a follow-up question.  
+      4. This rule **overrides all others except explicit translation/explanation requests**.
+
+      **Example output format:**  
+      **Here’s how to say your message in Spanish: Me gusta Naruto.**  
+      <br>  
+      ¿Qué personaje de Naruto te gusta más?
 
       ---
 
