@@ -34,6 +34,7 @@ export const sendPromptHandler = async ({
       timestamp: Date.now(),
     };
 
+    // Add prompt to UI state immediately
     setChats((prevChats) =>
       prevChats.map((chat) =>
         chat._id === selectedChat._id
@@ -49,7 +50,8 @@ export const sendPromptHandler = async ({
 
     let isLocal = false;
     let languagesUpdated = false;
-    if (prevNativeLang != nativeLang || prevTargetLang != targetLang) {
+
+    if (prevNativeLang !== nativeLang || prevTargetLang !== targetLang) {
       languagesUpdated = true;
       setPrevNativeLang(nativeLang);
       setPrevTargetLang(targetLang);
@@ -63,9 +65,10 @@ export const sendPromptHandler = async ({
       isLocal,
       languagesUpdated
     };
-    // if this is a local chat, send the full history
+
+    // Local (not logged in) chat sends full history
     if (!user) {
-      payload.messages = [...selectedChat.messages, userPrompt]; // include the latest message
+      payload.messages = [...selectedChat.messages, userPrompt];
       payload.isLocal = true;
     }
 

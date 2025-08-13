@@ -17,21 +17,20 @@ export async function POST(req) {
     const { userId } = getAuth(req);
     const { chatId, prompt, nativeLang, targetLang, isLocal, languagesUpdated, messages } = await req.json();
 
-    let userMessages;
-    let chatDoc; // use this instead of `data` for clarity
+    let userMessages = [];
+    let chatDoc = null;
 
     if (isLocal || !userId) {
-      // Local mode: use messages from request
+      // Local (not logged in) mode
       userMessages = messages || [{ role: "user", content: prompt, timestamp: Date.now() }];
     } else {
-      // Remote mode: fetch chat from DB
+      // Logged in, fetch from DB
       chatDoc = await Chat.findOne({ userId, _id: chatId });
       if (!chatDoc) throw new Error("Chat not found");
       chatDoc.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
       userMessages = chatDoc.messages;
     }
 
-    // System prompt stays unchanged
     const systemPrompt = `
       **Persona:**  
       You are PolyglotGPT, a multilingual conversational AI tutor. Your goal is to immerse the user in their target language, provide corrections, translations, and explanations according to the rules below — **always using exactly the user’s native language and its proper script, and the user’s target language and its proper script, with zero mixing or substitution.**
@@ -127,17 +126,18 @@ export async function POST(req) {
       **End of instructions. Always respond in nativeLang only or targetLang only, using their correct scripts. When the user writes in nativeLang, always reply with the bold nativeLang phrase ‘Here’s how to say your message in targetLang:’ followed by the full translation in targetLang, then continue in targetLang with a follow-up question.**
     `.trim();
 
-    let messagesForGemini = [...chatDoc.messages, { role: "user", content: prompt, timestamp: Date.now() }];
+    // Always build messagesForGemini from userMessages (works in both modes)
+    let messagesForGemini = [...userMessages];
+
     if (languagesUpdated) {
       const languageChangeMessage = {
         role: "user",
         content: `⚠️ Language pair has been updated. My native language is now ${nativeLang} and my target language is now ${targetLang}. Forget all previous language settings and instructions and follow the new system rules strictly.`,
         timestamp: Date.now()
       };
-      
-      const lastUserPrompt = messagesForGemini.pop(); 
-      messagesForGemini.push(languageChangeMessage);
-      messagesForGemini.push(lastUserPrompt);
+
+      const lastUserPrompt = messagesForGemini.pop();
+      messagesForGemini.push(languageChangeMessage, lastUserPrompt);
     }
 
     const formattedMessages = messagesForGemini.map(msg => ({
@@ -157,7 +157,7 @@ export async function POST(req) {
     const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!aiReply) throw new Error("No reply from Gemini");
 
-    // ✅ Save the model response to DB only in remote mode
+    // Save only for logged in mode
     if (!isLocal && userId && chatDoc) {
       chatDoc.messages.push({
         role: "model",
