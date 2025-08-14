@@ -27,7 +27,7 @@ const PromptBox = ({setIsLoading}) => {
             sendPrompt(e);
             setPrompt('');
             if (textareaRef.current) {
-                textareaRef.current.style.height = '5vh';
+                textareaRef.current.style.height = 'auto';
             }
         }
     }
@@ -117,7 +117,7 @@ const PromptBox = ({setIsLoading}) => {
             ref={textareaRef}
             onKeyDown={handleKeyDown}
             className="outline-none w-full resize-none overflow-hidden
-            break-words bg-transparent text-white placeholder-white/30 text-base max-h-[20vh] min-h-[5vh] mb-3 overflow-y-auto"
+            break-words bg-transparent text-white placeholder-white/30 text-base max-h-[20vh] mb-3 overflow-y-auto"
             placeholder="Start a conversation, or ask me what I can do"
             title=""
             required
@@ -128,6 +128,7 @@ const PromptBox = ({setIsLoading}) => {
                 e.target.style.height = `${e.target.scrollHeight}px`;
             }}
             value={prompt}
+            rows={1}
         />
 
         <div className="flex items-center justify-between text-sm">
