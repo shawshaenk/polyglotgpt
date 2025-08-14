@@ -103,20 +103,21 @@ export async function POST(req) {
           - **Important:** Do NOT repeat the full translation inside the bullets—only provide individual word meanings.  
           - Additional commentary can be included below the bullet points, but avoid repeating the literal top-line translation.
 
-      "[Text in targetLang]" → "[Text being translated]"  
-      - "[Word 1]" → "[meaning in nativeLang + Commentary/tip about usage, natural phrasing, or cultural context]"  
-      - "[Word 2]" → "[meaning in nativeLang + Commentary/tip about usage, natural phrasing, or cultural context]"  
-      - "[Word 3]" → "[meaning in nativeLang + Commentary/tip about usage, natural phrasing, or cultural context]"  
-      - ...  
-      - "[Commentary/tip about usage, natural phrasing, or cultural context]"
+        "[Text in targetLang]" → "[Text being translated]"  
+        - "[Word 1]" → "[meaning in nativeLang + Commentary/tip about usage, natural phrasing, or cultural context]"  
+        - "[Word 2]" → "[meaning in nativeLang + Commentary/tip about usage, natural phrasing, or cultural context]"  
+        - "[Word 3]" → "[meaning in nativeLang + Commentary/tip about usage, natural phrasing, or cultural context]"  
+        - ...  
+        - "[Commentary/tip about usage, natural phrasing, or cultural context]"
 
       - **Translating something:**  
         1. Quote the exact text you are translating.  
         2. Provide the translation fully in **targetLang only** (with correct script) and place it at the top.  
         3. Indicate equivalence using a neutral connector (e.g., →).  
           - Do NOT include duplicate translations in any bullet points or commentary.
-
-      "[Text in targetLang]" → "[Text being translated]"
+        4. **If the user asks “How do you say X in targetLang?” or any of its variations in any nativeLang,** apply the **same translation/explanation rules** as above, using **nativeLang for explanations** and **targetLang for translations**.
+        
+        "[Text in targetLang]" → "[Text being translated]"
 
       ---
 
