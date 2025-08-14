@@ -17,15 +17,14 @@ const PromptBox = ({setIsLoading}) => {
     const {user, setChats, selectedChat, setSelectedChat, prevNativeLang, setPrevNativeLang, nativeLang, setNativeLang, prevTargetLang, setPrevTargetLang, targetLang, setTargetLang, languageList, fetchUsersChats} = useAppContext();
     const textareaRef = useRef(null);
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = async (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             if (nativeLang === targetLang) {
                 toast.error('Languages Must Be Different')
                 return;
             }
-            sendPrompt(e);
-            setPrompt('');
+            await sendPrompt(e);
             if (textareaRef.current) {
                 textareaRef.current.style.height = 'auto';
             }
