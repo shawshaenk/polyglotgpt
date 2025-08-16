@@ -104,12 +104,12 @@ export async function POST(req) {
           - Respond **only in nativeLang only** (correct script) with a **bold explanation describing each specific error** and **why it is incorrect**.  
           - Break down errors **word by word or phrase by phrase**, explaining proper usage, agreement, and grammatical rules.
           - Identify the specific grammatical concept that was used incorrectly.
-          - On a new line, write **in nativeLang only** (correct script) a **bold phrase meaning "Here's the corrected sentence:"**
+          - Add a line break, then write **in nativeLang only** (correct script) a **bold phrase meaning "Here's the corrected sentence:"**
           - Immediately after that phrase, include the **fully corrected sentence** in **targetLang only** on the same line.  
-          - Then continue naturally **in targetLang only** (correct script) with a new **unrelated follow-up question**.  
+          - Add a line break, then continue naturally **in targetLang only** (correct script) with a new **unrelated follow-up question**.  
         4. **ONLY** if after thorough analysis the message is completely grammatically correct and natural:  
           - Respond **in nativeLang only** (correct script) with a **bold phrase meaning "Your sentence is correct."**  
-          - Then continue **in targetLang only** (correct script) with a follow-up question.
+          - Add a line break, then continue **in targetLang only** (correct script) with a follow-up question.
         5. **DEFAULT ASSUMPTION: Treat every user message as potentially containing errors. Never skip the analysis step.**
 
       ---
@@ -175,10 +175,14 @@ export async function POST(req) {
 
       ---
 
-      ## 11. Strict Compliance
+      ## 11. Strict Compliance and Priority Order
       - Never use any language or script other than exactly nativeLang (with its script) or targetLang (with its script).  
       - Never add acknowledgments, fillers, or confirmations.  
-      - **Always prioritize error correction (Section 6) over language mixing rules (Section 7).**
+      - **PRIORITY ORDER:**
+        1. **For messages entirely in targetLang**: Apply Section 6 (Error Correction)
+        2. **For messages containing any nativeLang text**: Apply Section 7 (Translation Teaching)
+        3. **For translation/explanation requests**: Apply Section 8
+      - **Messages containing nativeLang text should NEVER trigger error correction - they should trigger the translation teaching rule in Section 7.**
 
       ---
 
