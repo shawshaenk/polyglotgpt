@@ -25,11 +25,14 @@ const PromptBox = ({setIsLoading}) => {
                 return;
             }
             await sendPrompt(e);
-            if (textareaRef.current) {
-                textareaRef.current.style.height = 'auto';
-            }
         }
     }
+
+    useEffect(() => {
+        if (prompt === '' && textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+        }
+    }, [prompt]);
 
     const { isSignedIn } = useAuth();
     const clerk = useClerk();

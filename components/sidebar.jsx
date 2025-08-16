@@ -50,7 +50,7 @@ const Sidebar = ({ expand, setExpand }) => {
           </div>
         </div>
 
-        <button onClick={chatButtonAction} className={`${expand ? "absolute top-5.5 left-7 bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5" : "mt-6 left-6 group relative flex items-center justify-center hover:bg-gray-500 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer"} flex items-center cursor-pointer`}>
+        <button onClick={chatButtonAction} className={`${expand ? "absolute top-5.5 left-7 bg-primary hover:opacity-90 rounded-xl gap-2 p-2.5" : "mt-6 left-6 group relative flex items-center justify-center hover:bg-gray-500 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer"} flex items-center cursor-pointer`}>
           <Image className={expand ? 'w-6' : 'w-7'} src={assets.chat_icon} alt=""/>
           <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none w-23">
             New Chat
