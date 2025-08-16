@@ -37,18 +37,13 @@ const Message = ({role, content, setIsLoading}) => {
   useEffect(() => {
     Prism.highlightAll();
 
-    const handleMouseUp = (e) => {
-      if (popupRef.current?.contains(e.target)) {
-        return;
-      }
-
+    const handleMouseUp = () => {
       const selection = window.getSelection();
       const selectedText = selection.toString().trim();
 
       if (selectedText.length > 0 && containerRef.current?.contains(selection.anchorNode)) {
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
-
         const parentRect = messageWrapperRef.current.getBoundingClientRect();
 
         let newX = rect.left - parentRect.left;
@@ -61,23 +56,32 @@ const Message = ({role, content, setIsLoading}) => {
           newX += (rect.width / 2) - (popupWidth / 2);
           newY -= (popupHeight + 10);
         } else {
-            newX += (rect.width / 2) - 75;
-            newY -= 50;
+          newX += (rect.width / 2) - 75;
+          newY -= 50;
         }
 
         setSelectionText(selectedText);
         setPopupPos({ x: newX, y: newY });
-
-      } else {
-        setSelectionText("");
       }
+    };
+
+    const handleClickOutside = (event) => {
+        if (popupRef.current && !popupRef.current.contains(event.target)) {
+            setSelectionText("");
+            window.getSelection().removeAllRanges();
+        }
     };
 
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("touchend", handleMouseUp);
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
     return () => {
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("touchend", handleMouseUp);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
     };
   }, []);
 
@@ -99,7 +103,7 @@ const Message = ({role, content, setIsLoading}) => {
     setRomanizedText(null);
   }, [content, nativeLang, targetLang]);
 
-  useEffect(()=>{
+  useEffect(()=> {
     Prism.highlightAll()
   }, [content])
 
