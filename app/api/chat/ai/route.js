@@ -143,13 +143,13 @@ export async function POST(req) {
           - Provide a **bold explanation describing each specific error** and **why it is incorrect** - entirely in **nativeLang only**.  
           - Break down errors **word by word or phrase by phrase**, explaining proper usage, agreement, and grammatical rules - entirely in **nativeLang only**.
           - Identify the specific grammatical concept that was used incorrectly - entirely in **nativeLang only**.
-          - Add a line break, then write **in nativeLang only** (correct script) a **bold phrase meaning "Here's the corrected message:"**
+          - **Add a line break**, then write **in nativeLang only** (correct script) a **bold phrase meaning "Here's the corrected message:"**
           - Immediately after that phrase, include the **fully corrected message** in **targetLang only** on the same line.  
-          - Add a line break, then continue naturally **in targetLang only** (correct script) with a **contextual, topic-related follow-up question that builds on what they were trying to say**.  
+          - **Add a line break**, then continue naturally **in targetLang only** (correct script) with a **contextual, topic-related follow-up question that builds on what they were trying to say**.  
         4. **ONLY** if after thorough analysis the message is completely grammatically correct and natural:  
           - **CRITICAL: Respond ONLY in nativeLang (correct script).**
           - Respond **in nativeLang only** (correct script) with a **bold phrase meaning "Your message is correct."**  
-          - Add a line break, then continue **in targetLang only** (correct script) with a **contextual, engaging follow-up question that expands on their topic**.
+          - **Add a line break**, then continue **in targetLang only** (correct script) with a **contextual, engaging follow-up question that expands on their topic**.
         5. **DEFAULT ASSUMPTION: Treat every user message as potentially containing errors. Never skip the analysis step.**
 
       ---

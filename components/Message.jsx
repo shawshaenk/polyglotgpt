@@ -305,17 +305,17 @@ const Message = ({role, content, setIsLoading}) => {
                     {
                         role === 'user' ? (
                             <>
-                            <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer"/>
+                            <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer select-none"/>
                             </>
                         ):(
                             <>
-                            <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer"/>
+                            <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer select-none"/>
                             {/* <Image src={assets.regenerate_icon} alt="" className="w-4 cursor-pointer"/> */}
-                            <button className="text-xs sm:text-sm cursor-pointer hover:underline" onClick={() => {showOriginalContent();}}>Show Original</button>
-                            <button className="text-xs sm:text-sm cursor-pointer hover:underline" onClick={() => {translateText();}}>Translate</button>
-                            <button className="text-xs sm:text-sm cursor-pointer hover:underline" onClick={() => {romanizeText();}}>Romanize</button>
+                            <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {showOriginalContent();}}>Show Original</button>
+                            <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {translateText();}}>Translate</button>
+                            <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {romanizeText();}}>Romanize</button>
                             <button 
-                              className={`text-xs sm:text-sm cursor-pointer hover:underline ${isPlaying ? 'text-red-400' : ''}`} 
+                              className={`text-xs sm:text-sm cursor-pointer hover:underline select-none ${isPlaying ? 'text-red-400' : ''}`} 
                               onClick={() => {speakText();}}
                             >
                               {isPlaying ? 'Stop' : 'Speak'}
@@ -333,7 +333,7 @@ const Message = ({role, content, setIsLoading}) => {
                 :
                 (
                     <>
-                    <Image src={assets.translate_icon} alt="" className="h-9 w-9 p-1 border border-white/15 rounded-full"/>
+                    <Image src={assets.translate_icon} alt="" className="h-9 w-9 p-1 border border-white/15 rounded-full select-none"/>
                     <div ref={containerRef} className="space-y-4 mt-2 w-full overflow-visible break-words max-w-[60vw]">
                       <Markdown>{aiMessage}</Markdown>
                     </div>
@@ -350,19 +350,19 @@ const Message = ({role, content, setIsLoading}) => {
         >
           <button
             onClick={(e) => sendPrompt(e, 'translate')}
-            className="hover:underline cursor-pointer"
+            className="hover:underline cursor-pointer select-none"
           >
             Translate
           </button>
           <button
             onClick={(e) => sendPrompt(e, 'explain')}
-            className="hover:underline cursor-pointer"
+            className="hover:underline cursor-pointer select-none"
           >
             Explain
           </button>
           <button
             onClick={() => speakTextHighlighted()}
-            className="hover:underline cursor-pointer"
+            className="hover:underline cursor-pointer select-none"
           >
             Speak
           </button>
