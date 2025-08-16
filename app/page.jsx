@@ -93,14 +93,14 @@ export default function Home() {
         <div className={`flex-1 flex flex-col items-center ${messages.length === 0 ? "justify-center" : "justify-start"} px-4 pb-8 bg-[#1e1e1e] text-white relative`}>
           <div className="md:hidden absolute px-4 top-6 flex items-center justify-between w-full">
             <Image onClick={()=> (expand ? setExpand(false): setExpand(true))}
-              className="rotate-180 icon" src={assets.menu_icon} alt=""/>
-            <Image onClick={chatButtonAction} className="opacity-70 icon" src={assets.chat_icon} alt=""/>
+              className="rotate-180 select-none" src={assets.menu_icon} alt=""/>
+            <Image onClick={chatButtonAction} className="opacity-70 select-none" src={assets.chat_icon} alt=""/>
           </div>
 
           {messages.length === 0 ? (
             <div className="flex flex-col items-center text-center">
               <div className="flex items-center gap-3">
-                <Image src={assets.polyglotgpt_logo} alt="" className="h-19 w-19 pb-1 -mr-2 -mb-2"/>
+                <Image src={assets.polyglotgpt_logo} alt="" className="h-19 w-19 pb-1 -mr-2 -mb-2 select-none"/>
                 <p className="text-3xl font-medium">PolyglotGPT</p>
               </div>
               <p className="text-lg mt-1">What language do you want to learn today?</p>
@@ -115,7 +115,7 @@ export default function Home() {
           {
             isLoading && (
               <div className="flex gap-4 max-w-3xl w-full py-3">
-                <Image className="h-9 w-9 p-1 border border-white/15 rounded-full icon" src={assets.translate_icon} alt="Logo"/>
+                <Image className="h-9 w-9 p-1 border border-white/15 rounded-full select-none" src={assets.translate_icon} alt="Logo"/>
                 <div className="loader flex justify-center items-center gap-1">
                   <div className="w-1 h-1 rounded-full bg-white animate-bounce">
                   </div>

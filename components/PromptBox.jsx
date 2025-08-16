@@ -186,7 +186,7 @@ const PromptBox = ({setIsLoading}) => {
 
             <button className={` ${prompt ? "bg-primary" : "bg-[#3a3a3a]"}
                 rounded-full p-2 cursor-pointer`}>
-                    <Image className="w-3.5 aspect-square" src={assets.arrow_icon} alt=''/>
+                    <Image className="w-3.5 aspect-square select-none" src={assets.arrow_icon} alt=''/>
             </button>
         </div>
     </form>

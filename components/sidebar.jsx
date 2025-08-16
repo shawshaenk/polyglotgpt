@@ -37,11 +37,11 @@ const Sidebar = ({ expand, setExpand }) => {
 
           <div onClick={()=> expand ? setExpand(false) : setExpand(true)}
           className="group relative flex items-center justify-center hover:bg-gray-500 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer">
-            <Image src={assets.menu_icon} alt="Menu" className="md:hidden" />
+            <Image src={assets.menu_icon} alt="Menu" className="md:hidden select-none" />
             <Image
               src={assets.sidebar_icon}
               alt="Toggle"
-              className="hidden md:block w-7"
+              className="hidden md:block w-7 select-none"
             />
             <div className={`absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none ${expand ? 'w-30' : 'w-29'}`}>
                 {expand ? "Close Sidebar" : "Open Sidebar"}
@@ -51,12 +51,12 @@ const Sidebar = ({ expand, setExpand }) => {
         </div>
 
         <button onClick={chatButtonAction} className={`${expand ? "absolute top-5.5 left-7 bg-primary hover:opacity-90 rounded-xl gap-2 p-2.5" : "mt-6 left-6 group relative flex items-center justify-center hover:bg-gray-500 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer"} flex items-center cursor-pointer`}>
-          <Image className={expand ? 'w-6' : 'w-7'} src={assets.chat_icon} alt=""/>
-          <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none w-23">
+          <Image className={expand ? 'w-6 select-none' : 'w-7 select-none'} src={assets.chat_icon} alt=""/>
+          <div className="absolute select-none left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none w-23">
             New Chat
             <div className="w-3 h-3 absolute bg-black rotate-45 left-1.5 -translate-x-full top-1/2 -translate-y-1/2"></div>
           </div>
-          {expand && <p className="text-white text font-medium">New Chat</p>}
+          {expand && <p className="text-white text font-medium select-none">New Chat</p>}
         </button>
       </div>
 
@@ -71,7 +71,7 @@ const Sidebar = ({ expand, setExpand }) => {
         <div onClick={user ? null : openSignIn}
         className={`flex items-center ${expand ? 'hover:bg-white/10 rounded-lg -mb-4' : 'justify-center w-full'} gap-3 text-white/60 text-sm p-2 cursor-pointer`}>
           {
-            user ? <UserButton/> : <Image src={assets.profile_icon} alt="" className="w-7"/>
+            user ? <UserButton/> : <Image src={assets.profile_icon} alt="" className="w-7 select-none"/>
           }
           {expand && <span className="mt-1">{user ? "My Profile" : "Log In"}</span>}
         </div>
