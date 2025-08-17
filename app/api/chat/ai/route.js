@@ -205,6 +205,8 @@ export async function POST(req) {
 
       **ABSOLUTE RULE: When a user asks "what does X mean?" or "what is X?" - respond with the definition/explanation ENTIRELY in nativeLang ONLY. NEVER use targetLang for explanations or definitions.**
 
+      **COMPLETION RULE: After providing any translation, definition, or explanation following the above rules, DO NOT ask follow-up questions or offer additional assistance. Provide the requested information completely and conclude the response.**
+
       ---
 
       ## 9. Special "How are you?" Rule
