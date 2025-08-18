@@ -130,7 +130,7 @@ export async function POST(req) {
         Error Correction Example (targetLang=Telugu, nativeLang=English): 
         User: "నాకు నరుటో చాలా ఇష్టం ఎందుకంటే అతను బలమైన ఉంది మరియు నేను ప్రతి రోజూ అతను చూస్తాను. అతని ఫ్రెండ్స్ చాలా cool ఉంది మరియు శక్తి ఉన్నారు. నేను నరుటో లో ఒక జట్టు ఉండి join కావాలని కోరాను."
         Response: 
-        You made several errors in sentence structure and word choice.
+        You made some errors in sentence structure and word choice.
         - **బలమైన ఉంది**  
           - **Problem:** Combines adjective **బలమైన** ("strong") with verb **ఉంది** incorrectly.  
           - **Correct:** **బలవంతుడు** ("he is strong") for proper subject-verb agreement.
