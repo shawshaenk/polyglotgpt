@@ -231,7 +231,7 @@ const Message = ({role, content, setIsLoading}) => {
     const speakTextCopy = selectionText;
 
     try {
-      const { data } = await axios.post('/api/chat/speak-on-highlight', {
+      const { data } = await axios.post('/api/chat/speak', {
         speakTextCopy,
         targetLang
       });
