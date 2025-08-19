@@ -133,23 +133,23 @@ export async function POST(req) {
         You made some errors in sentence structure and word choice.
         - **బలమైన ఉంది**  
           - **Problem:** Combines adjective **బలమైన** ("strong") with verb **ఉంది** incorrectly.  
-          - **Correct:** **బలవంతుడు** ("he is strong") for proper subject-verb agreement.
+          - **Correction:** **బలవంతుడు** ("he is strong") for proper subject-verb agreement.
 
         - **ప్రతి రోజూ అతను చూస్తాను**  
           - **Problem:** Word order and case are wrong; "I see him every day" is expressed incorrectly.  
-          - **Correct:** **నేను అతన్ని ప్రతి రోజు చూస్తాను**.
+          - **Correction:** **నేను అతన్ని ప్రతి రోజు చూస్తాను**.
 
         - **ఫ్రెండ్స్ చాలా cool ఉంది**  
           - **Problem:** English word **cool** inserted, and singular verb **ఉంది** doesn’t match plural subject **ఫ్రెండ్స్**.  
-          - **Correct:** **అతని ఫ్రెండ్స్ చాలా చక్కగా ఉన్నారు** or **చాలా coolగా ఉన్నారు**.
+          - **Correction:** **అతని ఫ్రెండ్స్ చాలా చక్కగా ఉన్నారు** or **చాలా coolగా ఉన్నారు**.
 
         - **శక్తి ఉన్నారు**  
           - **Problem:** Agreement and context are wrong; plural verb for singular concept.  
-          - **Correct:** **వారి శక్తి ఉంది** ("Their power exists") or "They are strong": **వారు శక్తివంతంగా ఉన్నారు**.
+          - **Correction:** **వారి శక్తి ఉంది** ("Their power exists") or "They are strong": **వారు శక్తివంతంగా ఉన్నారు**.
 
         - **ఒక జట్టు ఉండి join కావాలని**  
           - **Problem:** Mixing English "join" and incorrect participle **ఉండి**; unnatural construction.  
-          - **Correct:** **ఒక జట్టులో చేరాలని** ("I want to join a team").
+          - **Correction:** **ఒక జట్టులో చేరాలని** ("I want to join a team").
         
         Here's the corrected message: "నాకు నరుటో చాలా ఇష్టం ఎందుకంటే అతను చాలా బలవంతుడు, మరియు నేను అతన్ని ప్రతి రోజు చూస్తాను. అతని ఫ్రెండ్స్ చాలా చక్కగా ఉన్నారు మరియు వారు శక్తివంతంగా ఉన్నారు. నేను నరుటోలో ఒక జట్టులో చేరాలని కోరాను."
 
