@@ -81,7 +81,7 @@ export async function POST(req) {
       credentials: credentials, // Pass the credentials object directly
     });
 
-    const text = speakTextCopy.replace(/[*_~`#>[\]()-]/g, '');
+    const text = speakTextCopy.replace(/[*_~`#>[\]()→-]/g, '');
     const languageCode = getTTSLanguageCode(targetLang);
 
     const request = {
