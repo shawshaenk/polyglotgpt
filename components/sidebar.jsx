@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useClerk, useAuth, UserButton } from "@clerk/nextjs";
 import { useAppContext } from '@/context/AppContext';
@@ -23,12 +23,31 @@ const Sidebar = ({ expand, setExpand }) => {
   const {openSignIn} = useClerk()
   const {user, chats, createNewChat, chatButtonAction} = useAppContext()
   const [openMenu, setOpenMenu] = useState({id: 0, open: false})
+  const sidebarRef = useRef(null)
 
-  const { isSignedIn } = useAuth();
-  const clerk = useClerk();
+  // Add click outside handler to close menu
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Only close menu if it's currently open and the click is outside the sidebar
+      if (openMenu.open && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setOpenMenu({id: 0, open: false});
+      }
+    };
+
+    // Add event listeners for both mouse and touch events
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    // Cleanup function
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [openMenu.open]); // Only re-run when openMenu.open changes
 
   return (
     <div
+      ref={sidebarRef}
       className={`flex flex-col justify-between bg-[#2a2a2a] pt-7 transition-all z-50 max-md:absolute max-md:h-screen ${
         expand ? 'p-4 w-64' : 'md:w-20 w-0 max-md:overflow-hidden'}`}>
       <div>
