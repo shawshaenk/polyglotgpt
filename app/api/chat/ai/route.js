@@ -121,53 +121,53 @@ export async function POST(req) {
 
       **EXAMPLES**
         Translation Teaching Example (targetLang=Spanish, nativeLang=English): 
-        User: "Let's talk about movies" 
-        Response: 
-        Here's how to say your message in Spanish: Hablemos de películas
+          User: "Let's talk about movies" 
+          Response: 
+          Here's how to say your message in Spanish: Hablemos de películas
 
-        Me encantan las películas. ¿Qué género prefieres cuando quieres relajarte después de un día difícil?
+          Me encantan las películas. ¿Qué género prefieres cuando quieres relajarte después de un día difícil?
 
         Error Correction Example (targetLang=Telugu, nativeLang=English): 
-        User: "నాకు నరుటో చాలా ఇష్టం ఎందుకంటే అతను బలమైన ఉంది మరియు నేను ప్రతి రోజూ అతను చూస్తాను. అతని ఫ్రెండ్స్ చాలా cool ఉంది మరియు శక్తి ఉన్నారు. నేను నరుటో లో ఒక జట్టు ఉండి join కావాలని కోరాను."
-        Response: 
-        You made some errors in sentence structure and word choice.
-        - **బలమైన ఉంది**  
-          - **Problem:** Combines adjective **బలమైన** ("strong") with verb **ఉంది** incorrectly.  
-          - **Correction:** **బలవంతుడు** ("he is strong") for proper subject-verb agreement.
+          User: "నాకు నరుటో చాలా ఇష్టం ఎందుకంటే అతను బలమైన ఉంది మరియు నేను ప్రతి రోజూ అతను చూస్తాను. అతని ఫ్రెండ్స్ చాలా cool ఉంది మరియు శక్తి ఉన్నారు. నేను నరుటో లో ఒక జట్టు ఉండి join కావాలని కోరాను."
+          Response: 
+          You made some errors in sentence structure and word choice.
+          - **బలమైన ఉంది**  
+            - **Problem:** Combines adjective **బలమైన** ("strong") with verb **ఉంది** incorrectly.  
+            - **Correction:** **బలవంతుడు** ("he is strong") for proper subject-verb agreement.
 
-        - **ప్రతి రోజూ అతను చూస్తాను**  
-          - **Problem:** Word order and case are wrong; "I see him every day" is expressed incorrectly.  
-          - **Correction:** **నేను అతన్ని ప్రతి రోజు చూస్తాను**.
+          - **ప్రతి రోజూ అతను చూస్తాను**  
+            - **Problem:** Word order and case are wrong; "I see him every day" is expressed incorrectly.  
+            - **Correction:** **నేను అతన్ని ప్రతి రోజు చూస్తాను**.
 
-        - **ఫ్రెండ్స్ చాలా cool ఉంది**  
-          - **Problem:** English word **cool** inserted, and singular verb **ఉంది** doesn’t match plural subject **ఫ్రెండ్స్**.  
-          - **Correction:** **అతని ఫ్రెండ్స్ చాలా చక్కగా ఉన్నారు** or **చాలా coolగా ఉన్నారు**.
+          - **ఫ్రెండ్స్ చాలా cool ఉంది**  
+            - **Problem:** English word **cool** inserted, and singular verb **ఉంది** doesn’t match plural subject **ఫ్రెండ్స్**.  
+            - **Correction:** **అతని ఫ్రెండ్స్ చాలా చక్కగా ఉన్నారు** or **చాలా coolగా ఉన్నారు**.
 
-        - **శక్తి ఉన్నారు**  
-          - **Problem:** Agreement and context are wrong; plural verb for singular concept.  
-          - **Correction:** **వారి శక్తి ఉంది** ("Their power exists") or "They are strong": **వారు శక్తివంతంగా ఉన్నారు**.
+          - **శక్తి ఉన్నారు**  
+            - **Problem:** Agreement and context are wrong; plural verb for singular concept.  
+            - **Correction:** **వారి శక్తి ఉంది** ("Their power exists") or "They are strong": **వారు శక్తివంతంగా ఉన్నారు**.
 
-        - **ఒక జట్టు ఉండి join కావాలని**  
-          - **Problem:** Mixing English "join" and incorrect participle **ఉండి**; unnatural construction.  
-          - **Correction:** **ఒక జట్టులో చేరాలని** ("I want to join a team").
-        
-        Here's the corrected message: "నాకు నరుటో చాలా ఇష్టం ఎందుకంటే అతను చాలా బలవంతుడు, మరియు నేను అతన్ని ప్రతి రోజు చూస్తాను. అతని ఫ్రెండ్స్ చాలా చక్కగా ఉన్నారు మరియు వారు శక్తివంతంగా ఉన్నారు. నేను నరుటోలో ఒక జట్టులో చేరాలని కోరాను."
+          - **ఒక జట్టు ఉండి join కావాలని**  
+            - **Problem:** Mixing English "join" and incorrect participle **ఉండి**; unnatural construction.  
+            - **Correction:** **ఒక జట్టులో చేరాలని** ("I want to join a team").
+          
+          Here's the corrected message: "నాకు నరుటో చాలా ఇష్టం ఎందుకంటే అతను చాలా బలవంతుడు, మరియు నేను అతన్ని ప్రతి రోజు చూస్తాను. అతని ఫ్రెండ్స్ చాలా చక్కగా ఉన్నారు మరియు వారు శక్తివంతంగా ఉన్నారు. నేను నరుటోలో ఒక జట్టులో చేరాలని కోరాను."
 
         Translate Example (targetLang=Spanish, nativeLang=English): 
-        User: Translate "Hola!" 
-        Response: "Hola!" → Hello!
+          User: Translate "Hola!" 
+          Response: "Hola!" → Hello!
 
-        Explanation Example (targetLang=Spanish, nativeLang=English): 
-        User: Explain "¿Qué tal tu día hoy?" 
-        Response: 
-        "¿Qué tal tu día hoy?" → How was your day today?
+          Explanation Example (targetLang=Spanish, nativeLang=English): 
+          User: Explain "¿Qué tal tu día hoy?" 
+          Response: 
+          "¿Qué tal tu día hoy?" → How was your day today?
 
-        *   "¿Qué tal?" means "How is it?" or "What about?". It's a versatile phrase used to ask about the state or condition of something.
-        *   "tu" means "your" (informal singular).
-        *   "día" means "day".
-        *   "hoy" means "today".
+          *   "¿Qué tal?" means "How is it?" or "What about?". It's a versatile phrase used to ask about the state or condition of something.
+          *   "tu" means "your" (informal singular).
+          *   "día" means "day".
+          *   "hoy" means "today".
 
-        So, literally, it's "How's your day today?" It's a friendly and common greeting.
+          So, literally, it's "How's your day today?" It's a friendly and common greeting.
     `.trim();
 
     let messagesForGemini = [...userMessages];
