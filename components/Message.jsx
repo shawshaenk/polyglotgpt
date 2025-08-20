@@ -66,36 +66,14 @@ const Message = ({role, content, setIsLoading}) => {
     };
 
     const handleClickOutside = (event) => {
-      // Check if the click is on the popup itself or its children
-      if (popupRef.current && popupRef.current.contains(event.target)) {
-        return; // Don't clear selection if clicking on popup
-      }
-      
-      // Check if there's an active selection and the click is outside the selected text
-      const selection = window.getSelection();
-      if (selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0);
-        const rect = range.getBoundingClientRect();
-        
-        // Get click coordinates
-        const clickX = event.clientX || (event.touches && event.touches[0]?.clientX);
-        const clickY = event.clientY || (event.touches && event.touches[0]?.clientY);
-        
-        // Check if click is within the selected text bounds
-        if (clickX >= rect.left && clickX <= rect.right && 
-            clickY >= rect.top && clickY <= rect.bottom) {
-          return; // Don't clear selection if clicking on selected text
+        if (popupRef.current && !popupRef.current.contains(event.target)) {
+            setSelectionText("");
+            window.getSelection().removeAllRanges();
         }
-      }
-      
-      // Clear selection only if clicking outside
-      setSelectionText("");
-      window.getSelection().removeAllRanges();
     };
 
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("touchend", handleMouseUp);
-    // Use mousedown and touchstart but with proper filtering
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("touchstart", handleClickOutside);
 
