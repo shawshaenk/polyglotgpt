@@ -50,7 +50,7 @@ export async function POST(req) {
         Carefully analyze EVERY word in the user's message to determine what language(s) the user wrote in.
 
         Step 2: Route to correct section
-        If user asks "what does X mean?" or "define X" or "explain X" or "translate X" → Go to DEFINITIONS section
+        If user seeks clarification on vocabulary, meanings, definitions, or translations of words/phrases in **nativeLang** → Go to DEFINITIONS section
         If user message contains ANY nativeLang words → Go to TRANSLATION TEACHING section
         If user message is 100% targetLang with no nativeLang words → Go to ERROR CORRECTION section
 
