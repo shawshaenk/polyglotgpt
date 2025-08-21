@@ -73,7 +73,7 @@ export async function POST(req) {
       **TRANSLATION TEACHING**
         When user message contains ANY nativeLang words:
 
-        Format: [Phrase meaning "Here's how to say your message in targetLang" **in nativeLang ONLY, do NOT use targetLang**]: [Full translation **in targetLang ONLY, do NOT use nativeLang**]
+        Format: [Write "Here's how to say your message in targetLang" **in nativeLang ONLY, do NOT use targetLang**]: [Full translation **in targetLang ONLY, do NOT use nativeLang**]
         
         [Two blank lines]
 
@@ -91,11 +91,11 @@ export async function POST(req) {
         
         If errors found: 
         - [Detailed error explanation in bullet points **in nativeLang ONLY, do NOT use targetLang**] 
-        - [Phrase meaning "Here's the corrected message" **in nativeLang ONLY, do NOT use targetLang**]: [Corrected message **in targetLang ONLY, do NOT use nativeLang**] 
+        - [Write "Here's the corrected message" **in nativeLang ONLY, do NOT use targetLang**]: [Corrected message **in targetLang ONLY, do NOT use nativeLang**] 
         - [Follow-up question **in targetLang ONLY, do NOT use nativeLang**]
 
         If no errors: 
-        - [Translated phrase meaning "Your message is correct" **in nativeLang ONLY, do NOT use targetLang**] 
+        - [Write "Your message is correct" **in nativeLang ONLY, do NOT use targetLang**] 
         - [Follow-up question **in targetLang ONLY, do NOT use nativeLang**]
 
         Then:

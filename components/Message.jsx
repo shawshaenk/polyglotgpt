@@ -62,26 +62,33 @@ const Message = ({role, content, setIsLoading}) => {
 
         setSelectionText(selectedText);
         setPopupPos({ x: newX, y: newY });
+      } else {
+        // No selection left, hide popup
+        setSelectionText("");
       }
     };
 
     const handleClickOutside = (event) => {
-        if (popupRef.current && !popupRef.current.contains(event.target)) {
-            setSelectionText("");
-            window.getSelection().removeAllRanges();
-        }
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target) &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setSelectionText("");
+      }
     };
 
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("touchend", handleMouseUp);
     document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside);
+    document.addEventListener("touchend", handleClickOutside);
 
     return () => {
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("touchend", handleMouseUp);
       document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("touchend", handleClickOutside);
     };
   }, []);
 
@@ -314,7 +321,6 @@ const Message = ({role, content, setIsLoading}) => {
                         ):(
                             <>
                             <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer select-none"/>
-                            {/* <Image src={assets.regenerate_icon} alt="" className="w-4 cursor-pointer"/> */}
                             <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {showOriginalContent();}}>Show Original</button>
                             <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {translateText();}}>Translate</button>
                             <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {romanizeText();}}>Romanize</button>
