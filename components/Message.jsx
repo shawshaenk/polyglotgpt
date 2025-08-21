@@ -18,7 +18,6 @@ const assets = {
 };
 
 const Message = ({role, content, setIsLoading}) => {
-
   const [selectionText, setSelectionText] = useState("");
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
@@ -37,11 +36,14 @@ const Message = ({role, content, setIsLoading}) => {
   useEffect(() => {
     Prism.highlightAll();
 
-    const handleMouseUp = () => {
+    const handleMouseUp = (event) => {
       const selection = window.getSelection();
       const selectedText = selection.toString().trim();
 
-      if (selectedText.length > 0 && containerRef.current?.contains(selection.anchorNode)) {
+      if (
+        selectedText.length > 0 &&
+        containerRef.current?.contains(selection.anchorNode)
+      ) {
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
         const parentRect = messageWrapperRef.current.getBoundingClientRect();
@@ -53,18 +55,20 @@ const Message = ({role, content, setIsLoading}) => {
           const popupWidth = popupRef.current.offsetWidth;
           const popupHeight = popupRef.current.offsetHeight;
 
-          newX += (rect.width / 2) - (popupWidth / 2);
-          newY -= (popupHeight + 10);
+          newX += rect.width / 2 - popupWidth / 2;
+          newY -= popupHeight + 10;
         } else {
-          newX += (rect.width / 2) - 75;
+          newX += rect.width / 2 - 75;
           newY -= 50;
         }
 
         setSelectionText(selectedText);
         setPopupPos({ x: newX, y: newY });
       } else {
-        // No selection left, hide popup
-        setSelectionText("");
+        // Only hide popup if the click wasn't inside the popup
+        if (popupRef.current && !popupRef.current.contains(event.target)) {
+          setSelectionText("");
+        }
       }
     };
 
@@ -119,7 +123,7 @@ const Message = ({role, content, setIsLoading}) => {
     toast.success("Message Copied to Clipboard")
   }
 
-  const translateText = async (e)=> {
+  const translateText = async ()=> {
     if (translatedText) {
       setAiMessage(translatedText);
       toast.success("Translated!")
@@ -144,7 +148,7 @@ const Message = ({role, content, setIsLoading}) => {
     }
   }
 
-  const romanizeText = async (e)=> {
+  const romanizeText = async ()=> {
     if (romanizedText) {
       setAiMessage(romanizedText);
       toast.success("Romanized!")
@@ -178,7 +182,7 @@ const Message = ({role, content, setIsLoading}) => {
     }
   };
 
-  const speakText = async (e) => {
+  const speakText = async () => {
     if (currentAudio) {
       stopSpeaking();
       return;
@@ -195,11 +199,9 @@ const Message = ({role, content, setIsLoading}) => {
       });
 
       if (data.success) {
-        // Convert base64 to audio and play it
         const audioSrc = `data:${data.contentType};base64,${data.audioContent}`;
         const audio = new Audio(audioSrc);
         
-        // Set up event listeners
         audio.onplay = () => {
           setIsPlaying(true);
           toast.success("Speaking!", { id: toastId });
@@ -228,7 +230,7 @@ const Message = ({role, content, setIsLoading}) => {
     }
   };
 
-  const speakTextHighlighted = async (e) => {
+  const speakTextHighlighted = async () => {
     if (currentAudio) {
       stopSpeaking();
       return;
@@ -244,11 +246,9 @@ const Message = ({role, content, setIsLoading}) => {
       });
 
       if (data.success) {
-        // Convert base64 to audio and play it
         const audioSrc = `data:${data.contentType};base64,${data.audioContent}`;
         const audio = new Audio(audioSrc);
         
-        // Set up event listeners
         audio.onplay = () => {
           setIsPlaying(true);
           toast.success("Speaking!", { id: toastId });
