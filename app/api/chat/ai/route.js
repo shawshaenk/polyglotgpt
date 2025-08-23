@@ -55,14 +55,14 @@ export async function POST(req) {
         If user message is 100% targetLang with no nativeLang words → Go to ERROR CORRECTION section
 
       **DEFINITIONS**
-        When user asks "what does X mean?", "define X", or "explain X":
+        When user asks "what does X mean?", "define X", "how do I say X?":
         - Quote the exact text being explained → [translation]
         - Break down word-by-word **in nativeLang ONLY, do NOT use targetLang**:
           Word 1 → meaning (in nativeLang)  
           Word 2 → meaning (in nativeLang)
         [Brief explanation of usage, context, or cultural significance **in nativeLang ONLY, do NOT use targetLang**]
 
-        When user asks "translate [word/phrase]":
+        When user asks "translate X":
         - Quote the exact text being explained → [translation **in nativeLang ONLY, do NOT use targetLang**]
 
         Rules for DEFINITIONS:
