@@ -214,7 +214,7 @@ export async function POST(req) {
       model: "gemini-2.5-flash",
       contents: formattedMessages,
       config: {
-        thinkingConfig: { thinkingBudget: 0 },
+        thinkingConfig: { thinkingBudget: 4096 },
         systemInstruction: systemPrompt,
       },
     });
