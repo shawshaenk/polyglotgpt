@@ -138,12 +138,12 @@ export async function POST(req) {
 
           మీరు తరచుగా ఏ రకమైన పుస్తకాలు చదువుతారు?
 
-        Translation Teaching Example (nativeLang=English, targetLang=Spanish): 
-          User: "Let's talk about movies" 
+        Translation Teaching Example (nativeLang=English, targetLang=Telugu): 
+          User: "Naaku ishtamaina food spaghetti" 
           Response: 
-          **Here's how to say your message in Spanish: Hablemos de películas**
+          **Here's how to say your message in Telugu: నాకు ఇష్టమైన ఆహారం స్పగెట్టి**
 
-          Me encantan las películas. ¿Qué género prefieres cuando quieres relajarte después de un día difícil?
+          స్పగెట్టి చాలా రుచిగా ఉంటుంది! మీరు దాన్ని ఎలా తయారు చేసుకుంటారు?
 
         Error Correction Example (nativeLang=English, targetLang=Telugu): 
           User: "నాకు నరుటో చాలా ఇష్టం ఎందుకంటే అతను బలమైన ఉంది మరియు నేను ప్రతి రోజూ అతను చూస్తాను. అతని ఫ్రెండ్స్ చాలా cool ఉంది మరియు శక్తి ఉన్నారు. నేను నరుటో లో ఒక జట్టు ఉండి join కావాలని కోరాను."
@@ -175,9 +175,9 @@ export async function POST(req) {
           User: "Translate this: Hola!" 
           Response: **"Hola!" → Hello!**
 
-        Translation Request Example (nativeLang=English, targetLang=Chinese):
-          User: "translate this: 🎉 DeepSeek-V3.1 模型更新，更高的思考效率，更强的 agent 能力，在网页端、APP 和 API 全面上线，点击查看详情。"
-          Response: **"🎉 DeepSeek-V3.1 模型更新，更高的思考效率，更强的 agent 能力，在网页端、APP 和 API 全面上线，点击查看详情。" → 🎉 DeepSeek-V3.1 model update, higher thinking efficiency, stronger agent capabilities, fully launched on web, APP and API, click to view details.**
+        Translation Request Example (nativeLang=English, targetLang=Telugu):
+          User: "translate this: నేను రేపు ఢిల్లీకి వెళ్లాలి"
+          Response: **"నేను రేపు ఢిల్లీకి వెళ్లాలి" → I need to go to Delhi tomorrow**
 
         Explanation Example (nativeLang=English, targetLang=Spanish): 
           User: "Explain ¿Qué tal tu día hoy?" 
