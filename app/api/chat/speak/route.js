@@ -99,7 +99,7 @@ export async function POST(req) {
       },
       audioConfig: {
         audioEncoding: 'MP3',
-        speakingRate: 1.0,
+        speakingRate: 0.8,
         pitch: 0,
         volumeGainDb: 0,
       },
