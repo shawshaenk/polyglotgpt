@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
+let isProcessing = false;
+
 export const sendPromptHandler = async ({
   e,
   prompt,
@@ -20,6 +22,12 @@ export const sendPromptHandler = async ({
   regenerate = false,
   lastUserMessage
 }) => {
+  if (isProcessing) {
+    toast.error("Another Message in Progress");
+    return;
+  }
+  isProcessing = true;
+
   let promptCopy = prompt;
 
   try {
@@ -82,23 +90,6 @@ export const sendPromptHandler = async ({
         ...prev,
         messages: updatedMessages,
       }));
-
-      // If user is logged in, sync with backend
-      // if (user) {
-      //   const payload = {
-      //     chatId: selectedChat._id,
-      //     action: 'deleteLastMessage'
-      //   };
-
-      //   const { data } = await axios.post('/api/chat/delete-message', payload);
-        
-      //   if (data.success) {
-      //     fetchUsersChats(); // Refresh chats from server
-      //   }
-      // } else {
-      //   // For local chats, just show success
-      //   toast.success('Message deleted');
-      // }
     }
 
     const payload = {
@@ -155,5 +146,6 @@ export const sendPromptHandler = async ({
     setPrompt(promptCopy);
   } finally {
     setIsLoading(false);
+    isProcessing = false;
   }
 };

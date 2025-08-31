@@ -4,7 +4,6 @@ import { useAppContext } from "@/context/AppContext";
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { sendPromptHandler } from '@/app/utils/sendPromptHandler';
-import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 
 import arrow_icon from '@/assets/arrow_icon.svg';
 
@@ -33,9 +32,6 @@ const PromptBox = ({setIsLoading}) => {
             textareaRef.current.style.height = 'auto';
         }
     }, [prompt]);
-
-    const { isSignedIn } = useAuth();
-    const clerk = useClerk();
 
     const sendPrompt = (e) =>
         sendPromptHandler({
