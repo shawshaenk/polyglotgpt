@@ -22,6 +22,8 @@ export const AppContextProvider = ({children})=>{
     const [targetLang, setTargetLang] = useState('es');
     const [isLocalMode, setIsLocalMode] = useState(false);
 
+    const allChatIds = chats.map(chat => chat._id);
+
     const languageList = [
       { code: 'ar', label: 'Arabic' },
       { code: 'bn', label: 'Bengali' },
@@ -226,7 +228,8 @@ export const AppContextProvider = ({children})=>{
         targetLang, 
         setTargetLang, 
         languageList,
-        isLocalMode
+        isLocalMode, 
+        allChatIds
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

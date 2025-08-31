@@ -9,21 +9,44 @@ import menu_icon from '@/assets/menu_icon.svg';
 import sidebar_icon from '@/assets/sidebar_icon.svg';
 import chat_icon from '@/assets/chat_icon.svg';
 import profile_icon from '@/assets/profile_icon.svg';
+import delete_icon from '@/assets/delete_icon.svg';
 import ChatLabel from './ChatLabel';
+import toast from 'react-hot-toast';
+import axios from 'axios';
 
 const assets = {
   menu_icon,
   sidebar_icon,
   chat_icon, 
-  profile_icon
+  profile_icon,
+  delete_icon
 };
 
 const Sidebar = ({ expand, setExpand }) => {
-  
   const {openSignIn} = useClerk()
-  const {user, chats, createNewChat, chatButtonAction} = useAppContext()
+  const {user, chats, chatButtonAction, fetchUsersChats, allChatIds} = useAppContext()
   const [openMenu, setOpenMenu] = useState({id: 0, open: false})
   const sidebarRef = useRef(null)
+
+  const deleteAllMessages = async () => {
+    try {
+      const confirm = window.confirm("Are you sure you want to delete ALL CHATS?");
+      if (!confirm) return;
+
+      if (!allChatIds.length) return toast.error("No chats to delete");
+
+    const toastId = toast.loading("Deleting Chats...");
+      for (const chatId of allChatIds) {
+        await axios.post("/api/chat/delete", { chatId });
+      }
+
+      fetchUsersChats(false);
+      setOpenMenu({ id: 0, open: false });
+      toast.success("All Chats Deleted!", { id: toastId });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   // Add click outside handler to close menu
   useEffect(() => {
@@ -92,7 +115,8 @@ const Sidebar = ({ expand, setExpand }) => {
           {
             user ? <UserButton/> : <Image src={assets.profile_icon} alt="" className="w-7 select-none"/>
           }
-          {expand && <span className="mt-1">{user ? "My Profile" : "Log In"}</span>}
+          {expand && <span>{user ? "My Profile" : "Log In"}</span>}
+          {user && <Image onClick={deleteAllMessages} src={assets.delete_icon} alt="" className="w-5 select-none mb-0.5"/>}
         </div>
       </div>
 
