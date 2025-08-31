@@ -8,16 +8,18 @@ import { sendPromptHandler } from '@/app/utils/sendPromptHandler';
 import copy_icon from '@/assets/copy_icon.svg';
 import rename_icon from '@/assets/rename_icon.svg';
 import translate_icon from '@/assets/translate_icon.svg';
+import regenerate_icon from '@/assets/regenerate_icon.svg';
 import toast from "react-hot-toast";
 import axios from 'axios';
 
 const assets = {
   copy_icon,
   rename_icon,
-  translate_icon
+  translate_icon,
+  regenerate_icon,
 };
 
-const Message = ({role, content, setIsLoading}) => {
+const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage}) => {
   const [selectionText, setSelectionText] = useState("");
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
@@ -31,7 +33,7 @@ const Message = ({role, content, setIsLoading}) => {
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   
-  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, languageList, fetchUsersChats, setPrevNativeLang, setPrevTargetLang} = useAppContext();
+  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, languageList, fetchUsersChats, setPrevNativeLang, setPrevTargetLang, prevNativeLang, prevTargetLang} = useAppContext();
 
   useEffect(() => {
     Prism.highlightAll();
@@ -121,6 +123,28 @@ const Message = ({role, content, setIsLoading}) => {
   const copyMessage = ()=> {
     navigator.clipboard.writeText(aiMessage)
     toast.success("Message Copied to Clipboard")
+  }
+
+  const regenerateMessage = (e)=> {
+    let regenerate = true;
+    sendPromptHandler({
+        e,
+        lastUserMessage,
+        // setPrompt,
+        setIsLoading,
+        setChats,
+        setSelectedChat,
+        selectedChat,
+        user,
+        prevNativeLang,
+        prevTargetLang,
+        setPrevNativeLang,
+        setPrevTargetLang,
+        nativeLang,
+        targetLang,
+        fetchUsersChats,
+        regenerate
+    });
   }
 
   const translateText = async ()=> {
@@ -316,11 +340,13 @@ const Message = ({role, content, setIsLoading}) => {
                     {
                         role === 'user' ? (
                             <>
-                            <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer select-none"/>
+                            <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer select-none" title="Copy Message"/>
+                            {/* <Image onClick={copyMessage} src={assets.rename_icon} alt="" className="w-4 cursor-pointer select-none" title="Edit Message"/> */}
                             </>
                         ):(
                             <>
-                            <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer select-none"/>
+                            <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer select-none" title="Copy Message"/>
+                            {isLastAIMessage && (<Image onClick={regenerateMessage} src={assets.regenerate_icon} alt="" className="w-4 cursor-pointer select-none" title="Regenerate Message"/>)}
                             <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {showOriginalContent();}}>Show Original</button>
                             <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {translateText();}}>Translate</button>
                             <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {romanizeText();}}>Romanize</button>

@@ -109,9 +109,12 @@ export default function Home() {
           (
           <div className="relative flex flex-col items-center justify-start w-full mt-20 max-h-screen overflow-y-auto pb-35" ref={containerRef}>
           <p className="fixed top-8 border border-transparent hover:border-gray-500/50 py-1 px-2 rounded-lg font-semibold mb-6">{selectedChat.name}</p>
-          {messages.map((msg, index)=>
-            <Message key={index} role={msg.role} content={msg.content} setIsLoading={setIsLoading}/>
-          )}
+          {messages.map((msg, index)=> {
+            const lastUserMessage = messages.filter(message => message.role === 'user').pop()?.content;
+            return (
+              <Message key={index} role={msg.role} content={msg.content} setIsLoading={setIsLoading} isLastAIMessage={index === messages.length - 1} lastUserMessage={lastUserMessage}/>
+            )
+          })}
           {
             isLoading && (
               <div className="flex gap-4 max-w-3xl w-full py-3">

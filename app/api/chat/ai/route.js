@@ -15,19 +15,24 @@ export async function POST(req) {
 
   try {
     const { userId } = getAuth(req);
-    const { chatId, prompt, nativeLang, targetLang, isLocal, languagesUpdated, messages } = await req.json();
+    const { chatId, prompt, nativeLang, targetLang, isLocal, languagesUpdated, messages, regenerate } = await req.json();
 
     let userMessages = [];
     let chatDoc = null;
 
     if (isLocal || !userId) {
       // Local (not logged in) mode
-      userMessages = messages || [{ role: "user", content: prompt, timestamp: Date.now() }];
+      userMessages = messages;
     } else {
       // Logged in, fetch from DB
       chatDoc = await Chat.findOne({ userId, _id: chatId });
       if (!chatDoc) throw new Error("Chat not found");
-      chatDoc.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
+      if (!regenerate) {
+        chatDoc.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
+      } else {
+        chatDoc.messages.pop();
+        await chatDoc.save();
+      }
       userMessages = chatDoc.messages;
     }
 
@@ -205,15 +210,20 @@ export async function POST(req) {
       messagesForGemini.push(languageChangeMessage, lastUserPrompt);
     }
 
-    const formattedMessages = messagesForGemini.map(msg => ({
-      role: msg.role,
-      parts: [{ text: msg.content }],
+    const formattedMessages = messagesForGemini
+    .filter(m => m?.content && m.content.trim().length > 0)
+    .map(m => ({
+      role: m.role === "model" ? "model" : "user",
+      parts: [{ text: m.content }],
     }));
+
+    console.log(JSON.stringify(formattedMessages, null, 2));
 
     const result = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: formattedMessages,
       config: {
+        temperature: 2.0,
         thinkingConfig: { thinkingBudget: 4096 },
         systemInstruction: systemPrompt,
       },

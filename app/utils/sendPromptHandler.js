@@ -16,18 +16,25 @@ export const sendPromptHandler = async ({
   nativeLang,
   setPrevTargetLang,
   targetLang,
-  fetchUsersChats
+  fetchUsersChats,
+  regenerate = false,
+  lastUserMessage
 }) => {
-  const promptCopy = prompt;
+  let promptCopy = prompt;
 
   try {
     e.preventDefault();
 
-    if (!prompt) return toast.error('Enter a Prompt');
+    if (regenerate) {
+      prompt = lastUserMessage;
+      promptCopy = lastUserMessage;
+    }
+
+    if (!prompt && !regenerate) return toast.error('Enter a Prompt');
 
     setIsLoading(true);
     setPrompt('');
-
+    
     const userPrompt = {
       role: 'user',
       content: prompt,
@@ -35,18 +42,20 @@ export const sendPromptHandler = async ({
     };
 
     // Add prompt to UI state immediately
-    setChats((prevChats) =>
-      prevChats.map((chat) =>
-        chat._id === selectedChat._id
-          ? { ...chat, messages: [...chat.messages, userPrompt] }
-          : chat
-      )
-    );
-
-    setSelectedChat((prev) => ({
-      ...prev,
-      messages: [...(prev?.messages || []), userPrompt],
-    }));
+    if (!regenerate) {
+      setChats((prevChats) =>
+        prevChats.map((chat) =>
+          chat._id === selectedChat._id
+            ? { ...chat, messages: [...chat.messages, userPrompt] }
+            : chat
+        )
+      );
+  
+      setSelectedChat((prev) => ({
+        ...prev,
+        messages: [...(prev?.messages || []), userPrompt],
+      }));
+    }
 
     let isLocal = false;
     let languagesUpdated = false;
@@ -57,18 +66,58 @@ export const sendPromptHandler = async ({
       setPrevTargetLang(targetLang);
     }
 
+    let updatedMessages = selectedChat.messages;
+    if (regenerate) {
+      updatedMessages = selectedChat.messages.slice(0, -1);
+
+      setChats((prevChats) =>
+        prevChats.map((chat) =>
+          chat._id === selectedChat._id
+            ? { ...chat, messages: updatedMessages }
+            : chat
+        )
+      );
+
+      setSelectedChat((prev) => ({
+        ...prev,
+        messages: updatedMessages,
+      }));
+
+      // If user is logged in, sync with backend
+      // if (user) {
+      //   const payload = {
+      //     chatId: selectedChat._id,
+      //     action: 'deleteLastMessage'
+      //   };
+
+      //   const { data } = await axios.post('/api/chat/delete-message', payload);
+        
+      //   if (data.success) {
+      //     fetchUsersChats(); // Refresh chats from server
+      //   }
+      // } else {
+      //   // For local chats, just show success
+      //   toast.success('Message deleted');
+      // }
+    }
+
     const payload = {
       chatId: selectedChat._id,
       prompt,
       nativeLang,
       targetLang,
       isLocal,
-      languagesUpdated
+      languagesUpdated,
+      regenerate
     };
 
     // Local (not logged in) chat sends full history
     if (!user) {
-      payload.messages = [...selectedChat.messages, userPrompt];
+      if (!regenerate) {
+        payload.messages = [...selectedChat.messages, userPrompt];
+      } else {
+        payload.messages = updatedMessages;
+      }
       payload.isLocal = true;
     }
 
