@@ -33,7 +33,7 @@ const Sidebar = ({ expand, setExpand }) => {
       const confirm = window.confirm("Are you sure you want to delete ALL CHATS?");
       if (!confirm) return;
 
-      if (!allChatIds.length) return toast.error("No chats to delete");
+      if (!allChatIds.length) return toast.error("No Chats to Delete");
 
     const toastId = toast.loading("Deleting Chats...");
       for (const chatId of allChatIds) {

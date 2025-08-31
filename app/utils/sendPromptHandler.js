@@ -19,8 +19,9 @@ export const sendPromptHandler = async ({
   setPrevTargetLang,
   targetLang,
   fetchUsersChats,
-  regenerate = false,
-  lastUserMessage
+  regenerate=false,
+  lastUserMessage,
+  editingMessage=false
 }) => {
   if (isProcessing) {
     toast.error("Another Message in Progress");
@@ -49,7 +50,6 @@ export const sendPromptHandler = async ({
       timestamp: Date.now(),
     };
 
-    // Add prompt to UI state immediately
     if (!regenerate) {
       setChats((prevChats) =>
         prevChats.map((chat) =>
@@ -75,8 +75,15 @@ export const sendPromptHandler = async ({
     }
 
     let updatedMessages = selectedChat.messages;
-    if (regenerate) {
-      updatedMessages = selectedChat.messages.slice(0, -1);
+    if (regenerate || editingMessage) {
+      if (regenerate) {
+        updatedMessages = selectedChat.messages.slice(0, -1);
+      } else if (editingMessage) {
+        updatedMessages = [
+          ...selectedChat.messages.slice(0, -2),
+          userPrompt
+        ];
+      }
 
       setChats((prevChats) =>
         prevChats.map((chat) =>
@@ -99,7 +106,8 @@ export const sendPromptHandler = async ({
       targetLang,
       isLocal,
       languagesUpdated,
-      regenerate
+      regenerate,
+      editingMessage
     };
 
     // Local (not logged in) chat sends full history

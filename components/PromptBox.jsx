@@ -12,8 +12,7 @@ const assets = {
 };
 
 const PromptBox = ({setIsLoading}) => {
-    const [prompt, setPrompt] = useState('');
-    const {user, setChats, selectedChat, setSelectedChat, prevNativeLang, setPrevNativeLang, nativeLang, setNativeLang, prevTargetLang, setPrevTargetLang, targetLang, setTargetLang, languageList, fetchUsersChats} = useAppContext();
+    const {user, setChats, selectedChat, setSelectedChat, prevNativeLang, setPrevNativeLang, nativeLang, setNativeLang, prevTargetLang, setPrevTargetLang, targetLang, setTargetLang, languageList, fetchUsersChats, prompt, setPrompt, editingMessage, setEditingMessage} = useAppContext();
     const textareaRef = useRef(null);
 
     const handleKeyDown = async (e) => {
@@ -33,7 +32,7 @@ const PromptBox = ({setIsLoading}) => {
         }
     }, [prompt]);
 
-    const sendPrompt = (e) =>
+    const sendPrompt = (e) => {
         sendPromptHandler({
             e,
             prompt,
@@ -49,8 +48,18 @@ const PromptBox = ({setIsLoading}) => {
             setPrevTargetLang,
             nativeLang,
             targetLang,
-            fetchUsersChats
-    });
+            fetchUsersChats,
+            editingMessage,
+        });
+
+        setEditingMessage(false);
+    };
+
+    useEffect(() => {
+        if (textareaRef.current) {
+        textareaRef.current.focus();
+        }
+    }, [prompt]);
 
     async function updateChatLanguages({ 
     langType,
@@ -121,7 +130,6 @@ const PromptBox = ({setIsLoading}) => {
             required
             onChange={(e) => {
                 setPrompt(e.target.value);
-
                 e.target.style.height = 'auto';
                 e.target.style.height = `${e.target.scrollHeight}px`;
             }}

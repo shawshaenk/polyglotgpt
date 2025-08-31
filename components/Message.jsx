@@ -19,7 +19,7 @@ const assets = {
   regenerate_icon,
 };
 
-const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage}) => {
+const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage, isLastUserMessage}) => {
   const [selectionText, setSelectionText] = useState("");
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
@@ -33,7 +33,7 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage}
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   
-  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, languageList, fetchUsersChats, setPrevNativeLang, setPrevTargetLang, prevNativeLang, prevTargetLang} = useAppContext();
+  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, fetchUsersChats, setPrevNativeLang, setPrevTargetLang, prevNativeLang, prevTargetLang, setPrompt, setEditingMessage} = useAppContext();
 
   useEffect(() => {
     Prism.highlightAll();
@@ -123,6 +123,11 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage}
   const copyMessage = ()=> {
     navigator.clipboard.writeText(aiMessage)
     toast.success("Message Copied to Clipboard")
+  }
+
+  const editMessage = ()=> {
+    setPrompt(lastUserMessage);
+    setEditingMessage(true);
   }
 
   const regenerateMessage = (e)=> {
@@ -307,7 +312,6 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage}
   }
 
   const sendPrompt = (e, action) => {
-    const languageToExplainIn = languageList.find(lang => lang.code === nativeLang)?.label
     let promptToSend = ''
     if (action === 'translate') {
       promptToSend = `Translate "${selectionText}"`
@@ -315,7 +319,7 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage}
       promptToSend = `Explain "${selectionText}"`
     }
 
-    sendPromptHandler({
+  sendPromptHandler({
       e,
       prompt: promptToSend,
       setIsLoading,
@@ -335,13 +339,13 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage}
     <div ref={messageWrapperRef} className="relative flex flex-col items-center w-full max-w-3xl text-base">
       <div className={`flex flex-col w-full mb-8 ${role === 'user' && 'items-end'}`}>
         <div className={`group relative flex max-w-2xl py-3 rounded-xl ${role === 'user' ? 'bg-[#2a2a2a] px-5 mt-2 max-w-[80vw] sm:max-w-[30vw]' : '-mt-6 gap-3'}`}>
-            <div className={`absolute ${role === 'user' ? '-left-6 top-1/2 -translate-y-1/2' : 'left-12.5 -bottom-3.5'} transition-all`}>
+            <div className={`absolute ${role === 'user' ? 'top-1/2 -translate-y-1/2' : 'left-12.5 -bottom-3.5'} ${isLastUserMessage ? '-left-12' : '-left-6'}`}>
                 <div className="flex items-center gap-2 opacity-70">
                     {
                         role === 'user' ? (
                             <>
                             <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer select-none" title="Copy Message"/>
-                            {/* <Image onClick={copyMessage} src={assets.rename_icon} alt="" className="w-4 cursor-pointer select-none" title="Edit Message"/> */}
+                            {isLastUserMessage && <Image onClick={editMessage} src={assets.rename_icon} alt="" className="w-4 cursor-pointer select-none" title="Edit Message"/>}
                             </>
                         ):(
                             <>

@@ -112,7 +112,7 @@ export default function Home() {
           {messages.map((msg, index)=> {
             const lastUserMessage = messages.filter(message => message.role === 'user').pop()?.content;
             return (
-              <Message key={index} role={msg.role} content={msg.content} setIsLoading={setIsLoading} isLastAIMessage={index === messages.length - 1} lastUserMessage={lastUserMessage}/>
+              <Message key={index} role={msg.role} content={msg.content} setIsLoading={setIsLoading} isLastAIMessage={index === messages.length - 1} isLastUserMessage={index === messages.length - 1 || index === messages.length - 2} lastUserMessage={lastUserMessage}/>
             )
           })}
           {

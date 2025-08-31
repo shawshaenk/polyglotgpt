@@ -21,6 +21,8 @@ export const AppContextProvider = ({children})=>{
     const [prevTargetLang, setPrevTargetLang] = useState('es');
     const [targetLang, setTargetLang] = useState('es');
     const [isLocalMode, setIsLocalMode] = useState(false);
+    const [prompt, setPrompt] = useState('');
+    const [editingMessage, setEditingMessage] = useState(false);
 
     const allChatIds = chats.map(chat => chat._id);
 
@@ -236,7 +238,11 @@ export const AppContextProvider = ({children})=>{
         setTargetLang, 
         languageList,
         isLocalMode, 
-        allChatIds
+        allChatIds,
+        prompt,
+        setPrompt,
+        editingMessage,
+        setEditingMessage
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
