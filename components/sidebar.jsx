@@ -116,7 +116,7 @@ const Sidebar = ({ expand, setExpand }) => {
             user ? <UserButton/> : <Image src={assets.profile_icon} alt="" className="w-7 select-none"/>
           }
           {expand && <span>{user ? "My Profile" : "Log In"}</span>}
-          {user && <Image onClick={deleteAllMessages} src={assets.delete_icon} alt="" className="w-5 select-none mb-0.5 ml-17"/>}
+          {user && expand && <Image onClick={deleteAllMessages} src={assets.delete_icon} alt="" className="w-5 select-none mb-0.5 ml-17"/>}
         </div>
       </div>
 
