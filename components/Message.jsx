@@ -338,7 +338,7 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage,
   return (
     <div ref={messageWrapperRef} className="relative flex flex-col items-center w-full max-w-3xl text-base">
       <div className={`flex flex-col w-full mb-8 ${role === 'user' && 'items-end'}`}>
-        <div className={`group relative flex max-w-2xl py-3 rounded-xl ${role === 'user' ? 'bg-[#2a2a2a] px-5 mt-2 max-w-[80vw] sm:max-w-[30vw]' : '-mt-6 gap-3'}`}>
+        <div className={`group relative flex max-w-2xl py-3 rounded-xl ${role === 'user' ? 'bg-[#2a2a2a] px-5 mt-2 max-w-[75vw] sm:max-w-[30vw]' : '-mt-6 gap-3'}`}>
             <div className={`absolute ${role === 'user' ? 'top-1/2 -translate-y-1/2' : 'left-12.5 -bottom-3.5'} ${isLastUserMessage ? '-left-12' : '-left-6'}`}>
                 <div className="flex items-center gap-2 opacity-70">
                     {
