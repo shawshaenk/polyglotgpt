@@ -5,52 +5,59 @@ import { TextToSpeechClient } from '@google-cloud/text-to-speech';
 dotenv.config();
 
 const googleTTSLanguageMap = {
-  ar: "ar-XA",
-  bn: "bn-IN",
-  bg: "bg-BG",
-  "zh-CN": "cmn-CN",      // Mandarin Simplified
-  "zh-TW": "cmn-TW",      // Mandarin Traditional
-  hr: "hr-HR",
-  cs: "cs-CZ",
-  da: "da-DK",
-  nl: "nl-NL",
-  en: "en-US",
-  et: "et-EE",
-  fi: "fi-FI",
-  fr: "fr-FR",
-  de: "de-DE",
-  el: "el-GR",
-  gu: "gu-IN",
-  he: "he-IL",
-  hi: "hi-IN",
-  hu: "hu-HU",
-  id: "id-ID",
-  it: "it-IT",
-  ja: "ja-JP",
-  kn: "kn-IN",
-  ko: "ko-KR",
-  lv: "lv-LV",
-  lt: "lt-LT",
-  ml: "ml-IN",
-  mr: "mr-IN",
-  no: "nb-NO",
-  pl: "pl-PL",
-  pt: "pt-PT",
-  ro: "ro-RO",
-  ru: "ru-RU",
-  sr: "sr-RS",
-  sk: "sk-SK",
-  sl: "sl-SI",
-  es: "es-ES",
-  sw: "sw-KE",
-  sv: "sv-SE",
-  ta: "ta-IN",
-  te: "te-IN",
-  th: "th-TH",
-  tr: "tr-TR",
-  uk: "uk-UA",
-  ur: "ur-IN",
-  vi: "vi-VN",
+  af: "af-ZA", // Afrikaans
+  ar: "ar-XA", // Arabic
+  eu: "eu-ES", // Basque
+  bn: "bn-IN", // Bengali
+  bg: "bg-BG", // Bulgarian
+  ca: "ca-ES", // Catalan
+  "zh-CN": "cmn-CN", // Chinese (Mandarin Simplified)
+  "zh-TW": "cmn-TW", // Chinese (Mandarin Traditional)
+  hr: "hr-HR", // Croatian
+  cs: "cs-CZ", // Czech
+  da: "da-DK", // Danish
+  nl: "nl-NL", // Dutch
+  en: "en-US", // English
+  et: "et-EE", // Estonian
+  fi: "fi-FI", // Finnish
+  fr: "fr-FR", // French
+  gl: "gl-ES", // Galician
+  de: "de-DE", // German
+  el: "el-GR", // Greek
+  gu: "gu-IN", // Gujarati
+  he: "he-IL", // Hebrew
+  hi: "hi-IN", // Hindi
+  hu: "hu-HU", // Hungarian
+  is: "is-IS", // Icelandic
+  id: "id-ID", // Indonesian
+  it: "it-IT", // Italian
+  ja: "ja-JP", // Japanese
+  kn: "kn-IN", // Kannada
+  ko: "ko-KR", // Korean
+  lv: "lv-LV", // Latvian
+  lt: "lt-LT", // Lithuanian
+  ms: "ms-MY", // Malay
+  ml: "ml-IN", // Malayalam
+  mr: "mr-IN", // Marathi
+  no: "nb-NO", // Norwegian
+  pl: "pl-PL", // Polish
+  pt: "pt-PT", // Portuguese
+  ro: "ro-RO", // Romanian
+  ru: "ru-RU", // Russian
+  sr: "sr-RS", // Serbian
+  sk: "sk-SK", // Slovak
+  sl: "sl-SI", // Slovenian
+  es: "es-ES", // Spanish
+  sw: "sw-KE", // Swahili
+  sv: "sv-SE", // Swedish
+  ta: "ta-IN", // Tamil
+  te: "te-IN", // Telugu
+  th: "th-TH", // Thai
+  tr: "tr-TR", // Turkish
+  uk: "uk-UA", // Ukrainian
+  ur: "ur-IN", // Urdu
+  vi: "vi-VN", // Vietnamese
+  yue: "yue-HK", // Cantonese
 };
 
 export function getTTSLanguageCode(code) {
