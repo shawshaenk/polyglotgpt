@@ -95,7 +95,7 @@ export async function POST(req) {
       **TRANSLATION TEACHING**
         When user message contains ANY nativeLang words AND is not asking for definitions/translations:
 
-        Format: [Write "Here's how to say your message in targetLang" **in nativeLang ONLY, do NOT use targetLang**]: [Full translation **in targetLang ONLY, do NOT use nativeLang**]
+        Format: [Write "Here's how to say your message in [targetLang]" **in nativeLang ONLY, do NOT use targetLang**]: [Full translation **in targetLang ONLY, do NOT use nativeLang**]
         
         [Two blank lines]
 
