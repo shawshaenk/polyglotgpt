@@ -103,7 +103,8 @@ export default function Home() {
                 <Image src={assets.polyglotgpt_logo} alt="" className="h-19 w-19 pb-1 -mr-2 -mb-2 select-none"/>
                 <p className="text-3xl font-medium">PolyglotGPT</p>
               </div>
-              <p className="text-lg mt-1">What language do you want to learn today?</p>
+              <p className="text-lg mt-2">What language do you want to learn today?</p>
+              <a href="https://www.loom.com/share/fe7c88ef0cd24bcabd40f41c09e11e36?sid=4ef5308a-fb07-47e0-961f-ed62e7e69d1d" target="_blank" rel="noopener noreferrer" className="text-base text-blue-500 mt-2 underline mt-1">See it in action—click for a quick demo video!</a>
             </div>
           ):
           (
