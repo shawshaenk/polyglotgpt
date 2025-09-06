@@ -213,19 +213,19 @@ export async function POST(req) {
         For language instruction requests, provide only the explanation/examples without follow-up questions
 
       **EXAMPLES**
-        Message is Correct Example (nativeLang=English, targetLang=Telugu):
-          User: "నేను పుస్తకం చదువుతున్నాను."
-          Response: 
-          **Your message is correct!**
+        Message is Correct Example (nativeLang=French, targetLang=Spanish):
+          User: "Estoy leyendo un libro."  
+          Response:
+          **Votre message est correct !**
 
-          మీరు తరచుగా ఏ రకమైన పుస్తకాలు చదువుతారు?
+          ¿qué tipo de libros sueles leer con más frecuencia?
 
-        Translation Teaching Example (nativeLang=English, targetLang=Telugu): 
-          User: "Naaku ishtamaina food spaghetti" 
-          Response: 
-          **Here's how to say your message in Telugu: నాకు ఇష్టమైన ఆహారం స్పగెట్టి**
+        Translation Teaching Example (nativeLang=Telugu, targetLang=Tamil):  
+          User: "Naaku ishtamaina food dosa"  
+          Response:
+          **మీ సందేశాన్ని తమిళంలో ఇలా చెప్పవచ్చు:** எனக்கு பிடித்த உணவு தோசை
 
-          స్పగెట్టి చాలా రుచిగా ఉంటుంది! మీరు దాన్ని ఎలా తయారు చేసుకుంటారు?
+          தோசை மிகவும் சுவையாக இருக்கும்! நீங்கள் அதை எப்படி தயாரிக்கிறீர்கள்?
 
         Translation Teaching Example for General Questions (nativeLang=English, targetLang=French):
           User: "what is the capital of paris"
@@ -234,20 +234,24 @@ export async function POST(req) {
 
           Paris est la capitale de la France. C'est une ville très célèbre, connue pour son art, sa culture et ses monuments emblématiques comme la tour Eiffel et le musée du Louvre. Vous souhaitez en savoir plus sur la France ?
 
-        Pure Explanation Example (nativeLang=English, targetLang=Telugu): 
-          User: "Explain Mīru telugulō māṭlāḍēṭappuḍu ēdainā savālunu edurkoṇṭunnārā?" 
-          Response: 
-          **"మీరు తెలుగులో మాట్లాడేటప్పుడు ఏదైనా సవాలును ఎదుర్కొంటున్నారా?" (Mīru telugulō māṭlāḍēṭappuḍu ēdainā savālunu edurkoṇṭunnārā?) → Are you facing any challenges when speaking in Telugu?**
+        Pure Explanation Example (nativeLang=Portuguese, targetLang=Spanish): 
+          User: "Explain ¿Tienes algún problema al hablar en español?"  
+          Response:
 
-          **Word-by-word breakdown:**
-          - మీరు (Mīru) → you (formal/plural)
-          - తెలుగులో (telugulō) → in Telugu
-          - మాట్లాడేటప్పుడు (māṭlāḍēṭappuḍu) → when speaking
-          - ఏదైనా (ēdainā) → any/some
-          - సవాలును (savālunu) → challenge/difficulty (accusative case)
-          - ఎదుర్కొంటున్నారా (edurkoṇṭunnārā) → are you facing? (present continuous interrogative)
+          **"¿Tienes algún problema al hablar en español?" → "Você tem algum problema ao falar em espanhol?"**
 
-          This is a polite inquiry asking if someone is experiencing difficulties while speaking Telugu. The sentence uses formal language with "మీరు" and the respectful verb ending "-ారా".
+          **Análise palavra-por-palavra (em Português):**
+          - ¿Tienes → você tem (informal — da 2ª pessoa: tú)  
+          - algún → algum  
+          - problema → problema  
+          - al → ao (a + el)  
+          - hablar → falar  
+          - en → em  
+          - español → espanhol  
+
+          Esta é uma pergunta direta para saber se alguém encontra dificuldades ao falar espanhol.  
+          Observações gramaticais: usa o presente simples "tienes" (informal); a construção **"al + infinitivo"** significa "ao/when [fazer algo]" (por exemplo, *al hablar* = "ao falar" / "quando fala").  
+          Se quiser formular de modo formal, troque **¿Tienes** por **¿Tiene**.
 
         Language Instruction Example (nativeLang=English, targetLang=Telugu):
           User: "use it in a sentence" (referring to శత్రుడు)
@@ -260,57 +264,85 @@ export async function POST(req) {
 
           In this sentence, "శత్రుడు" is used to describe an adversary or opponent. The word combines with adjectives like "పెద్ద" (great/big) to emphasize the severity of the enmity.
 
-        Error Correction Example (nativeLang=English, targetLang=Telugu): 
-          User: "నాకు నరుటో చాలా ఇష్టం ఎందుకంటే అతను బలమైన ఉంది మరియు నేను ప్రతి రోజూ అతను చూస్తాను. అతని ఫ్రెండ్స్ చాలా cool ఉంది మరియు శక్తి ఉన్నారు. నేను నరుటో లో ఒక జట్టు ఉండి join కావాలని కోరాను."
-          Response: 
+        Error Correction Example (nativeLang=English, targetLang=Tamil):
+          User: "நான் coffee-ஐ மிகவும் like செய்கிறேன் ஏனென்றால் அது me energy தருகிறது மற்றும் நான் it ஒவ்வொரு காலை குடிக்கிறேன். என் friends அதனை மிகவும் enjoy செய்கிறார்கள் மற்றும் அவர்கள் healthy இருக்கிறார்கள். நான் ஒரு coffee blog start செய்ய விரும்பினேன்."
+
+          Response:  
           You made some errors in sentence structure and word choice.
-          - **బలమైన ఉంది**  
-            - **Problem:** Combines adjective **బలమైన** ("strong") with verb **ఉంది** incorrectly.  
-            - **Correction:** **బలవంతుడు** ("he is strong") for proper subject-verb agreement.
 
-          - **ప్రతి రోజూ అతను చూస్తాను**  
-            - **Problem:** Word order and case are wrong; "I see him every day" is expressed incorrectly.  
-            - **Correction:** **నేను అతన్ని ప్రతి రోజు చూస్తాను**.
+          - **mixing English 'like' with Tamil verb**  
+            - **Problem:** Uses the English verb *like* instead of a Tamil equivalent.  
+            - **Correction:** **நான் காபியை மிகவும் விரும்புகிறேன்**.
 
-          - **ఫ్రెండ్స్ చాలా cool ఉంది**  
-            - **Problem:** English word **cool** inserted, and singular verb **ఉంది** doesn't match plural subject **ఫ్రెండ్స్**.  
-            - **Correction:** **అతని ఫ్రెండ్స్ చాలా చక్కగా ఉన్నారు** or **చాలా coolగా ఉన్నారు**.
+          - **'me energy தருகிறது' (mixed pronoun + English noun)**  
+            - **Problem:** English pronoun *me* and English noun *energy* are mixed into Tamil; unnatural.  
+            - **Correction:** **அது எனக்கு ஆற்றல் தருகிறது**.
 
-          - **శక్తి ఉన్నారు**  
-            - **Problem:** Agreement and context are wrong; plural verb for singular concept.  
-            - **Correction:** **వారి శక్తి ఉంది** ("Their power exists") or "They are strong": **వారు శక్తివంతంగా ఉన్నారు**.
+          - **'நான் it ஒவ்வொரு காலை குடிக்கிறேன்' (mixed pronoun + word order)**  
+            - **Problem:** English pronoun *it* used instead of Tamil object pronoun; word order should place object before verb.  
+            - **Correction:** **நான் அதை ஒவ்வொரு காலை குடிக்கிறேன்**.
 
-          - **ఒక జట్టు ఉండి join కావాలని**  
-            - **Problem:** Mixing English "join" and incorrect participle **ఉండి**; unnatural construction.  
-            - **Correction:** **ఒక జట్టులో చేరాలని** ("I want to join a team").
-          
-          **Here's the corrected message: "నాకు నరుటో చాలా ఇష్టం ఎందుకంటే అతను చాలా బలవంతుడు, మరియు నేను అతన్ని ప్రతి రోజు చూస్తాను. అతని ఫ్రెండ్స్ చాలా చక్కగా ఉన్నారు మరియు వారు శక్తివంతంగా ఉన్నారు. నేను నరుటోలో ఒక జట్టులో చేరాలని కోరాను."**
+          - **'என் friends ... enjoy ... healthy இருக்கிறார்கள்' (mixed English nouns/verbs + adjective)**  
+            - **Problem:** Uses English *friends*, *enjoy*, and *healthy* inside Tamil sentence.  
+            - **Correction:** **என் நண்பர்கள் அதைப் மிகவும் ரசிக்கிறார்கள் மற்றும் அவர்கள் ஆரோக்கியமாக உள்ளனர்**.
 
-        Pure Translation Example (nativeLang=English, targetLang=Spanish): 
-          User: "Translate this: Hola!" 
-          Response: **"Hola!" → Hello!**
+          - **'coffee blog start செய்ய விரும்பினேன்' (mixing English nouns/verbs, unnatural construction)**  
+            - **Problem:** Uses English *coffee*, *blog*, *start* with Tamil grammar.  
+            - **Correction:** **ஒரு காபி வலைப்பதிவை தொடங்க விரும்பினேன்**.
+
+          **Here's the corrected message:**  
+          **நான் காபியை மிகவும் விரும்புகிறேன்; ஏனென்றால் அது எனக்கு ஆற்றல் தருகிறது, மற்றும் நான் அதை ஒவ்வொரு காலை குடிக்கிறேன். என் நண்பர்கள் அதைப் மிகவும் ரசிக்கிறார்கள் மற்றும் அவர்கள் ஆரோக்கியமாக உள்ளனர். நான் ஒரு காபி வலைப்பதிவை தொடங்க விரும்பினேன்.**
+
+          **நீங்கள் எந்த வகையான காபியை விரும்புகிறீர்கள்?**
+
+        Second Error Correction Example (nativeLang=English, targetLang=French):
+          User: "Je suis allé au marché hier et j'achète des pommes et une oranges. Elles étais très délicieuse."
+
+          Response:
+          You made some errors in tense consistency, agreement, and article usage.
+
+          - **Tense inconsistency ("je suis allé" + "j'achète")**  
+            - **Problem:** The first clause uses the past (passé composé) while the second uses the present; for a sequence of completed actions they should agree.  
+            - **Correction:** **j'ai acheté** — use passé composé to match "je suis allé".
+
+          - **Article–noun agreement ("une oranges")**  
+            - **Problem:** "une" is singular but "oranges" is plural.  
+            - **Correction:** **des oranges**
+
+          - **Subject–verb agreement ("Elles étais")**  
+            - **Problem:** "étais" is 1st/2nd person singular imperfect; with "elles" (3rd person plural) the verb should be plural.  
+            - **Correction:** **Elles étaient**
+
+          - **Adjective agreement ("très délicieuse")**  
+            - **Problem:** "délicieuse" is singular feminine while the subject ("elles") is plural.  
+            - **Correction:** **délicieuses**
+
+          **Here's the corrected message:**  
+          Je suis allé au marché hier et j'ai acheté des pommes et des oranges. Elles étaient délicieuses.
+
+          **Aimez-vous cuisiner avec des fruits frais ?**
+
+        Pure Translation Example (nativeLang=French, targetLang=Hindi): 
+          User: Traduire "मुझे कल दिल्ली जाना है"
+          Response: **"मुझे कल दिल्ली जाना है" → J'ai besoin d'aller à Delhi demain.**
 
         Translation Request Example with Original Script (nativeLang=English, targetLang=Telugu):
-          User: "translate this: అంశాలు"
+          User: Translate "అంశాలు"
           Response: **"అంశాలు" (aṃśālu) → aspects**
 
         Translation Request Example with Romanized Text (nativeLang=English, targetLang=Telugu):
-          User: "translate this: aṃśālu"
+          User: Translate "aṃśālu"
           Response: **"aṃśālu" (అంశాలు) → aspects**
-
-        Translation Request Example (nativeLang=English, targetLang=Telugu):
-          User: "translate this: నేను రేపు ఢిల్లీకి వెళ్లాలి"
-          Response: **"నేను రేపు ఢిల్లీకి వెళ్లాలి" → I need to go to Delhi tomorrow**
 
         Definition Example (nativeLang=English, targetLang=Spanish): 
           User: "what does ¿Qué tal tu día hoy? mean" 
-          Response: 
+          Response:
           **"¿Qué tal tu día hoy?" → How was your day today?**
 
-          - "¿Qué tal?" means "How is it?" or "What about?". It's a versatile phrase used to ask about the state or condition of something.
-          - "tu" means "your" (informal singular).
-          - "día" means "day".
-          - "hoy" means "today".
+          - "¿Qué tal?" → "How is it?" or "What about?". It's a versatile phrase used to ask about the state or condition of something.
+          - "tu" → "your" (informal singular).
+          - "día" → "day".
+          - "hoy" → "today".
 
           So, literally, it's "How's your day today?" It's a friendly and common greeting.
     `.trim();
