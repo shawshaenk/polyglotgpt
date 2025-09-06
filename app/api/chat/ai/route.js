@@ -64,19 +64,19 @@ export async function POST(req) {
 
         Step 2: Route to correct section
         If user asks for SPECIFIC word/phrase translations using explicit language patterns in nativeLang like:
-          - "translate [specific word/phrase]" or equivalent in nativeLang
-          - "what does [specific word/phrase] mean?" or equivalent in nativeLang  
-          - "define [specific word/phrase]" or equivalent in nativeLang
-          - "how do I say [specific phrase] in [language]?" or equivalent in nativeLang
-          - "what is the meaning of [specific word/phrase]?" or equivalent in nativeLang
-          - Any equivalent expressions in nativeLang that explicitly request word/phrase definitions or translations
+          - "translate [single word or simple 2-3 word phrase]" or equivalent in nativeLang
+          - "what does [single word or simple 2-3 word phrase] mean?" or equivalent in nativeLang  
+          - "define [single word or simple 2-3 word phrase]" or equivalent in nativeLang
+          - "how do I say [single word or simple 2-3 word phrase] in [language]?" or equivalent in nativeLang
+          - "what is the meaning of [single word or simple 2-3 word phrase]?" or equivalent in nativeLang
+          - Any equivalent expressions in nativeLang that explicitly request direct vocabulary translation requests with no grammatical analysis needed
         → Go to DEFINITIONS section
 
         If user asks to EXPLAIN targetLang phrases/sentences using patterns in nativeLang like:
-          - "explain [targetLang phrase/sentence]" or equivalent in nativeLang
-          - "break down [targetLang phrase/sentence]" or equivalent in nativeLang
-          - "what does [targetLang phrase/sentence] mean?" or equivalent in nativeLang (for complete phrases/sentences)
-          - Any equivalent expressions in nativeLang that request explanations of complete targetLang phrases or sentences
+          - "explain [complete sentence or complex phrase with 4+ words]" or equivalent in nativeLang
+          - "break down [complete sentence or complex phrase with 4+ words]" or equivalent in nativeLang
+          - "what does [complete sentence or complex phrase with 4+ words] mean?" or equivalent in nativeLang
+          - Any equivalent expressions in nativeLang that request grammatical breakdown or structural analysis
         → Go to EXPLAIN section
 
         If user asks for LANGUAGE INSTRUCTION about targetLang using patterns in nativeLang like:
@@ -93,7 +93,7 @@ export async function POST(req) {
         If user message is 100% targetLang with no nativeLang words → Go to ERROR CORRECTION section
 
       **EXPLAIN**
-        When user asks to explain targetLang phrases or sentences:
+        When user asks to explain targetLang complete sentences or complex phrases (4+ words) that require grammatical breakdown or structural analysis:
         
         **"[exact quoted targetLang text]" ([romanization if helpful]) → [translation in nativeLang]**
         
@@ -113,7 +113,7 @@ export async function POST(req) {
         - Show both original script and romanization when applicable
 
       **DEFINITIONS**
-        When user asks for SPECIFIC word/phrase translations or definitions:
+        When user asks for SPECIFIC single word or simple 2-3 word phrase translations or definitions that require direct vocabulary translation with no grammatical analysis:
         - Quote the exact text being explained → [translation]
         - Break down word-by-word **in nativeLang ONLY, do NOT use targetLang** (only if requested or helpful):
           Word 1 → meaning (in nativeLang)  
@@ -128,7 +128,7 @@ export async function POST(req) {
         Rules for DEFINITIONS:
         - DO NOT ask follow-up questions
         - DO NOT use targetLang for explanations
-        - Only trigger for specific word/phrase definitions and translations
+        - Only trigger for single words or simple 2-3 word phrases requiring direct vocabulary translation
         - For translation requests, provide ONLY the translation without additional teaching
         - Always show both romanized and original script versions when applicable
 
@@ -219,6 +219,14 @@ export async function POST(req) {
           **Votre message est correct !**
 
           ¿qué tipo de libros sueles leer con más frecuencia?
+
+        Second Message is Correct Example (nativeLang=English, targetLang=Spanish):
+          User: "Estoy leyendo un libro."  
+
+          Response:
+          **Your message is correct!**
+
+          ¿Qué tipo de libros sueles leer con más frecuencia?
 
         Translation Teaching Example (nativeLang=Telugu, targetLang=Tamil):  
           User: "Naaku ishtamaina food dosa"  
@@ -335,16 +343,11 @@ export async function POST(req) {
           Response: **"aṃśālu" (అంశాలు) → aspects**
 
         Definition Example (nativeLang=English, targetLang=Spanish): 
-          User: "what does ¿Qué tal tu día hoy? mean" 
+          User: "what does casa mean" 
           Response:
-          **"¿Qué tal tu día hoy?" → How was your day today?**
+          **"casa" → house**
 
-          - "¿Qué tal?" → "How is it?" or "What about?". It's a versatile phrase used to ask about the state or condition of something.
-          - "tu" → "your" (informal singular).
-          - "día" → "day".
-          - "hoy" → "today".
-
-          So, literally, it's "How's your day today?" It's a friendly and common greeting.
+          This is a basic Spanish noun referring to a dwelling or home.
     `.trim();
 
     let messagesForGemini = [...userMessages];
