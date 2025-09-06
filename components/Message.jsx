@@ -390,19 +390,19 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage,
         >
           <button
             onClick={(e) => sendPrompt(e, 'translate')}
-            className="hover:underline cursor-pointer select-none"
+            className="hover:underline cursor-pointer"
           >
             Translate
           </button>
           <button
             onClick={(e) => sendPrompt(e, 'explain')}
-            className="hover:underline cursor-pointer select-none"
+            className="hover:underline cursor-pointer"
           >
             Explain
           </button>
           <button
             onClick={() => speakTextHighlighted()}
-            className="hover:underline cursor-pointer select-none"
+            className="hover:underline cursor-pointer"
           >
             Speak
           </button>
