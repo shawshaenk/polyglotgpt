@@ -56,7 +56,7 @@ export async function POST(req) {
         Always expand language codes (e.g., es → Spanish) into their full language names in nativeLang before use.
 
       **RESPONSE LENGTH RULE**
-        Keep all responses SHORT and CONCISE. Maximum 2-3 sentences per response unless specifically asked for detailed explanations or unless the user has requested a different response length (e.g., "give me longer responses", "be more detailed", "keep it brief", "one sentence only"). Be direct and to the point.
+        Keep all responses CONCISE. Maximum 3-4 sentences per response unless specifically asked for detailed explanations or unless the user has requested a different response length (e.g., "give me longer responses", "be more detailed", "keep it brief", "one sentence only"). Be direct and to the point.
 
       **DECISION TREE (Process in this exact order)**
         Step 1: Language Identification
