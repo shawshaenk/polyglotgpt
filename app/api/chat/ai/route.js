@@ -15,7 +15,7 @@ export async function POST(req) {
 
   try {
     const { userId } = getAuth(req);
-    const { chatId, prompt, nativeLang, targetLang, isLocal, languagesUpdated, messages, regenerate, editingMessage, userMessageIndex } = await req.json();
+    const { chatId, prompt, nativeLang, targetLang, isLocal, languagesUpdated, messages, regenerate, editingMessage, messageIndex } = await req.json();
 
     let userMessages = [];
     let chatDoc = null;
@@ -27,19 +27,15 @@ export async function POST(req) {
       // Logged in, fetch from DB
       chatDoc = await Chat.findOne({ userId, _id: chatId });
       if (!chatDoc) throw new Error("Chat not found");
-      if (!regenerate) {
-        if (editingMessage) {
-          let newLength = chatDoc.messages.length - (userMessageIndex + 1)
-          for (let i = 0; i <= newLength; i++) {
-            chatDoc.messages.pop();
-          }
+      if (regenerate || editingMessage) {
+        while (chatDoc.messages.length > messageIndex) {
+          chatDoc.messages.pop();
         }
+      }
+      if (!regenerate) {
         chatDoc.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
-        await chatDoc.save();
-      } else if (regenerate) {
-        chatDoc.messages.pop();
-        await chatDoc.save();
-      } 
+      }
+      await chatDoc.save();
       userMessages = chatDoc.messages;
     }
 

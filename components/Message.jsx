@@ -19,7 +19,7 @@ const assets = {
   regenerate_icon,
 };
 
-const Message = ({role, content, setIsLoading, isLastAIMessage, relevantUserMessage, userMessageIndex}) => {
+const Message = ({role, content, setIsLoading, isLastAIMessage, relevantUserMessage, messageIndex}) => {
   const [selectionText, setSelectionText] = useState("");
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
@@ -128,7 +128,7 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, relevantUserMess
   const editMessage = ()=> {
     setPrompt(relevantUserMessage);
     setEditingMessage(true);
-    setEditingMessageIndex(userMessageIndex);
+    setEditingMessageIndex(messageIndex);
   }
 
   const regenerateMessage = (e)=> {
@@ -148,7 +148,8 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, relevantUserMess
         nativeLang,
         targetLang,
         fetchUsersChats,
-        regenerate
+        regenerate,
+        messageIndex
     });
   }
 
@@ -332,7 +333,7 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, relevantUserMess
       fetchUsersChats,
       setPrevNativeLang,
       setPrevTargetLang,
-      userMessageIndex
+      messageIndex
     });
   };
 
@@ -351,7 +352,7 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, relevantUserMess
                         ):(
                             <>
                             <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer select-none" title="Copy Message"/>
-                            {isLastAIMessage && (<Image onClick={regenerateMessage} src={assets.regenerate_icon} alt="" className="w-4 cursor-pointer select-none" title="Regenerate Message"/>)}
+                            <Image onClick={regenerateMessage} src={assets.regenerate_icon} alt="" className="w-4 cursor-pointer select-none" title="Regenerate Message"/>
                             <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {showOriginalContent();}}>Show Original</button>
                             <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {translateText();}}>Translate</button>
                             <button className="text-xs sm:text-sm cursor-pointer hover:underline select-none" onClick={() => {romanizeText();}}>Romanize</button>

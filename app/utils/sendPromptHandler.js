@@ -22,7 +22,7 @@ export const sendPromptHandler = async ({
   regenerate=false,
   relevantUserMessage,
   editingMessage=false,
-  userMessageIndex
+  messageIndex
 }) => {
   if (isProcessing) {
     toast.error("Another Message in Progress");
@@ -78,10 +78,10 @@ export const sendPromptHandler = async ({
     let updatedMessages = selectedChat.messages;
     if (regenerate || editingMessage) {
       if (regenerate) {
-        updatedMessages = selectedChat.messages.slice(0, -1);
+        updatedMessages = selectedChat.messages.slice(0, messageIndex);
       } else if (editingMessage) {
         updatedMessages = [
-          ...selectedChat.messages.slice(0, userMessageIndex),
+          ...selectedChat.messages.slice(0, messageIndex),
           userPrompt
         ];
       }
@@ -109,7 +109,7 @@ export const sendPromptHandler = async ({
       languagesUpdated,
       regenerate,
       editingMessage,
-      userMessageIndex
+      messageIndex
     };
 
     // Local (not logged in) chat sends full history

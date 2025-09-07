@@ -113,7 +113,7 @@ export default function Home() {
           {messages.map((msg, index)=> {
             const relevantUserMessage = msg.content;
             return (
-              <Message key={index} role={msg.role} content={msg.content} setIsLoading={setIsLoading} isLastAIMessage={index === messages.length - 1} userMessageIndex={index} relevantUserMessage={relevantUserMessage}/>
+              <Message key={index} role={msg.role} content={msg.content} setIsLoading={setIsLoading} isLastAIMessage={index === messages.length - 1} messageIndex={index} relevantUserMessage={relevantUserMessage}/>
             )
           })}
           {

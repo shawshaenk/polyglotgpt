@@ -50,7 +50,7 @@ const PromptBox = ({setIsLoading}) => {
             targetLang,
             fetchUsersChats,
             editingMessage,
-            userMessageIndex: editingMessageIndex
+            messageIndex: editingMessageIndex
         });
 
         setEditingMessage(false);
