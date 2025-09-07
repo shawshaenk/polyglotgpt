@@ -23,6 +23,7 @@ export const AppContextProvider = ({children})=>{
     const [isLocalMode, setIsLocalMode] = useState(false);
     const [prompt, setPrompt] = useState('');
     const [editingMessage, setEditingMessage] = useState(false);
+    const [editingMessageIndex, setEditingMessageIndex] = useState(null);
 
     const allChatIds = chats.map(chat => chat._id);
 
@@ -242,7 +243,9 @@ export const AppContextProvider = ({children})=>{
         prompt,
         setPrompt,
         editingMessage,
-        setEditingMessage
+        setEditingMessage,
+        editingMessageIndex,
+        setEditingMessageIndex
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

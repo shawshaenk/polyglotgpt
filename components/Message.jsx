@@ -19,7 +19,7 @@ const assets = {
   regenerate_icon,
 };
 
-const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage, isLastUserMessage}) => {
+const Message = ({role, content, setIsLoading, isLastAIMessage, relevantUserMessage, userMessageIndex}) => {
   const [selectionText, setSelectionText] = useState("");
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
@@ -33,7 +33,7 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage,
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   
-  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, fetchUsersChats, setPrevNativeLang, setPrevTargetLang, prevNativeLang, prevTargetLang, setPrompt, setEditingMessage} = useAppContext();
+  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, fetchUsersChats, setPrevNativeLang, setPrevTargetLang, prevNativeLang, prevTargetLang, setPrompt, setEditingMessage, setEditingMessageIndex} = useAppContext();
 
   useEffect(() => {
     Prism.highlightAll();
@@ -126,15 +126,15 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage,
   }
 
   const editMessage = ()=> {
-    setPrompt(lastUserMessage);
+    setPrompt(relevantUserMessage);
     setEditingMessage(true);
+    setEditingMessageIndex(userMessageIndex);
   }
 
   const regenerateMessage = (e)=> {
     let regenerate = true;
     sendPromptHandler({
         e,
-        lastUserMessage,
         // setPrompt,
         setIsLoading,
         setChats,
@@ -331,7 +331,8 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage,
       targetLang,
       fetchUsersChats,
       setPrevNativeLang,
-      setPrevTargetLang
+      setPrevTargetLang,
+      userMessageIndex
     });
   };
 
@@ -339,13 +340,13 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, lastUserMessage,
     <div ref={messageWrapperRef} className={`relative flex flex-col items-center w-full max-w-3xl text-base ${role === "user" ? "mb-5 mt-5" : "mb-5 mt-5"}`}>
       <div className={`flex flex-col w-full mb-8 ${role === 'user' && 'items-end'}`}>
         <div className={`group relative flex max-w-2xl py-3 rounded-xl ${role === 'user' ? 'bg-[#2a2a2a] px-5 mt-2 max-w-[75vw] sm:max-w-[30vw]' : '-mt-6 gap-3'}`}>
-            <div className={`absolute ${role === 'user' ? 'top-1/2 -translate-y-1/2' : 'left-12.5 -bottom-3.5'} ${isLastUserMessage ? '-left-12' : '-left-6'}`}>
+            <div className={`absolute -left-12 ${role === 'user' ? 'top-1/2 -translate-y-1/2' : 'left-12.5 -bottom-3.5'}`}>
                 <div className="flex items-center gap-2 opacity-70">
                     {
                         role === 'user' ? (
                             <>
                             <Image onClick={copyMessage} src={assets.copy_icon} alt="" className="w-4 cursor-pointer select-none" title="Copy Message"/>
-                            {isLastUserMessage && <Image onClick={editMessage} src={assets.rename_icon} alt="" className="w-4 cursor-pointer select-none" title="Edit Message"/>}
+                            <Image onClick={editMessage} src={assets.rename_icon} alt="" className="w-4 cursor-pointer select-none" title="Edit Message"/>
                             </>
                         ):(
                             <>

@@ -12,7 +12,7 @@ const assets = {
 };
 
 const PromptBox = ({setIsLoading}) => {
-    const {user, setChats, selectedChat, setSelectedChat, prevNativeLang, setPrevNativeLang, nativeLang, setNativeLang, prevTargetLang, setPrevTargetLang, targetLang, setTargetLang, languageList, fetchUsersChats, prompt, setPrompt, editingMessage, setEditingMessage} = useAppContext();
+    const {user, setChats, selectedChat, setSelectedChat, prevNativeLang, setPrevNativeLang, nativeLang, setNativeLang, prevTargetLang, setPrevTargetLang, targetLang, setTargetLang, languageList, fetchUsersChats, prompt, setPrompt, editingMessage, setEditingMessage, editingMessageIndex, setEditingMessageIndex} = useAppContext();
     const textareaRef = useRef(null);
 
     const handleKeyDown = async (e) => {
@@ -50,9 +50,11 @@ const PromptBox = ({setIsLoading}) => {
             targetLang,
             fetchUsersChats,
             editingMessage,
+            userMessageIndex: editingMessageIndex
         });
 
         setEditingMessage(false);
+        setEditingMessageIndex(null);
     };
 
     useEffect(() => {

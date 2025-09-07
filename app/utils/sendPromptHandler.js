@@ -20,8 +20,9 @@ export const sendPromptHandler = async ({
   targetLang,
   fetchUsersChats,
   regenerate=false,
-  lastUserMessage,
-  editingMessage=false
+  relevantUserMessage,
+  editingMessage=false,
+  userMessageIndex
 }) => {
   if (isProcessing) {
     toast.error("Another Message in Progress");
@@ -35,8 +36,8 @@ export const sendPromptHandler = async ({
     e.preventDefault();
 
     if (regenerate) {
-      prompt = lastUserMessage;
-      promptCopy = lastUserMessage;
+      prompt = relevantUserMessage;
+      promptCopy = relevantUserMessage;
     }
 
     if (!prompt && !regenerate) return toast.error('Enter a Prompt');
@@ -80,7 +81,7 @@ export const sendPromptHandler = async ({
         updatedMessages = selectedChat.messages.slice(0, -1);
       } else if (editingMessage) {
         updatedMessages = [
-          ...selectedChat.messages.slice(0, -2),
+          ...selectedChat.messages.slice(0, userMessageIndex),
           userPrompt
         ];
       }
@@ -107,7 +108,8 @@ export const sendPromptHandler = async ({
       isLocal,
       languagesUpdated,
       regenerate,
-      editingMessage
+      editingMessage,
+      userMessageIndex
     };
 
     // Local (not logged in) chat sends full history
