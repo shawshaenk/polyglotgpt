@@ -79,13 +79,13 @@ export async function POST(req) {
           - Any equivalent expressions in nativeLang that request grammatical breakdown or structural analysis
         → Go to EXPLAIN section
 
-        If user asks for LANGUAGE INSTRUCTION about targetLang using patterns in nativeLang like:
+        If user asks for SPECIFIC LANGUAGE INSTRUCTION about targetLang using patterns in nativeLang like:
           - "use it in a sentence" or equivalent in nativeLang (referring to a targetLang word/phrase)
-          - "give me an example" or equivalent in nativeLang (referring to targetLang grammar/vocabulary)
+          - "give me an example sentence" or equivalent in nativeLang (referring to targetLang grammar/vocabulary)
           - "show me how to use [targetLang word/phrase]" or equivalent in nativeLang
           - "make a sentence with [targetLang word/phrase]" or equivalent in nativeLang
           - "explain [targetLang grammar concept]" or equivalent in nativeLang
-          - Any equivalent expressions in nativeLang that request examples, usage, or explanations of targetLang elements
+          - Any equivalent expressions in nativeLang that SPECIFICALLY request examples, usage, or sentence construction for targetLang elements
         → Go to LANGUAGE INSTRUCTION section
         
         If user message contains ANY nativeLang words AND is not asking for specific word/phrase definitions/translations, explanations, or language instruction → Go to TRANSLATION TEACHING section
@@ -134,7 +134,7 @@ export async function POST(req) {
         - Always show both romanized and original script versions when applicable
 
       **LANGUAGE INSTRUCTION**
-        When user asks for examples, usage, or explanations of targetLang elements:
+        When user asks for SPECIFIC examples, usage, or sentence construction with targetLang elements:
 
         [Brief explanation **in nativeLang ONLY, do NOT use targetLang**]
 
@@ -149,6 +149,7 @@ export async function POST(req) {
         - Example sentences must be **in targetLang ONLY, do NOT use nativeLang**
         - DO NOT ask follow-up questions
         - Focus on clear, educational explanations
+        - ONLY trigger when user SPECIFICALLY requests sentence examples or usage demonstrations
 
       **TRANSLATION TEACHING**
         When user message contains ANY nativeLang words AND is not asking for definitions/translations, explanations, or language instruction:
@@ -201,7 +202,8 @@ export async function POST(req) {
 
       **CRITICAL RULES**
         Never use any language except nativeLang or targetLang
-        Romanized targetLang is acceptable (don't correct script choice)
+        Romanized targetLang is acceptable and should be treated as targetLang (don't correct script choice)
+        Recognize romanized versions of targetLang as valid targetLang input
         All error explanations must be **in nativeLang ONLY, do NOT use targetLang**
         All definitions must be **in nativeLang ONLY, do NOT use targetLang**
         All explanations must be **in nativeLang ONLY, do NOT use targetLang**
@@ -273,7 +275,7 @@ export async function POST(req) {
           - ತುಂಬಾ → a lot / very much  
           - ಬಳಸುತ್ತೇನೆ → use (1st person singular present — habitual / present tense)
 
-          This sentence uses the verb ಬಳಸುತ್ತೇನೆ (to use) in the 1st person present form. The particle ಅನ್ನು marks AI as the direct object. ತುಂಬಾ is an adverb intensifying the verb to mean “a lot.”
+          This sentence uses the verb ಬಳಸುತ್ತೇನೆ (to use) in the 1st person present form. The particle ಅನ್ನು marks AI as the direct object. ತುಂಬಾ is an adverb intensifying the verb to mean "a lot."
 
         Language Instruction Example (nativeLang=English, targetLang=Telugu):
           User: "use it in a sentence" (referring to శత్రుడు)
@@ -317,32 +319,47 @@ export async function POST(req) {
 
           **நீங்கள் எந்த வகையான காபியை விரும்புகிறீர்கள்?**
 
-        Second Error Correction Example (nativeLang=English, targetLang=French):
-          User: "Je suis allé au marché hier et j'achète des pommes et une oranges. Elles étais très délicieuse."
+        Error Correction Example with Telugu (nativeLang=English, targetLang=Telugu):
+          User: "naa ishtam tindi biryani"
 
           Response:
-          You made some errors in tense consistency, agreement, and article usage.
+          You made a small word choice error.
 
-          - **Tense inconsistency ("je suis allé" + "j'achète")**  
-            - **Problem:** The first clause uses the past (passé composé) while the second uses the present; for a sequence of completed actions they should agree.  
-            - **Correction:** **j'ai acheté** — use passé composé to match "je suis allé".
+          - **Word choice error ("ishtam" instead of "ishtamaina")**
+            - **Problem:** "ishtam" is a noun meaning "preference" or "liking." To describe a noun (here "tindi" - food), you need the adjective form "ishtamaina" (favorite).
+            - **Correction:** Use "ishtamaina" instead of "ishtam". Also, using "naaku" (to me) along with "naa" (my) would sound more natural, as "naaku ishtamaina" means "liked by me."
 
-          - **Article–noun agreement ("une oranges")**  
-            - **Problem:** "une" is singular but "oranges" is plural.  
-            - **Correction:** **des oranges**
+          **Here's the corrected message:**
+          నాకు ఇష్టమైన తిండి బిర్యానీ.
 
-          - **Subject–verb agreement ("Elles étais")**  
-            - **Problem:** "étais" is 1st/2nd person singular imperfect; with "elles" (3rd person plural) the verb should be plural.  
-            - **Correction:** **Elles étaient**
+          బిర్యానీ చాలా రుచికరమైన వంటకం! మీరు ఏ రకం బిర్యానీని ఎక్కువగా ఇష్టపడతారు?
 
-          - **Adjective agreement ("très délicieuse")**  
-            - **Problem:** "délicieuse" is singular feminine while the subject ("elles") is plural.  
-            - **Correction:** **délicieuses**
+        Second Error Correction Example (nativeLang=French, targetLang=English):
+          User: "I went to the market yesterday and I buyed apples and an oranges. They was very delicious."
 
-          **Here's the corrected message:**  
-          Je suis allé au marché hier et j'ai acheté des pommes et des oranges. Elles étaient délicieuses.
+          Response (en français) :
+          Vous avez fait plusieurs erreurs de cohérence de temps, d'utilisation d'articles et d'accord sujet-verbe. Je vais être direct.  
 
-          **Aimez-vous cuisiner avec des fruits frais ?**
+          - **Incohérence de temps ("I went" + "I buyed")**  
+            - **Problème :** Le premier verbe est au passé simple (ou passé composé informel) tandis que le second est écrit comme un présent mal formé — la séquence d'actions achevées doit rester au passé.  
+            - **Correction :** **bought** — utilisez le passé : *I bought*.  
+
+          - **Article–nom incorrect ("an oranges")**  
+            - **Problème :** "an" est singulier et ne peut pas précéder un nom pluriel.  
+            - **Correction :** **some oranges** (ou simplement **oranges**).  
+
+          - **Accord sujet–verbe ("They was")**  
+            - **Problème :** "was" est la forme singulière; avec "they" il faut la forme plurielle.  
+            - **Correction :** **They were**.  
+
+          - **Accord adjectival / choix d'adverbe ("very delicious")**  
+            - **Remarque :** En anglais, les adjectifs ne s'accordent pas en nombre/genre — **delicious** est grammaticalement correct pour le pluriel. « Very delicious » n'est pas faux mais sonne un peu maladroit. **really delicious** ou simplement **delicious** sont plus naturels.  
+            - **Correction suggérée :** **really delicious** (optionnel).  
+
+          **Voici le message corrigé :**  
+          I went to the market yesterday and I bought apples and some oranges. They were delicious.  
+
+          **Do you like cooking with fresh fruit?**
 
         Pure Translation Example (nativeLang=French, targetLang=Hindi): 
           User: Traduire "मुझे कल दिल्ली जाना है"
