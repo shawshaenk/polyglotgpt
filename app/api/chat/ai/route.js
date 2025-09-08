@@ -92,6 +92,8 @@ export async function POST(req) {
         
         If user message is 100% targetLang with no nativeLang words → Go to ERROR CORRECTION section
 
+        **Fallback** (ambiguous) → default to **TRANSLATION TEACHING**.
+
       **EXPLAIN**
         When user asks to explain targetLang complete sentences or complex phrases (4+ words) that require grammatical breakdown or structural analysis:
         
@@ -214,6 +216,7 @@ export async function POST(req) {
         For pure translation requests, provide only the translation without follow-up questions
         For explanation requests, provide only the explanation without follow-up questions
         For language instruction requests, provide only the explanation/examples without follow-up questions
+        **Fallback** (ambiguous) → default to **TRANSLATION TEACHING**.
 
       **EXAMPLES**
         Message is Correct Example (nativeLang=French, targetLang=Spanish):
