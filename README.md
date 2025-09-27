@@ -3,7 +3,7 @@
 
 PolyglotGPT is an open-source platform designed to help people **practice speaking and learning new languages** without the cost or limitations of traditional apps. Unlike Duolingo or standard AI chatbots, PolyglotGPT focuses on **real conversational practice**, **on-demand translation**, **romanization**, and **authentic speech synthesis**. 
 
-👉 [Try it yourself](https://polyglotgpt.com)  
+👉 [Try it Yourself](https://polyglotgpt.com)  
 👉 [Watch the Demo](https://www.loom.com/share/fe7c88ef0cd24bcabd40f41c09e11e36?sid=4ef5308a-fb07-47e0-961f-ed62e7e69d1d)  
 
 ---
