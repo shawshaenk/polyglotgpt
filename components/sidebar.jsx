@@ -48,26 +48,6 @@ const Sidebar = ({ expand, setExpand }) => {
     }
   };
 
-  // Add click outside handler to close menu
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // Only close menu if it's currently open and the click is outside the sidebar
-      if (openMenu.open && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-        setOpenMenu({id: 0, open: false});
-      }
-    };
-
-    // Add event listeners for both mouse and touch events
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside);
-
-    // Cleanup function
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
-    };
-  }, [openMenu.open]); // Only re-run when openMenu.open changes
-
   return (
     <div
       ref={sidebarRef}

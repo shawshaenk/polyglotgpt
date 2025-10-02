@@ -136,9 +136,7 @@ export const AppContextProvider = ({children})=>{
         }
 
         try {
-
             const token = await getToken();
-
             const { data } = await axios.post('/api/chat/create',
             { nativeLang, targetLang },
             {
