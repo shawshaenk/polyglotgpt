@@ -28,14 +28,14 @@ const Sidebar = ({ expand, setExpand }) => {
   const [openMenu, setOpenMenu] = useState({id: 0, open: false})
   const sidebarRef = useRef(null)
 
-  const deleteAllMessages = async () => {
+  const deleteAllChats = async () => {
     try {
       const confirm = window.confirm("Are you sure you want to delete ALL CHATS?");
       if (!confirm) return;
 
       if (!allChatIds.length) return toast.error("No Chats to Delete");
 
-    const toastId = toast.loading("Deleting Chats...");
+      const toastId = toast.loading("Deleting Chats...");
       for (const chatId of allChatIds) {
         await axios.post("/api/chat/delete", { chatId });
       }
@@ -116,7 +116,7 @@ const Sidebar = ({ expand, setExpand }) => {
             user ? <UserButton/> : <Image src={assets.profile_icon} alt="" className="w-7 select-none"/>
           }
           {expand && <span>{user ? "My Profile" : "Log In"}</span>}
-          {user && expand && <Image onClick={deleteAllMessages} src={assets.delete_icon} alt="" title="Delete All Chats" className="w-5 select-none mb-0.5 ml-17"/>}
+          {user && expand && <Image onClick={deleteAllChats} src={assets.delete_icon} alt="" title="Delete All Chats" className="w-5 select-none mb-0.5 ml-17"/>}
         </div>
       </div>
 
