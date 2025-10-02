@@ -102,7 +102,7 @@ export async function POST(req) {
         contents: formattedMessages,
         config: {
           temperature: 2.0,
-          thinkingConfig: { thinkingBudget: 4096 },
+          thinkingConfig: { thinkingBudget: 1000 },
           systemInstruction: systemPrompt,
         },
       }),
