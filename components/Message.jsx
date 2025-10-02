@@ -19,7 +19,7 @@ const assets = {
   regenerate_icon,
 };
 
-const Message = ({role, content, setIsLoading, isLastAIMessage, relevantUserMessage, messageIndex}) => {
+const Message = ({role, content, setIsLoading, relevantUserMessage, messageIndex}) => {
   const [selectionText, setSelectionText] = useState("");
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
@@ -33,7 +33,7 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, relevantUserMess
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   
-  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, fetchUsersChats, setPrevNativeLang, setPrevTargetLang, prevNativeLang, prevTargetLang, setPrompt, setEditingMessage, setEditingMessageIndex} = useAppContext();
+  const {user, setChats, selectedChat, setSelectedChat, nativeLang, targetLang, fetchUsersChats, setPrevNativeLang, setPrevTargetLang, prevNativeLang, prevTargetLang, setPrompt, setEditingMessage, setEditingMessageIndex, startResponse, stopResponse} = useAppContext();
 
   useEffect(() => {
     Prism.highlightAll();
@@ -149,7 +149,9 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, relevantUserMess
         targetLang,
         fetchUsersChats,
         regenerate,
-        messageIndex
+        messageIndex,
+        startResponse,
+        stopResponse
     });
   }
 
@@ -333,7 +335,9 @@ const Message = ({role, content, setIsLoading, isLastAIMessage, relevantUserMess
       fetchUsersChats,
       setPrevNativeLang,
       setPrevTargetLang,
-      messageIndex
+      messageIndex,
+      startResponse,
+      stopResponse
     });
   };
 
