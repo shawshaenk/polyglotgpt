@@ -161,7 +161,7 @@ export const AppContextProvider = ({children})=>{
             messages: [],
             nativeLang,
             targetLang,
-            isLocal
+            isLocal: true
           };
           setChats(prev => {
               const exists = prev.some(c => c._id === tempChat._id);
@@ -171,6 +171,7 @@ export const AppContextProvider = ({children})=>{
               return [...prev, tempChat];
           });
           setSelectedChat(tempChat);
+          toast.success('Chat Cleared!', { id: toastId })
           return;
         }
 
