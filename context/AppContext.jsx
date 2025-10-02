@@ -96,6 +96,11 @@ export const AppContextProvider = ({children})=>{
             clerk.openSignIn();
             return;
         }
+
+        if (selectedChat.messages.length === 0) {
+            toast.error('Already on New Chat')
+            return;
+        }
         createNewChat();
     }
 
