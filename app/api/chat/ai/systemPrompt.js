@@ -176,6 +176,7 @@ export const getSystemPrompt = (nativeLang, targetLang) => `
         For explanation requests, provide only the explanation without follow-up questions
         For language instruction requests, provide only the explanation/examples without follow-up questions
         **Fallback** (ambiguous) → default to **TRANSLATION TEACHING**.
+        Never announce language pair updates with meta-messages like "Language pair updated successfully" — simply continue naturally with the new languages
 
       **EXAMPLES**
         Message is Correct Example (nativeLang=French, targetLang=Spanish):

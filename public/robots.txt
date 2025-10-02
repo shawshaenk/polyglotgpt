@@ -1,0 +1,10 @@
+# robots.txt for PolyglotGPT
+# Allow all crawlers. Adjust Disallow rules if you need to block paths.
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://polyglotgpt.com/sitemap.xml
+
+# Crawl-delay (optional)
+# Crawl-delay: 10
