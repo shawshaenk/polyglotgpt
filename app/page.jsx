@@ -11,20 +11,22 @@ import { useAuth, useClerk } from "@clerk/nextjs";
 import menu_icon from '@/assets/menu_icon.svg';
 import chat_icon from '@/assets/chat_icon.svg';
 import translate_icon from '@/assets/translate_icon.svg';
+import broom_icon from '@/assets/broom_icon.svg';
 import polyglotgpt_logo from '@/assets/polyglotgpt_logo.png';
 
 const assets = {
   menu_icon,
   chat_icon,
   translate_icon,
-  polyglotgpt_logo
+  polyglotgpt_logo,
+  broom_icon
 };
 
 export default function Home() {
   const [expand, setExpand] = useState(true)
   const [messages, setMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const {selectedChat, chatButtonAction} = useAppContext()
+  const {selectedChat, chatButtonAction, clearChat} = useAppContext()
   const containerRef = useRef(null)
 
   const { isSignedIn, isLoaded } = useAuth();
@@ -84,6 +86,15 @@ export default function Home() {
     }
   },[messages])
 
+  const clearMessages = async () => {
+    if (!selectedChat) return;
+    
+    const confirmed = window.confirm("Are you sure you want to clear all messages in this chat?");
+    if (!confirmed) return;
+
+    clearChat();
+  };
+
   return (
     <div>
       <Analytics/>
@@ -104,12 +115,21 @@ export default function Home() {
                 <p className="text-3xl font-medium">PolyglotGPT</p>
               </div>
               <p className="text-lg mt-2">What language do you want to learn today?</p>
-              <a href="https://www.loom.com/share/fe7c88ef0cd24bcabd40f41c09e11e36?sid=4ef5308a-fb07-47e0-961f-ed62e7e69d1d" target="_blank" rel="noopener noreferrer" className="text-base mt-2 underline mt-1">Click for a Demo Video</a>
+              <a href="https://www.loom.com/share/fe7c88ef0cd24bcabd40f41c09e11e36?sid=4ef5308a-fb07-47e0-961f-ed62e7e69d1d" target="_blank" rel="noopener noreferrer" className="text-base mt-2 underline mt-1">Demo Video</a>
             </div>
           ):
           (
           <div className="relative flex flex-col items-center justify-start w-full mt-20 max-h-screen overflow-y-auto pb-35" ref={containerRef}>
-          <p className="fixed top-8 border border-transparent hover:border-gray-500/50 py-1 px-2 rounded-lg font-semibold mb-6">{selectedChat.name}</p>
+          <div className="fixed top-8 flex items-center gap-2">
+            <p className="border border-transparent hover:border-gray-500/50 py-1 px-2 rounded-lg font-semibold">{selectedChat.name}</p>
+            <Image 
+              src={assets.broom_icon} 
+              alt="Clear chat" 
+              title="Clear All Messages in Chat"
+              onClick={clearMessages}
+              className="w-5 select-none cursor-pointer hover:opacity-80 -ml-1.5 -mt-0.5" 
+            />
+          </div>
           {messages.map((msg, index)=> {
             const relevantUserMessage = msg.content;
             return (

@@ -148,6 +148,60 @@ export const AppContextProvider = ({children})=>{
         }
     };
 
+    const clearChat = async () => {
+        let toastId;
+
+        toastId = toast.loading("Clearing Chat...");
+
+        if (!isSignedIn) {
+          // GUEST / LOCAL chat
+          const tempChat = {
+            _id: selectedChat._id,
+            name: selectedChat.name,
+            messages: [],
+            nativeLang,
+            targetLang,
+            isLocal
+          };
+          setChats(prev => {
+              const exists = prev.some(c => c._id === tempChat._id);
+              if (exists) {
+                  return prev.map(c => c._id === tempChat._id ? tempChat : c);
+              }
+              return [...prev, tempChat];
+          });
+          setSelectedChat(tempChat);
+          return;
+        }
+
+        try {
+
+            const token = await getToken();
+
+            const { data } = await axios.post('/api/chat/clear',
+            { chatId: selectedChat._id },
+            {
+                headers: {
+                Authorization: `Bearer ${token}`,
+                },
+            }
+            );
+
+            console.log("Chat Cleared:", data);
+
+            setSelectedChat(prev => ({...prev, messages: []}));
+            setChats(prev => prev.map(chat => 
+            chat._id === selectedChat._id 
+                ? {...chat, messages: []} 
+                : chat
+            ));
+
+            toast.success('Chat Cleared!', { id: toastId })
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
     const fetchUsersChats = async (showLoading = false) => {
         let toastId;
 
@@ -228,6 +282,7 @@ export const AppContextProvider = ({children})=>{
         setSelectedChat,
         fetchUsersChats,
         createNewChat, 
+        clearChat,
         chatButtonAction, 
         prevNativeLang,
         setPrevNativeLang,
