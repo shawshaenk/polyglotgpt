@@ -6,13 +6,15 @@ import axios from 'axios';
 import { sendPromptHandler } from '@/app/utils/sendPromptHandler';
 
 import arrow_icon from '@/assets/arrow_icon.svg';
+import square_icon from '@/assets/square_icon.svg';
 
 const assets = {
   arrow_icon,
+  square_icon
 };
 
 const PromptBox = ({setIsLoading}) => {
-    const {user, setChats, selectedChat, setSelectedChat, prevNativeLang, setPrevNativeLang, nativeLang, setNativeLang, prevTargetLang, setPrevTargetLang, targetLang, setTargetLang, languageList, fetchUsersChats, prompt, setPrompt, editingMessage, setEditingMessage, editingMessageIndex, setEditingMessageIndex} = useAppContext();
+    const {user, setChats, selectedChat, setSelectedChat, prevNativeLang, setPrevNativeLang, nativeLang, setNativeLang, prevTargetLang, setPrevTargetLang, targetLang, setTargetLang, languageList, fetchUsersChats, prompt, setPrompt, editingMessage, setEditingMessage, editingMessageIndex, setEditingMessageIndex, isGenerating, startResponse, stopResponse} = useAppContext();
     const textareaRef = useRef(null);
 
     const handleKeyDown = async (e) => {
@@ -50,7 +52,9 @@ const PromptBox = ({setIsLoading}) => {
             targetLang,
             fetchUsersChats,
             editingMessage,
-            messageIndex: editingMessageIndex
+            messageIndex: editingMessageIndex,
+            startResponse,
+            stopResponse
         });
 
         setEditingMessage(false);
@@ -190,9 +194,19 @@ const PromptBox = ({setIsLoading}) => {
                 </div>
             </div>
 
-            <button className={` ${prompt ? "bg-primary" : "bg-[#3a3a3a]"}
+            <button type="button" onClick={() => {
+                // if generating, stop; otherwise submit form
+                if (isGenerating) {
+                    stopResponse && stopResponse();
+                } else {
+                    // submit
+                    // create a fake event to satisfy handler
+                    const fakeEvent = { preventDefault: () => {} };
+                    sendPrompt(fakeEvent);
+                }
+            }} className={` ${prompt || isGenerating ? "bg-primary" : "bg-[#3a3a3a]"}
                 rounded-full p-2 cursor-pointer`}>
-                    <Image className="w-3.5 aspect-square select-none" src={assets.arrow_icon} alt=''/>
+                    <Image className="w-3.5 aspect-square select-none" src={!isGenerating ? assets.arrow_icon : assets.square_icon} alt=''/>
             </button>
         </div>
     </form>

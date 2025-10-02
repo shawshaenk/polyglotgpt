@@ -25,6 +25,10 @@ export const AppContextProvider = ({children})=>{
     const [editingMessage, setEditingMessage] = useState(false);
     const [editingMessageIndex, setEditingMessageIndex] = useState(null);
 
+    // Abort controller & generation state for "Stop Response"
+    const [isGenerating, setIsGenerating] = useState(false);
+    const generationControllerRef = useRef(null);
+
     const allChatIds = chats.map(chat => chat._id);
 
     const languageList = [
@@ -251,7 +255,7 @@ export const AppContextProvider = ({children})=>{
               messages:  [],
               nativeLang,
               targetLang,
-              isLocal:   true
+              isLocal: true
             };
             setChats([temp]);
             setSelectedChat(temp);
@@ -275,9 +279,44 @@ export const AppContextProvider = ({children})=>{
     }
     }, [selectedChat]);
 
+    // Start a response generation: create an AbortController and return its signal
+    const startResponse = () => {
+        // abort any previous controller just in case
+        if (generationControllerRef.current) {
+            try { generationControllerRef.current.abort(); } catch (e) { }
+        }
+        const controller = new AbortController();
+        generationControllerRef.current = controller;
+        setIsGenerating(true);
+        return controller.signal;
+    };
+
+    // Stop the in-flight response generation
+    const stopResponse = () => {
+        if (generationControllerRef.current) {
+            try { generationControllerRef.current.abort(); } catch (e) { }
+            generationControllerRef.current = null;
+        }
+        setIsGenerating(false);
+        // optionally clear loading toasts
+        try { toast.dismiss(); } catch (e) { }
+    };
+
+    // cleanup on unmount
+    useEffect(() => {
+        return () => {
+            if (generationControllerRef.current) {
+                try { generationControllerRef.current.abort(); } catch (e) { }
+            }
+        };
+    }, []);
+
     const value = {
         user,
         chats,
+        isGenerating,
+        startResponse,
+        stopResponse,
         setChats,
         selectedChat,
         setSelectedChat,

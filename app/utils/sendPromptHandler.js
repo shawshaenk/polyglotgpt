@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
+
 let isProcessing = false;
 
 export const sendPromptHandler = async ({
@@ -22,7 +23,9 @@ export const sendPromptHandler = async ({
   regenerate=false,
   relevantUserMessage,
   editingMessage=false,
-  messageIndex
+  messageIndex,
+  startResponse,
+  stopResponse
 }) => {
   if (isProcessing) {
     toast.error("Another Message in Progress");
@@ -122,7 +125,15 @@ export const sendPromptHandler = async ({
       payload.isLocal = true;
     }
 
-    const { data } = await axios.post('/api/chat/ai', payload);
+    // If provided, start response generation and get abort signal
+    let signal;
+    try {
+      signal = startResponse ? startResponse() : undefined;
+    } catch (err) {
+      // ignore
+    }
+    const axiosConfig = signal ? { signal } : {};
+    const { data } = await axios.post('/api/chat/ai', payload, axiosConfig);
 
     if (data.success) {
       const fullAssistantMessage = {
@@ -152,10 +163,37 @@ export const sendPromptHandler = async ({
       setPrompt(promptCopy);
     }
   } catch (error) {
-    toast.error(error.message);
+    // If request was aborted, axios throws a CanceledError with code 'ERR_CANCELED'
+    const isCanceled = error?.code === 'ERR_CANCELED' || error?.name === 'CanceledError' || error?.message === 'canceled';
+    
+    if (isCanceled) {
+      // Add "Response Aborted" message to the chat
+      const abortMessage = {
+        role: 'model',
+        content: '*Response Aborted*',
+        timestamp: Date.now(),
+      };
+
+      setChats((prevChats) =>
+        prevChats.map((chat) =>
+          chat._id === selectedChat._id
+            ? { ...chat, messages: [...chat.messages, abortMessage] }
+            : chat
+        )
+      );
+
+      setSelectedChat((prev) => ({
+        ...prev,
+        messages: [...prev.messages, abortMessage],
+      }));
+    } else {
+      toast.error(error.message);
+    }
+    
     setPrompt(promptCopy);
   } finally {
     setIsLoading(false);
+    try { if (stopResponse) stopResponse(); } catch (e) {}
     isProcessing = false;
   }
 };
