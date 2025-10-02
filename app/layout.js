@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "PolyglotGPT",
-  description: "Conversational AI to Learn 40+ Languages",
+  description: "Conversational AI to Learn 50+ Languages",
   keywords: [
     "language learning",
     "AI language learning",
@@ -31,7 +31,7 @@ export const metadata = {
   metadataBase: new URL("https://polyglotgpt.com"),
   openGraph: {
     title: "PolyglotGPT",
-    description: "Conversational AI to Learn 40+ Languages",
+    description: "Conversational AI to Learn 50+ Languages",
     url: "https://polyglotgpt.com",
     siteName: "PolyglotGPT",
     images: [
@@ -46,7 +46,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "PolyglotGPT",
-    description: "Conversational AI to Learn 40+ Languages",
+    description: "Conversational AI to Learn 50+ Languages",
     images: ["/polyglotgpt_logo.png"],
   },
   robots: {
