@@ -126,7 +126,7 @@ export default function Home() {
           (
           <div className="relative flex flex-col items-center justify-start w-full mt-20 max-h-screen overflow-y-auto pb-35" ref={containerRef}>
           <div className="fixed top-8 flex items-center gap-2">
-            <p className="border border-transparent hover:border-gray-500/50 py-1 px-2 rounded-lg font-semibold">{selectedChat.name}</p>
+            <p className="border border-transparent py-1 px-2 rounded-lg font-semibold">{selectedChat.name}</p>
             <Image 
               src={assets.broom_icon} 
               alt="Clear chat" 
