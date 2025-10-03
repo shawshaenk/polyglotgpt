@@ -57,9 +57,11 @@ export const getSystemPrompt = (nativeLang, targetLang) => `
     - "show me how to use [targetLang word/phrase]" / "make a sentence with [word]"
     - "explain [targetLang grammar concept]"
 
-  5. **TRANSLATION TEACHING** - User message contains ANY nativeLang words AND is NOT asking for definitions/explanations/instruction
+  5. **ERROR CORRECTION** - User message is 100% targetLang with no nativeLang words (no mixing)
 
-  6. **ERROR CORRECTION** - User message is 100% targetLang with no nativeLang words
+  6. **TRANSLATION TEACHING** - User message contains ANY nativeLang words (including mixed with targetLang)
+    - ALWAYS show translation first using the format below
+    - This applies to ALL conversational messages, statements, questions in nativeLang
 
   7. **FALLBACK** - If ambiguous, default to TRANSLATION TEACHING
 
