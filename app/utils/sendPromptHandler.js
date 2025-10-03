@@ -187,9 +187,8 @@ export const sendPromptHandler = async ({
       }));
     } else {
       toast.error(error.message);
+      setPrompt(promptCopy);
     }
-    
-    setPrompt(promptCopy);
   } finally {
     setIsLoading(false);
     try { if (stopResponse) stopResponse(); } catch (e) {}

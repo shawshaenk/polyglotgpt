@@ -80,11 +80,6 @@ const PromptBox = ({setIsLoading}) => {
     setSelectedChat,
     setChats
     }) {
-        // if (selectedChat.messages.length > 0 && user) {
-        //     toast.error('Create new chat to change languages')
-        //     return;
-        // }
-
         if (langType === "nativeLang") {
             setPrevNativeLang(nativeLang);
             setNativeLang(value);
@@ -107,7 +102,6 @@ const PromptBox = ({setIsLoading}) => {
             )
         );
 
-        // Persist to backend
         if (user) {
             try {
                 await axios.patch('/api/chat/update-langs', {
@@ -195,12 +189,9 @@ const PromptBox = ({setIsLoading}) => {
             </div>
 
             <button type="button" onClick={() => {
-                // if generating, stop; otherwise submit form
                 if (isGenerating) {
                     stopResponse && stopResponse();
                 } else {
-                    // submit
-                    // create a fake event to satisfy handler
                     const fakeEvent = { preventDefault: () => {} };
                     sendPrompt(fakeEvent);
                 }
