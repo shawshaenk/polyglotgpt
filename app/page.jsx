@@ -7,6 +7,7 @@ import Message from "@/components/Message";
 import { useAppContext } from "@/context/AppContext";
 import { Analytics } from '@vercel/analytics/next';
 import { useAuth, useClerk } from "@clerk/nextjs";
+import { toast } from 'react-hot-toast';
 
 import menu_icon from '@/assets/menu_icon.svg';
 import chat_icon from '@/assets/chat_icon.svg';
@@ -26,7 +27,7 @@ export default function Home() {
   const [expand, setExpand] = useState(true)
   const [messages, setMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const {selectedChat, chatButtonAction, clearChat} = useAppContext()
+  const {selectedChat, chatButtonAction, clearChat, isGenerating} = useAppContext()
   const containerRef = useRef(null)
 
   const { isSignedIn, isLoaded } = useAuth();
@@ -87,6 +88,10 @@ export default function Home() {
   },[messages])
 
   const clearMessages = async () => {
+    if (isGenerating) {
+        toast.error("Response in Progress")
+        return;
+    }
     if (!selectedChat) return;
     
     const confirmed = window.confirm("Are you sure you want to clear all messages in this chat?");

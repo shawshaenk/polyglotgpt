@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
-import { useClerk, useAuth, UserButton } from "@clerk/nextjs";
+import { useClerk, UserButton } from "@clerk/nextjs";
 import { useAppContext } from '@/context/AppContext';
+import { toast } from 'react-hot-toast';
 
 import menu_icon from '@/assets/menu_icon.svg';
 import sidebar_icon from '@/assets/sidebar_icon.svg';
@@ -11,7 +12,6 @@ import chat_icon from '@/assets/chat_icon.svg';
 import profile_icon from '@/assets/profile_icon.svg';
 import delete_icon from '@/assets/delete_icon.svg';
 import ChatLabel from './ChatLabel';
-import toast from 'react-hot-toast';
 import axios from 'axios';
 
 const assets = {
@@ -24,11 +24,16 @@ const assets = {
 
 const Sidebar = ({ expand, setExpand }) => {
   const {openSignIn} = useClerk()
-  const {user, chats, chatButtonAction, fetchUsersChats, allChatIds} = useAppContext()
+  const {user, chats, chatButtonAction, fetchUsersChats, allChatIds, isGenerating} = useAppContext()
   const [openMenu, setOpenMenu] = useState({id: 0, open: false})
   const sidebarRef = useRef(null)
 
   const deleteAllChats = async () => {
+    if (isGenerating) {
+        toast.error("Response in Progress")
+        return;
+    }
+
     try {
       const confirm = window.confirm("Are you sure you want to delete ALL CHATS?");
       if (!confirm) return;
