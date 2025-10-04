@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 
 dotenv.config();
@@ -7,9 +7,9 @@ dotenv.config();
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
 export async function POST(req) {
-    const { romanizedTextCopy } = await req.json();
+  const { romanizedTextCopy } = await req.json();
 
-    const systemPrompt = `
+  const systemPrompt = `
     You are a highly precise text processing system. Your SOLE task is to perform a **character-by-character Latin transliteration of ONLY the non-Latin characters** within the provided input, using the **standard transliteration system appropriate for each language**, including all necessary diacritics and phonetic markers.
 
     ## ABSOLUTE, NON-NEGOTIABLE RULES:
@@ -39,22 +39,22 @@ export async function POST(req) {
     7. Existing Latin characters and existing transliterations (if any) must remain untouched.  
       Only perform transliteration on characters that are *currently* non-Latin.
 
-    8. When in doubt, follow the **internationally recognized or ISO transliteration standard for the language** to ensure diacritics correctly represent the original sounds.`
+    8. When in doubt, follow the **internationally recognized or ISO transliteration standard for the language** to ensure diacritics correctly represent the original sounds.`;
 
-    const result = await ai.models.generateContent({
-          model: "gemini-2.5-flash",
-          contents: romanizedTextCopy,
-          config: {
-            thinkingConfig: {
-              thinkingBudget: 0,
-            },
-            systemInstruction: systemPrompt,
-          }
-        });
-    console.dir(result, { depth: null });
+  const result = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: romanizedTextCopy,
+    config: {
+      thinkingConfig: {
+        thinkingBudget: 0,
+      },
+      systemInstruction: systemPrompt,
+    },
+  });
+  console.dir(result, { depth: null });
 
-    const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!aiReply) throw new Error("No reply from Gemini");
+  const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!aiReply) throw new Error("No reply from Gemini");
 
-    return NextResponse.json({ success: true, response: aiReply });
+  return NextResponse.json({ success: true, response: aiReply });
 }

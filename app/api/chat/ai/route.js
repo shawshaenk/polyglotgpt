@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 import dotenv from "dotenv";
 import connectDB from "@/config/db";
-import { getSystemPrompt } from './systemPrompt.js';
+import { getSystemPrompt } from "./systemPrompt.js";
 
 dotenv.config();
 
@@ -20,15 +20,27 @@ export async function POST(req) {
     userId = getAuth(req).userId;
     const requestBody = await req.json();
     ({ chatId, isLocal } = requestBody);
-    const { prompt, nativeLang, targetLang, languagesUpdated, messages, regenerate, editingMessage, messageIndex } = requestBody;
+    const {
+      prompt,
+      nativeLang,
+      targetLang,
+      languagesUpdated,
+      messages,
+      regenerate,
+      editingMessage,
+      messageIndex,
+    } = requestBody;
 
     // Check if request is already aborted
     if (req.signal?.aborted) {
-      return NextResponse.json({ 
-        success: false, 
-        message: "Request was aborted",
-        aborted: true 
-      }, { status: 499 });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Request was aborted",
+          aborted: true,
+        },
+        { status: 499 }
+      );
     }
 
     let userMessages = [];
@@ -47,7 +59,11 @@ export async function POST(req) {
         }
       }
       if (!regenerate) {
-        chatDoc.messages.push({ role: "user", content: prompt, timestamp: Date.now() });
+        chatDoc.messages.push({
+          role: "user",
+          content: prompt,
+          timestamp: Date.now(),
+        });
       }
       await chatDoc.save();
       userMessages = chatDoc.messages;
@@ -59,7 +75,7 @@ export async function POST(req) {
       const languageChangeMessage = {
         role: "user",
         content: `Language pair has been updated. My native language is now ${nativeLang} and my target language is now ${targetLang}. Forget all previous language settings and instructions and follow the new system rules strictly.`,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       const lastUserPrompt = messagesForGemini.pop();
@@ -67,28 +83,31 @@ export async function POST(req) {
     }
 
     const formattedMessages = messagesForGemini
-    .filter(m => m?.content && m.content.trim().length > 0)
-    .map(m => ({
-      role: m.role === "model" ? "model" : "user",
-      parts: [{ text: m.content }],
-    }));
+      .filter((m) => m?.content && m.content.trim().length > 0)
+      .map((m) => ({
+        role: m.role === "model" ? "model" : "user",
+        parts: [{ text: m.content }],
+      }));
 
     console.log(JSON.stringify(formattedMessages, null, 2));
 
     // Check again before making the API call
     if (req.signal?.aborted) {
-      return NextResponse.json({ 
-        success: false, 
-        message: "Request was aborted",
-        aborted: true 
-      }, { status: 499 });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Request was aborted",
+          aborted: true,
+        },
+        { status: 499 }
+      );
     }
 
     // Create a promise that rejects when the request is aborted
     const abortPromise = new Promise((_, reject) => {
       if (req.signal) {
-        req.signal.addEventListener('abort', () => {
-          reject(new Error('Request aborted by client'));
+        req.signal.addEventListener("abort", () => {
+          reject(new Error("Request aborted by client"));
         });
       }
     });
@@ -106,7 +125,7 @@ export async function POST(req) {
           systemInstruction: systemPrompt,
         },
       }),
-      abortPromise
+      abortPromise,
     ]);
 
     const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -125,12 +144,12 @@ export async function POST(req) {
     return NextResponse.json({ success: true, response: aiReply });
   } catch (err) {
     // Check if error is due to abort
-    if (err.message === 'Request aborted by client' || req.signal?.aborted) {
+    if (err.message === "Request aborted by client" || req.signal?.aborted) {
       const abortMessage = "*Response Aborted*";
-      
+
       // Save abort message to DB for logged-in users
       const { userId } = getAuth(req);
-      
+
       if (!isLocal) {
         try {
           const chatDoc = await Chat.findOne({ userId, _id: chatId });
@@ -144,12 +163,15 @@ export async function POST(req) {
           console.error("Error saving abort message:", saveErr);
         }
       }
-      
-      return NextResponse.json({ 
-        success: true, 
-        response: abortMessage,
-        aborted: true 
-      }, { status: 200 });
+
+      return NextResponse.json(
+        {
+          success: true,
+          response: abortMessage,
+          aborted: true,
+        },
+        { status: 200 }
+      );
     }
     return NextResponse.json({ success: false, message: err.message });
   }

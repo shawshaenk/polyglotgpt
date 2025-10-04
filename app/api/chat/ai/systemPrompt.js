@@ -319,4 +319,4 @@ export const getSystemPrompt = (nativeLang, targetLang) => `
   Yes, you could also say "అది నాకు సంభాషణ విలువను నేర్పించింది" - this is a completely correct sentence.
 
   "సంభాషణ" is a proper word for "conversation." Both "నేర్పించింది" and "నేర్పింది" are correct past tense forms of "to teach." "నేర్పించింది" is the fuller form while "నేర్పింది" is more common and slightly shorter - both are used in practice.
-`
+`;

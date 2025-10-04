@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 
 dotenv.config();
@@ -7,9 +7,9 @@ dotenv.config();
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
 export async function POST(req) {
-    const { translatedTextCopy, nativeLang } = await req.json();
+  const { translatedTextCopy, nativeLang } = await req.json();
 
-    const systemPrompt = `
+  const systemPrompt = `
     You are an EXTREMELY PRECISE text processing system. Your SOLE purpose is to transform the provided input text by translating only the non-${nativeLang} segments, while preserving EVERYTHING else exactly as it is.
 
     ABSOLUTE, NON-NEGOTIABLE RULES:
@@ -19,22 +19,22 @@ export async function POST(req) {
     4.  For all other segments (i.e., text that is NOT in ${nativeLang}), you **MUST translate ONLY those segments** into natural, fluent **${nativeLang}**. Substitute the translated text directly into the exact position of the original non-${nativeLang} text.
     5.  **Respond ONLY with the complete, modified text.** Do NOT add any explanations, comments, preambles, postambles, or extra formatting of any kind.
 
-    Your final response must be the full original input text, with the *only* changes being the in-place translation of non-${nativeLang} segments.`
+    Your final response must be the full original input text, with the *only* changes being the in-place translation of non-${nativeLang} segments.`;
 
-    const result = await ai.models.generateContent({
-          model: "gemini-2.5-flash",
-          contents: translatedTextCopy,
-          config: {
-            thinkingConfig: {
-              thinkingBudget: 0,
-            },
-            systemInstruction: systemPrompt,
-          }
-        });
-    console.dir(result, { depth: null });
+  const result = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: translatedTextCopy,
+    config: {
+      thinkingConfig: {
+        thinkingBudget: 0,
+      },
+      systemInstruction: systemPrompt,
+    },
+  });
+  console.dir(result, { depth: null });
 
-    const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!aiReply) throw new Error("No reply from Gemini");
+  const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!aiReply) throw new Error("No reply from Gemini");
 
-    return NextResponse.json({ success: true, response: aiReply });
+  return NextResponse.json({ success: true, response: aiReply });
 }

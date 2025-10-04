@@ -81,7 +81,10 @@ export default function RootLayout({ children }) {
         <html lang="en">
           <head>
             {/* Basic meta tags for improved SEO & social sharing */}
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
             <meta name="description" content={metadata.description} />
             <meta name="keywords" content={metadata.keywords.join(", ")} />
             <link rel="icon" href="/favicon.ico" />
@@ -89,10 +92,14 @@ export default function RootLayout({ children }) {
               type="application/ld+json"
               // dangerouslySetInnerHTML is not available in server components the same way;
               // we'll output JSON-LD by embedding it as a string inside a script tag.
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgJSONLD) }}
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(schemaOrgJSONLD),
+              }}
             />
           </head>
-          <body className={`${inter.variable} ${geistMono.variable} antialiased`}>
+          <body
+            className={`${inter.variable} ${geistMono.variable} antialiased`}
+          >
             <Toaster
               toastOptions={{
                 success: {

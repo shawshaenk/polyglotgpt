@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { toast } from 'react-hot-toast';
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 let isProcessing = false;
 
@@ -19,12 +19,12 @@ export const sendPromptHandler = async ({
   setPrevTargetLang,
   targetLang,
   fetchUsersChats,
-  regenerate=false,
+  regenerate = false,
   relevantUserMessage,
-  editingMessage=false,
+  editingMessage = false,
   messageIndex,
   startResponse,
-  stopResponse
+  stopResponse,
 }) => {
   if (isProcessing) {
     toast.error("Another Message in Progress");
@@ -42,13 +42,13 @@ export const sendPromptHandler = async ({
       promptCopy = relevantUserMessage;
     }
 
-    if (!prompt && !regenerate) return toast.error('Enter a Prompt');
+    if (!prompt && !regenerate) return toast.error("Enter a Prompt");
 
     setIsLoading(true);
-    setPrompt('');
-    
+    setPrompt("");
+
     const userPrompt = {
-      role: 'user',
+      role: "user",
       content: prompt,
       timestamp: Date.now(),
     };
@@ -61,7 +61,7 @@ export const sendPromptHandler = async ({
             : chat
         )
       );
-  
+
       setSelectedChat((prev) => ({
         ...prev,
         messages: [...(prev?.messages || []), userPrompt],
@@ -84,7 +84,7 @@ export const sendPromptHandler = async ({
       } else if (editingMessage) {
         updatedMessages = [
           ...selectedChat.messages.slice(0, messageIndex),
-          userPrompt
+          userPrompt,
         ];
       }
 
@@ -111,7 +111,7 @@ export const sendPromptHandler = async ({
       languagesUpdated,
       regenerate,
       editingMessage,
-      messageIndex
+      messageIndex,
     };
 
     // Local (not logged in) chat sends full history
@@ -132,11 +132,11 @@ export const sendPromptHandler = async ({
       // ignore
     }
     const axiosConfig = signal ? { signal } : {};
-    const { data } = await axios.post('/api/chat/ai', payload, axiosConfig);
+    const { data } = await axios.post("/api/chat/ai", payload, axiosConfig);
 
     if (data.success) {
       const fullAssistantMessage = {
-        role: 'model',
+        role: "model",
         content: data.response,
         timestamp: Date.now(),
       };
@@ -163,13 +163,16 @@ export const sendPromptHandler = async ({
     }
   } catch (error) {
     // If request was aborted, axios throws a CanceledError with code 'ERR_CANCELED'
-    const isCanceled = error?.code === 'ERR_CANCELED' || error?.name === 'CanceledError' || error?.message === 'canceled';
-    
+    const isCanceled =
+      error?.code === "ERR_CANCELED" ||
+      error?.name === "CanceledError" ||
+      error?.message === "canceled";
+
     if (isCanceled) {
       // Add "Response Aborted" message to the chat
       const abortMessage = {
-        role: 'model',
-        content: '*Response Aborted*',
+        role: "model",
+        content: "*Response Aborted*",
         timestamp: Date.now(),
       };
 
@@ -191,7 +194,9 @@ export const sendPromptHandler = async ({
     }
   } finally {
     setIsLoading(false);
-    try { if (stopResponse) stopResponse(); } catch (e) {}
+    try {
+      if (stopResponse) stopResponse();
+    } catch (e) {}
     isProcessing = false;
   }
 };

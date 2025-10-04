@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import { NextResponse } from 'next/server';
-import { TextToSpeechClient } from '@google-cloud/text-to-speech';
+import { NextResponse } from "next/server";
+import { TextToSpeechClient } from "@google-cloud/text-to-speech";
 
 dotenv.config();
 
@@ -67,7 +67,9 @@ export function getTTSLanguageCode(code) {
 function getGoogleCredentials() {
   const base64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
   if (!base64) {
-    throw new Error("Missing GOOGLE_APPLICATION_CREDENTIALS_BASE64 environment variable.");
+    throw new Error(
+      "Missing GOOGLE_APPLICATION_CREDENTIALS_BASE64 environment variable."
+    );
   }
 
   try {
@@ -80,39 +82,39 @@ function getGoogleCredentials() {
 }
 
 export async function POST(req) {
-    const { speakTextCopy, targetLang } = await req.json();
+  const { speakTextCopy, targetLang } = await req.json();
 
-    const credentials = getGoogleCredentials();
+  const credentials = getGoogleCredentials();
 
-    const client = new TextToSpeechClient({
-      credentials: credentials, // Pass the credentials object directly
-    });
+  const client = new TextToSpeechClient({
+    credentials: credentials, // Pass the credentials object directly
+  });
 
-    const text = speakTextCopy.replace(/[*_~`#>[\]()→-]/g, '');
-    const languageCode = getTTSLanguageCode(targetLang);
+  const text = speakTextCopy.replace(/[*_~`#>[\]()→-]/g, "");
+  const languageCode = getTTSLanguageCode(targetLang);
 
-    const request = {
-      input: { text },
-      voice: {
-        languageCode,
-        ssmlGender: 'NEUTRAL',
-      },
-      audioConfig: {
-        audioEncoding: 'MP3',
-        speakingRate: 0.8,
-        pitch: 0,
-        volumeGainDb: 0,
-      },
-    };
+  const request = {
+    input: { text },
+    voice: {
+      languageCode,
+      ssmlGender: "NEUTRAL",
+    },
+    audioConfig: {
+      audioEncoding: "MP3",
+      speakingRate: 0.8,
+      pitch: 0,
+      volumeGainDb: 0,
+    },
+  };
 
-    const [response] = await client.synthesizeSpeech(request);
-    
-    // Convert audio content to base64
-    const audioBase64 = response.audioContent.toString('base64');
-    
-    return NextResponse.json({
-      success: true,
-      audioContent: audioBase64,
-      contentType: 'audio/mp3'
-    });
+  const [response] = await client.synthesizeSpeech(request);
+
+  // Convert audio content to base64
+  const audioBase64 = response.audioContent.toString("base64");
+
+  return NextResponse.json({
+    success: true,
+    audioContent: audioBase64,
+    contentType: "audio/mp3",
+  });
 }
