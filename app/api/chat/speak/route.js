@@ -18,7 +18,6 @@ const googleTTSLanguageMap = {
   da: "da-DK", // Danish
   nl: "nl-NL", // Dutch
   en: "en-US", // English
-  et: "et-EE", // Estonian
   fi: "fi-FI", // Finnish
   fr: "fr-FR", // French
   gl: "gl-ES", // Galician
@@ -48,16 +47,16 @@ const googleTTSLanguageMap = {
   sk: "sk-SK", // Slovak
   sl: "sl-SI", // Slovenian
   es: "es-ES", // Spanish
-  sw: "sw-KE", // Swahili
   sv: "sv-SE", // Swedish
   ta: "ta-IN", // Tamil
   te: "te-IN", // Telugu
   th: "th-TH", // Thai
   tr: "tr-TR", // Turkish
   uk: "uk-UA", // Ukrainian
-  ur: "ur-IN", // Urdu
   vi: "vi-VN", // Vietnamese
   yue: "yue-HK", // Cantonese
+  fil: "fil-PH", // Filipino
+  pa: "pa-IN" // Punjabi
 };
 
 export function getTTSLanguageCode(code) {

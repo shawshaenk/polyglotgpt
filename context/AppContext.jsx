@@ -43,7 +43,6 @@ export const AppContextProvider = ({ children }) => {
     { code: "eu", label: "Basque" },
     { code: "bn", label: "Bengali" },
     { code: "bg", label: "Bulgarian" },
-    { code: "yue", label: "Cantonese" },
     { code: "ca", label: "Catalan" },
     { code: "zh-CN", label: "Chinese (Simplified)" },
     { code: "zh-TW", label: "Chinese (Traditional)" },
@@ -52,7 +51,6 @@ export const AppContextProvider = ({ children }) => {
     { code: "da", label: "Danish" },
     { code: "nl", label: "Dutch" },
     { code: "en", label: "English" },
-    { code: "et", label: "Estonian" },
     { code: "fi", label: "Finnish" },
     { code: "fr", label: "French" },
     { code: "gl", label: "Galician" },
@@ -82,15 +80,16 @@ export const AppContextProvider = ({ children }) => {
     { code: "sk", label: "Slovak" },
     { code: "sl", label: "Slovenian" },
     { code: "es", label: "Spanish" },
-    { code: "sw", label: "Swahili" },
     { code: "sv", label: "Swedish" },
     { code: "ta", label: "Tamil" },
     { code: "te", label: "Telugu" },
     { code: "th", label: "Thai" },
     { code: "tr", label: "Turkish" },
     { code: "uk", label: "Ukrainian" },
-    { code: "ur", label: "Urdu" },
     { code: "vi", label: "Vietnamese" },
+    { code: "yue", label: "Cantonese" },
+    { code: "fil", label: "Filipino" },
+    { code: "pa", label: "Punjabi" }
   ];
 
   const { isSignedIn } = useAuth();
