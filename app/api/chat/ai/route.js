@@ -117,7 +117,7 @@ export async function POST(req) {
     // Race between the API call and the abort signal
     const result = await Promise.race([
       ai.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-2.5-flash-preview-09-2025",
         contents: formattedMessages,
         config: {
           temperature: 2.0,
