@@ -58,6 +58,14 @@ const PromptBox = ({ setIsLoading }) => {
     }
   }, [prompt]);
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [prompt]);
+
+
   const sendPrompt = (e) => {
     sendPromptHandler({
       e,
