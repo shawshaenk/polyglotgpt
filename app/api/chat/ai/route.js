@@ -117,7 +117,7 @@ export async function POST(req) {
     // Race between the API call and the abort signal
     const result = await Promise.race([
       ai.models.generateContent({
-        model: "gemini-2.5-flash-preview-09-2025",
+        model: "gemini-2.5-flash",
         contents: formattedMessages,
         config: {
           temperature: 2.0,
@@ -142,37 +142,43 @@ export async function POST(req) {
     }
 
     return NextResponse.json({ success: true, response: aiReply });
-  } catch (err) {
-    // Check if error is due to abort
-    if (err.message === "Request aborted by client" || req.signal?.aborted) {
-      const abortMessage = "*Response Aborted*";
+    } catch (err) {
+      // Log full error for debugging
+      console.error("Gemini API Error:", {
+        message: err.message,
+      });
 
-      // Save abort message to DB for logged-in users
-      const { userId } = getAuth(req);
+      // Check if error is due to abort
+      if (err.message === "Request aborted by client" || req.signal?.aborted) {
+        const abortMessage = "*Response Aborted*";
 
-      if (!isLocal) {
-        try {
-          const chatDoc = await Chat.findOne({ userId, _id: chatId });
-          chatDoc.messages.push({
-            role: "model",
-            content: abortMessage,
-            timestamp: Date.now(),
-          });
-          await chatDoc.save();
-        } catch (saveErr) {
-          console.error("Error saving abort message:", saveErr);
+        // Save abort message to DB for logged-in users
+        const { userId } = getAuth(req);
+
+        if (!isLocal) {
+          try {
+            const chatDoc = await Chat.findOne({ userId, _id: chatId });
+            chatDoc.messages.push({
+              role: "model",
+              content: abortMessage,
+              timestamp: Date.now(),
+            });
+            await chatDoc.save();
+          } catch (saveErr) {
+            console.error("Error saving abort message:", saveErr);
+          }
         }
+
+        return NextResponse.json(
+          {
+            success: true,
+            response: abortMessage,
+            aborted: true,
+          },
+          { status: 200 }
+        );
       }
 
-      return NextResponse.json(
-        {
-          success: true,
-          response: abortMessage,
-          aborted: true,
-        },
-        { status: 200 }
-      );
-    }
-    return NextResponse.json({ success: false, message: err.message });
+      return NextResponse.json({ success: false, message: err.message });
   }
 }
