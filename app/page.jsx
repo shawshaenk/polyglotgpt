@@ -200,7 +200,7 @@ export default function Home() {
           )}
           <PromptBox isLoading={isLoading} setIsLoading={setIsLoading} />
           <p className="text-xs absolute bottom-1 text-gray-500">
-            Powered by Gemini 2.5 Flash
+            Powered by Gemini 3 Flash
           </p>
         </div>
       </div>
