@@ -52,11 +52,11 @@ export default function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    if (isLoaded && isSignedIn === false && clerk) {
-      clerk.openSignIn();
-    }
-  }, [isSignedIn, isLoaded, clerk]);
+  // useEffect(() => {
+  //   if (isLoaded && isSignedIn === false && clerk) {
+  //     clerk.openSignIn();
+  //   }
+  // }, [isSignedIn, isLoaded, clerk]);
 
   // Handle sign-out detection and page reload
   useEffect(() => {
