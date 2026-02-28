@@ -149,9 +149,9 @@ const Sidebar = ({ expand, setExpand }) => {
           onClick={user ? null : openSignIn}
           className={`flex items-center ${
             expand
-              ? "hover:bg-white/10 rounded-lg -mb-4 transition-colors duration-100"
+              ? "hover:bg-white/10 rounded-lg -mb-4"
               : "justify-center w-full"
-          } gap-3 text-white/60 text-sm p-2 cursor-pointer`}
+          } gap-3 text-white/60 text-sm p-2 cursor-pointer transition-colors duration-100`}
         >
           {user ? (
             <UserButton />
@@ -169,7 +169,7 @@ const Sidebar = ({ expand, setExpand }) => {
               src={assets.delete_icon}
               alt=""
               title="Delete All Chats"
-              className="w-5 select-none hover:opacity-60 mb-0.5 ml-17"
+              className="w-5 select-none hover:opacity-60 mb-0.5 ml-17 transition-all duration-100"
             />
           )}
         </div>

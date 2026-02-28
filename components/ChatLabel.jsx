@@ -105,7 +105,7 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
           />
 
           <div
-            className={`absolute -right-0 top-6 bg-[#252525] rounded-xl w-max p-2 z-10 transition-opacity duration-75 ${
+            className={`absolute -right-0 top-6 bg-[#252525] rounded-xl w-max p-2 z-10 transition-opacity duration-100 ${
               openMenu.id === id && openMenu.open
                 ? "opacity-100 pointer-events-auto"
                 : "opacity-0 pointer-events-none"
@@ -113,7 +113,7 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
           >
             <div
               onClick={renameHandler}
-              className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer transition-all duration-75"
+              className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer transition-all duration-100"
             >
               <Image
                 src={assets.rename_icon}
