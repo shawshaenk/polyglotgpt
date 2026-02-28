@@ -165,7 +165,7 @@ export default function Home() {
                   alt="Clear chat"
                   title="Clear All Messages in Chat"
                   onClick={clearMessages}
-                  className="w-5 select-none cursor-pointer hover:opacity-80 -ml-1.5 -mt-0.5"
+                  className="w-5 select-none cursor-pointer hover:opacity-80 -ml-1.5 -mt-0.5 transition-all duration-100"
                 />
               </div>
               {messages.map((msg, index) => {
