@@ -190,9 +190,9 @@ export default function Home() {
                     alt="Logo"
                   />
                   <div className="loader flex justify-center items-center gap-1">
-                    <div className="w-1 h-1 rounded-full bg-white animate-bounce"></div>
-                    <div className="w-1 h-1 rounded-full bg-white animate-bounce"></div>
-                    <div className="w-1 h-1 rounded-full bg-white animate-bounce"></div>
+                    <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+                    <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+                    <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
                   </div>
                 </div>
               )}
