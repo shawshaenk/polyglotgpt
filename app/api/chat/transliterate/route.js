@@ -7,7 +7,7 @@ dotenv.config();
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
 export async function POST(req) {
-  const { romanizedTextCopy } = await req.json();
+  const { transliteratedTextCopy } = await req.json();
 
   const systemPrompt = `
     You are a highly precise text processing system. Your SOLE task is to perform a **character-by-character Latin transliteration of ONLY the non-Latin characters** within the provided input, using the **standard transliteration system appropriate for each language**, including all necessary diacritics and phonetic markers.
@@ -43,7 +43,7 @@ export async function POST(req) {
 
   const result = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
-    contents: romanizedTextCopy,
+    contents: transliteratedTextCopy,
     config: {
       thinkingConfig: {
         thinkingBudget: 0,

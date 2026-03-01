@@ -32,7 +32,7 @@ const Message = ({
   const messageWrapperRef = useRef(null);
   const popupRef = useRef(null);
   const [translatedText, setTranslatedText] = useState(null);
-  const [romanizedText, setRomanizedText] = useState(null);
+  const [transliteratedText, setRomanizedText] = useState(null);
   const [aiMessage, setAiMessage] = useState(content);
 
   // Audio control states
@@ -202,24 +202,24 @@ const Message = ({
     }
   };
 
-  const romanizeText = async () => {
-    if (romanizedText) {
-      setAiMessage(romanizedText);
-      toast.success("Romanized!");
+  const transliterateText = async () => {
+    if (transliteratedText) {
+      setAiMessage(transliteratedText);
+      toast.success("Transliterated!");
       return;
     }
 
-    const toastId = toast.loading("Romanizing...");
-    const romanizedTextCopy = content;
+    const toastId = toast.loading("Transliterating...");
+    const transliteratedTextCopy = content;
 
-    const { data } = await axios.post("/api/chat/romanize", {
-      romanizedTextCopy,
+    const { data } = await axios.post("/api/chat/transliterate", {
+      transliteratedTextCopy,
     });
 
     if (data.success) {
       setRomanizedText(data.response);
       setAiMessage(data.response);
-      toast.success("Romanized!", { id: toastId });
+      toast.success("Transliterated!", { id: toastId });
     } else {
       toast.error(data.message);
     }
@@ -393,14 +393,14 @@ const Message = ({
                     onClick={copyMessage}
                     src={assets.copy_icon}
                     alt=""
-                    className="w-4 cursor-pointer select-none"
+                    className="w-4 cursor-pointer select-none hover:opacity-60 transition-all duration-100"
                     title="Copy Message"
                   />
                   <Image
                     onClick={editMessage}
                     src={assets.rename_icon}
                     alt=""
-                    className="w-4 cursor-pointer select-none"
+                    className="w-4 cursor-pointer select-none hover:opacity-60 transition-all duration-100"
                     title="Edit Message"
                   />
                 </>
@@ -410,14 +410,14 @@ const Message = ({
                     onClick={copyMessage}
                     src={assets.copy_icon}
                     alt=""
-                    className="w-4 cursor-pointer select-none"
+                    className="w-4 cursor-pointer select-none hover:opacity-60 transition-all duration-100"
                     title="Copy Message"
                   />
                   <Image
                     onClick={regenerateMessage}
                     src={assets.regenerate_icon}
                     alt=""
-                    className="w-4 cursor-pointer select-none"
+                    className="w-4 cursor-pointer select-none hover:opacity-60 transition-all duration-100"
                     title="Regenerate Message"
                   />
                   <button
@@ -439,10 +439,10 @@ const Message = ({
                   <button
                     className="text-xs sm:text-sm cursor-pointer hover:underline select-none"
                     onClick={() => {
-                      romanizeText();
+                      transliterateText();
                     }}
                   >
-                    Romanize
+                    Transliterate
                   </button>
                   <button
                     className={`text-xs sm:text-sm cursor-pointer hover:underline select-none ${
