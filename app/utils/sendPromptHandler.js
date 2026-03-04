@@ -25,7 +25,63 @@ export const sendPromptHandler = async ({
   messageIndex,
   startResponse,
   stopResponse,
+  addPopupMessage = false,
+  AIpopupMessage = null, 
 }) => {
+  if (addPopupMessage) {
+    const userPrompt = {
+      role: "user",
+      content: prompt,
+      timestamp: Date.now(),
+    };
+
+    setChats((prevChats) =>
+      prevChats.map((chat) =>
+        chat._id === selectedChat._id
+          ? { ...chat, messages: [...chat.messages, userPrompt] }
+          : chat
+      )
+    );
+
+    setSelectedChat((prev) => ({
+      ...prev,
+      messages: [...(prev?.messages || []), userPrompt],
+    }));
+
+    const fullAssistantMessage = {
+      role: "model",
+      content: AIpopupMessage,
+      timestamp: Date.now(),
+    };
+
+    setChats((prevChats) =>
+      prevChats.map((chat) =>
+        chat._id === selectedChat._id
+          ? { ...chat, messages: [...chat.messages, fullAssistantMessage] }
+          : chat
+      )
+    );
+
+    setSelectedChat((prev) => ({
+      ...prev,
+      messages: [...prev.messages, fullAssistantMessage],
+    }));
+
+    if (user) {
+      const payload = {
+        chatId: selectedChat._id,
+        userPrompt, 
+        fullAssistantMessage
+      };
+      const { data } = await axios.post("/api/chat/addPopupMessage", payload);
+      if (data.success) {
+        fetchUsersChats();
+      }
+    }
+
+    return;
+  }
+
   if (isProcessing) {
     toast.error("Another Message in Progress");
     return;

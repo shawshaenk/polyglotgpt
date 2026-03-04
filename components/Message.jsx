@@ -28,9 +28,12 @@ const Message = ({
 }) => {
   const [selectionText, setSelectionText] = useState("");
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
+  const [popupMode, setPopupMode] = useState("default"); 
+  const [popupResult, setPopupResult] = useState("");
+  const [popupAction, setPopupAction] = useState("translate");
+  const popupRef = useRef(null);
   const containerRef = useRef(null);
   const messageWrapperRef = useRef(null);
-  const popupRef = useRef(null);
   const [translatedText, setTranslatedText] = useState(null);
   const [transliteratedText, setRomanizedText] = useState(null);
   const [aiMessage, setAiMessage] = useState(content);
@@ -93,6 +96,8 @@ const Message = ({
         // Only hide popup if the click wasn't inside the popup
         if (popupRef.current && !popupRef.current.contains(event.target)) {
           setSelectionText("");
+          setPopupMode("default");
+          setPopupResult("");
         }
       }
     };
@@ -105,6 +110,8 @@ const Message = ({
         !containerRef.current.contains(event.target)
       ) {
         setSelectionText("");
+        setPopupMode("default");
+        setPopupResult("");
       }
     };
 
@@ -132,7 +139,7 @@ const Message = ({
     };
   }, [currentAudio]);
 
-  //Whenever content changes, reset translated and romanized text
+  //Whenever content changes, reset translated and transliterated text
   useEffect(() => {
     setAiMessage(content);
     setTranslatedText(null);
@@ -148,6 +155,11 @@ const Message = ({
     toast.success("Message Copied to Clipboard");
   };
 
+  const copyPopup = () => {
+    navigator.clipboard.writeText(popupResult);
+    toast.success("Popup Copied to Clipboard");
+  };
+
   const editMessage = () => {
     setPrompt(relevantUserMessage);
     setEditingMessage(true);
@@ -158,7 +170,6 @@ const Message = ({
     let regenerate = true;
     sendPromptHandler({
       e,
-      // setPrompt,
       setIsLoading,
       setChats,
       setSelectedChat,
@@ -191,6 +202,7 @@ const Message = ({
     const { data } = await axios.post("/api/chat/translate", {
       translatedTextCopy,
       nativeLang,
+      targetLang
     });
 
     if (data.success) {
@@ -201,6 +213,48 @@ const Message = ({
       toast.error(data.message);
     }
   };
+
+  const translateTextPopup = async () => {
+    Prism.highlightAll();
+    setPopupMode("processing");
+    setPopupAction("translate")
+
+    const translatedTextCopy = selectionText;
+
+    const { data } = await axios.post("/api/chat/translate", {
+      translatedTextCopy,
+      nativeLang,
+      targetLang
+    });
+
+    if (data.success) {
+      setPopupResult(selectionText + " ➔ " + data.response);
+      setPopupMode("result");
+    } else {
+      toast.error(data.message);
+    }
+  }
+
+  const explainTextPopup = async () => {
+    Prism.highlightAll();
+    setPopupMode("processing");
+    setPopupAction("explain")
+
+    const translatedTextCopy = selectionText;
+
+    const { data } = await axios.post("/api/chat/explain", {
+      translatedTextCopy,
+      nativeLang,
+      targetLang
+    });
+
+    if (data.success) {
+      setPopupResult(data.response);
+      setPopupMode("result");
+    } else {
+      toast.error(data.message);
+    }
+  }
 
   const transliterateText = async () => {
     if (transliteratedText) {
@@ -335,28 +389,22 @@ const Message = ({
 
   const sendPrompt = (e, action) => {
     let promptToSend = "";
-    if (action === "translate") {
+    if (popupAction === "translate") {
       promptToSend = `Translate "${selectionText}"`;
-    } else {
+    } else if (popupAction === "explain") {
       promptToSend = `Explain "${selectionText}"`;
     }
 
     sendPromptHandler({
       e,
       prompt: promptToSend,
-      setIsLoading,
       setChats,
-      setSelectedChat,
       selectedChat,
-      user,
-      nativeLang,
-      targetLang,
+      setSelectedChat,
       fetchUsersChats,
-      setPrevNativeLang,
-      setPrevTargetLang,
-      messageIndex,
-      startResponse,
-      stopResponse,
+      user,
+      addPopupMessage: true,
+      AIpopupMessage: popupResult,
     });
   };
 
@@ -483,26 +531,65 @@ const Message = ({
         <div
           ref={popupRef}
           className="absolute z-50 bg-[#2a2a2a] text-white text-sm px-3 py-2 rounded-lg shadow-lg flex gap-2"
-          style={{ top: popupPos.y, left: popupPos.x }}
+          style={{ top: popupPos.y, left: popupPos.x, maxHeight: "250px", overflowY: "auto" }}
         >
-          <button
-            onClick={(e) => sendPrompt(e, "translate")}
-            className="hover:underline cursor-pointer"
-          >
-            Translate
-          </button>
-          <button
-            onClick={(e) => sendPrompt(e, "explain")}
-            className="hover:underline cursor-pointer"
-          >
-            Explain
-          </button>
-          <button
-            onClick={() => speakTextHighlighted()}
-            className="hover:underline cursor-pointer"
-          >
-            Speak
-          </button>
+        
+        {popupMode === "default" && (
+            <>
+            <button
+              onClick={translateTextPopup}
+              className="hover:underline cursor-pointer"
+            >
+              Translate
+            </button>
+            <button
+              onClick={explainTextPopup}
+              className="hover:underline cursor-pointer"
+            >
+              Explain
+            </button>
+            <button
+              onClick={() => speakTextHighlighted()}
+              className="hover:underline cursor-pointer"
+            >
+              Speak
+            </button>
+            </>
+        )}
+
+        {popupMode === "processing" && (
+          <div className="loader flex justify-center items-center gap-1">
+            <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+            <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+            <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+          </div>
+        )}
+
+        {popupMode === "result" && (
+          <div className="flex flex-col gap-2 max-w-[250px] overflow-y-auto">
+            <Markdown>
+              {popupResult}
+            </Markdown>
+
+            <hr className="border-t border-gray-300 my-0.5" />
+
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={copyPopup}
+                className="hover:underline cursor-pointer"
+              >
+                Copy
+              </button>
+
+              <button
+                onClick={(e) => sendPrompt(e)}
+                className="hover:underline cursor-pointer"
+              >
+                Add to Chat
+              </button>
+            </div>
+          </div>
+        )}
         </div>
       )}
     </div>

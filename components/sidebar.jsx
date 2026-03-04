@@ -151,7 +151,7 @@ const Sidebar = ({ expand, setExpand }) => {
             expand
               ? "hover:bg-white/10 rounded-lg -mb-4 select-none"
               : "justify-center w-full"
-          } gap-3 text-white/60 text-sm p-2 transition-colors duration-100`}
+          } ${user ? "" : "cursor-pointer"} gap-3 text-white/60 text-sm p-2 transition-colors duration-100`}
         >
           {user ? (
             <UserButton />
