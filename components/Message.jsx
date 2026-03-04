@@ -387,7 +387,7 @@ const Message = ({
     toast.success("Original Message Restored");
   };
 
-  const sendPrompt = (e, action) => {
+  const sendPrompt = (e) => {
     let promptToSend = "";
     if (popupAction === "translate") {
       promptToSend = `Translate "${selectionText}"`;
