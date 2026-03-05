@@ -130,11 +130,20 @@ export async function POST(req) {
       abortPromise,
     ]);
 
+    // Check if request was aborted after the API call finished
+    if (req.signal?.aborted) {
+      throw new Error("Request aborted by client");
+    }
+
     const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!aiReply) throw new Error("No reply from Gemini");
 
     // Save only for logged in mode
     if (!isLocal && userId && chatDoc) {
+      // Final check before saving to DB
+      if (req.signal?.aborted) {
+        throw new Error("Request aborted by client");
+      }
       chatDoc.messages.push({
         role: "model",
         content: aiReply,
