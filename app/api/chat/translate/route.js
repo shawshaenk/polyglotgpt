@@ -18,6 +18,7 @@ export async function POST(req) {
     3.  For any segment that is already written in **${nativeLang}**, you **MUST keep it EXACTLY as it appears in the input**. Do NOT alter, rephrase, or retranslate these segments in any way.
     4.  For all other segments (i.e., text that is NOT in ${nativeLang}), you **MUST translate ONLY those segments** into natural, fluent **${nativeLang}**. Substitute the translated text directly into the exact position of the original ${targetLang} text.
     5.  **Respond ONLY with the complete, modified text.** Do NOT add any explanations, comments, preambles, postambles, or extra formatting of any kind.
+    6. When given text labeled as context, DO NOT TRANSLATE OR INCLUDE IT IN YOUR OUTPUT. Use it ONLY to inform accurate translation of the main text.
 
     Your final response must be the full original input text, with the *only* changes being the in-place translation of ${targetLang} segments.`;
 

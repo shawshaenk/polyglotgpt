@@ -219,7 +219,7 @@ const Message = ({
     setPopupMode("processing");
     setPopupAction("translate")
 
-    const translatedTextCopy = selectionText;
+    const translatedTextCopy = "Taking this into context: " + content + "\n\nTranslate this: " + selectionText;
 
     const { data } = await axios.post("/api/chat/translate", {
       translatedTextCopy,
@@ -240,7 +240,7 @@ const Message = ({
     setPopupMode("processing");
     setPopupAction("explain")
 
-    const translatedTextCopy = selectionText;
+    const translatedTextCopy = "Taking this into context: " + content + "\n\nExplain this: " + selectionText;
 
     const { data } = await axios.post("/api/chat/explain", {
       translatedTextCopy,

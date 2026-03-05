@@ -27,7 +27,7 @@ export async function POST(req) {
     contents: translatedTextCopy,
     config: {
       thinkingConfig: {
-        thinkingBudget: 500,
+        thinkingLevel: "MEDIUM",
       },
       systemInstruction: systemPrompt,
     },
