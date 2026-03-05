@@ -34,7 +34,7 @@ PolyglotGPT is my attempt to fix that, using AI as a free, accessible practice p
 - **Icons:** [Lucide](https://lucide.dev/) (Creative Commons)  
 - **Database:** MongoDB Atlas  
 - **Auth:** Clerk  
-- **LLM API:** Gemini 2.5 Flash (low-latency, multilingual)  
+- **LLM API:** Gemini 3 Flash (low-latency, multilingual)  
 - **Text-to-Speech:** Google TTS  
 
 ---

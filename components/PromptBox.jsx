@@ -7,10 +7,12 @@ import { sendPromptHandler } from "@/app/utils/sendPromptHandler";
 
 import arrow_icon from "@/assets/arrow_icon.svg";
 import square_icon from "@/assets/square_icon.svg";
+import x_icon from "@/assets/x_icon.svg";
 
 const assets = {
   arrow_icon,
   square_icon,
+  x_icon
 };
 
 const PromptBox = ({ setIsLoading }) => {
@@ -65,6 +67,11 @@ const PromptBox = ({ setIsLoading }) => {
     }
   }, [prompt]);
 
+  const cancelEditing = () => {
+    setEditingMessage(false);
+    setEditingMessageIndex(null);
+    setPrompt("");
+  }
 
   const sendPrompt = (e) => {
     sendPromptHandler({
@@ -228,25 +235,41 @@ const PromptBox = ({ setIsLoading }) => {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => {
-            if (isGenerating) {
-              stopResponse && stopResponse();
-            } else {
-              const fakeEvent = { preventDefault: () => {} };
-              sendPrompt(fakeEvent);
-            }
-          }}
-          className={` ${prompt || isGenerating ? "bg-primary" : "bg-[#3a3a3a]"}
-                rounded-full p-2 cursor-pointer`}
-        >
-          <Image
-            className="w-3.5 aspect-square select-none"
-            src={!isGenerating ? assets.arrow_icon : assets.square_icon}
-            alt=""
-          />
-        </button>
+        <div className="flex items-center gap-3">
+          {editingMessage === true && (
+            <button
+              type="button"
+              onClick={cancelEditing}
+              className={"bg-primary rounded-full p-2 cursor-pointer"}
+            >
+              <Image
+                className="w-3.5 aspect-square select-none"
+                src={assets.x_icon}
+                alt=""
+              />
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={() => {
+              if (isGenerating) {
+                stopResponse && stopResponse();
+              } else {
+                const fakeEvent = { preventDefault: () => {} };
+                sendPrompt(fakeEvent);
+              }
+            }}
+            className={` ${prompt || isGenerating ? "bg-primary" : "bg-[#3a3a3a]"}
+                  rounded-full p-2 cursor-pointer`}
+          >
+            <Image
+              className="w-3.5 aspect-square select-none"
+              src={!isGenerating ? assets.arrow_icon : assets.square_icon}
+              alt=""
+            />
+          </button>
+        </div>
       </div>
     </form>
   );
