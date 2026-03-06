@@ -218,17 +218,17 @@ export const sendPromptHandler = async ({
       setPrompt(promptCopy);
     }
   } catch (error) {
-    // If request was aborted, axios throws a CanceledError with code 'ERR_CANCELED'
+    // If request was cancelled, axios throws a CanceledError with code 'ERR_CANCELED'
     const isCanceled =
       error?.code === "ERR_CANCELED" ||
       error?.name === "CanceledError" ||
       error?.message === "canceled";
 
     if (isCanceled) {
-      // Add "Response Aborted" message to the chat
+      // Add "You cancelled this response." message to the chat
       const abortMessage = {
         role: "model",
-        content: "*Response Aborted*",
+        content: "*You cancelled this response.*",
         timestamp: Date.now(),
       };
 
@@ -244,6 +244,20 @@ export const sendPromptHandler = async ({
         ...prev,
         messages: [...prev.messages, abortMessage],
       }));
+
+      // Sync server DB: Check if the server had already saved the full reply before
+      // detecting abort. If it did, replace it with "*You cancelled this response.*" so the next
+      // fetch doesn't bring the old reply back.
+      if (user && selectedChat._id && selectedChat._id !== "temp-local-chat") {
+        try {
+          setIsLoading(false);
+          await axios.post("/api/chat/markLastMessageAborted", {
+            chatId: selectedChat._id,
+          });
+        } catch (syncErr) {
+          // Non-blocking; local UI is already correct
+        }
+      }
     } else {
       toast.error(error.message);
       setPrompt(promptCopy);
