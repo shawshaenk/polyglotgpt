@@ -239,6 +239,7 @@ const PromptBox = ({ setIsLoading }) => {
           {editingMessage === true && (
             <button
               type="button"
+              title="Cancel Editing"
               onClick={cancelEditing}
               className={"bg-primary rounded-full p-2 cursor-pointer"}
             >
@@ -252,6 +253,7 @@ const PromptBox = ({ setIsLoading }) => {
 
           <button
             type="button"
+            title={!isGenerating ? "Send Prompt" : "Stop Generating"}
             onClick={() => {
               if (isGenerating) {
                 stopResponse && stopResponse();

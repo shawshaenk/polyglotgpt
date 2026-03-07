@@ -82,6 +82,8 @@ export const sendPromptHandler = async ({
     return;
   }
 
+  if (!prompt && !regenerate) return toast.error("Enter a Prompt");
+
   if (isProcessing) {
     toast.error("Another Message in Progress");
     return;
@@ -97,8 +99,6 @@ export const sendPromptHandler = async ({
       prompt = relevantUserMessage;
       promptCopy = relevantUserMessage;
     }
-
-    if (!prompt && !regenerate) return toast.error("Enter a Prompt");
 
     setIsLoading(true);
     setPrompt("");
