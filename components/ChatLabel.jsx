@@ -94,9 +94,7 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
             e.stopPropagation();
             setOpenMenu({ id: id, open: !openMenu.open });
           }}
-          className={`group relative flex items-center justify-center h-6 w-6 aspect-square hover:bg-black/30 rounded-lg transition-colors duration-100 ${
-            openMenu.id === id && openMenu.open ? "bg-black/30" : ""
-          }`}
+          className={"group relative flex items-center justify-center h-6 w-6 aspect-square rounded-lg"}
         >
           <Image
             src={assets.three_dots}
