@@ -46,7 +46,7 @@ export async function POST(req) {
     contents: transliteratedTextCopy,
     config: {
       thinkingConfig: {
-        thinkingBudget: 200,
+        thinkingBudget: 50,
       },
       systemInstruction: systemPrompt,
     },
