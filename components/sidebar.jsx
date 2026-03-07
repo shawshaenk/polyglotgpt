@@ -79,7 +79,7 @@ const Sidebar = ({ expand, setExpand }) => {
 
           <div
             onClick={() => (expand ? setExpand(false) : setExpand(true))}
-            className="group relative flex items-center justify-center hover:bg-gray-500 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer"
+            className="group relative flex items-center justify-center hover:bg-gray-500 h-9 w-9 aspect-square rounded-lg cursor-pointer"
           >
             <Image
               src={assets.menu_icon}
@@ -106,8 +106,8 @@ const Sidebar = ({ expand, setExpand }) => {
           onClick={chatButtonAction}
           className={`${
             expand
-              ? "absolute top-5.5 left-7 bg-primary hover:opacity-90 rounded-xl gap-2 p-2.5 transition-opacity duration-200"
-              : "mt-6 left-6 group relative flex items-center justify-center hover:bg-gray-500 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer"
+              ? "absolute top-5.5 left-7 bg-primary hover:opacity-80 transition-opacity duration-200 rounded-xl gap-2 p-2.5"
+              : "mt-6 left-6 group relative flex items-center justify-center hover:bg-gray-500 h-9 w-9 aspect-square rounded-lg cursor-pointer"
           } flex items-center cursor-pointer`}
         >
           <Image
