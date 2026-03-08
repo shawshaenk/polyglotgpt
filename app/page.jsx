@@ -112,7 +112,7 @@ export default function Home() {
         <div
           className={`flex-1 flex flex-col items-center ${
             messages.length === 0 ? "justify-center" : "justify-start"
-          } px-4 pb-8 bg-[#1e1e1e] text-white relative`}
+          } px-4 pb-8 bg-[#121212] text-white relative`}
         >
           <div className="md:hidden absolute px-4 top-6 flex items-center justify-between w-full">
             <Image

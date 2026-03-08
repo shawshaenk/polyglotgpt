@@ -157,7 +157,7 @@ const PromptBox = ({ setIsLoading }) => {
     <form
       onSubmit={sendPrompt}
       className={`fixed w-full z-10 bottom-7 max-w-2xl
-    bg-[#2a2a2a] p-4 pb-2 rounded-3xl mt-4 transition-all shadow-2xl`}
+    bg-[#1e1e1e] p-4 pb-2 rounded-3xl mt-4 transition-all shadow-2xl`}
     >
       <textarea
         ref={textareaRef}
@@ -196,7 +196,7 @@ const PromptBox = ({ setIsLoading }) => {
                   setChats,
                 })
               }
-              className="bg-[#3a3a3a] text-white rounded-lg -mb-1 w-32 sm:w-48 focus:outline-none focus:ring-0 focus:border-transparent p-3"
+              className="bg-[#2e2e2e] text-white rounded-lg -mb-1 w-32 sm:w-48 focus:outline-none focus:ring-0 focus:border-transparent p-3"
             >
               {languageList.map((l) => (
                 <option key={l.code} value={l.code}>
@@ -224,7 +224,7 @@ const PromptBox = ({ setIsLoading }) => {
                   setChats,
                 })
               }
-              className="bg-[#3a3a3a] text-white rounded-lg -mb-1 w-32 sm:w-48 focus:outline-none focus:ring-0 focus:border-transparent p-3"
+              className="bg-[#2e2e2e] text-white rounded-lg -mb-1 w-32 sm:w-48 focus:outline-none focus:ring-0 focus:border-transparent p-3"
             >
               {languageList.map((l) => (
                 <option key={l.code} value={l.code}>

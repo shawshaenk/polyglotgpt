@@ -423,7 +423,7 @@ const Message = ({
         <div
           className={`group relative flex max-w-2xl py-3 rounded-xl ${
             role === "user"
-              ? "bg-[#2a2a2a] px-5 mt-2 max-w-[75vw] sm:max-w-[30vw]"
+              ? "bg-[#1e1e1e] px-5 mt-2 max-w-[75vw] sm:max-w-[30vw]"
               : "-mt-6 gap-3"
           }`}
         >
@@ -530,7 +530,7 @@ const Message = ({
       {selectionText && (
         <div
           ref={popupRef}
-          className="absolute z-50 bg-[#2a2a2a] text-white text-sm px-3 py-2 rounded-lg shadow-lg flex gap-2"
+          className="absolute z-50 bg-[#1e1e1e] text-white text-sm px-3 py-2 rounded-lg shadow-lg flex gap-2"
           style={{ top: popupPos.y, left: popupPos.x, maxHeight: "250px", overflowY: "auto" }}
         >
         

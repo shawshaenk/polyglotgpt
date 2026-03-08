@@ -103,7 +103,7 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
           />
 
           <div
-            className={`absolute -right-0 top-6 bg-[#252525] rounded-xl w-max p-2 z-10 transition-opacity duration-100 ${
+            className={`absolute -right-0 top-6 bg-[#121212] rounded-xl w-max p-2 z-10 transition-opacity duration-100 ${
               openMenu.id === id && openMenu.open
                 ? "opacity-100 pointer-events-auto"
                 : "opacity-0 pointer-events-none"
