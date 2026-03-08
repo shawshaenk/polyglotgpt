@@ -95,7 +95,6 @@ const PromptBox = ({ setIsLoading }) => {
       messageIndex: editingMessageIndex,
       startResponse,
       stopResponse,
-      setIsGenerating
     });
 
     setEditingMessage(false);

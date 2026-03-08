@@ -73,7 +73,8 @@ const Message = ({
       if (
         popupRef.current &&
         !popupRef.current.contains(event.target) &&
-        selectionTextRef.current
+        selectionTextRef.current && 
+        event.detail < 3
       ) {
         isDismissingRef.current = true;
         setSelectionText("");
@@ -127,11 +128,15 @@ const Message = ({
     };
 
     document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("touchetart", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("touchend", handleMouseUp);
 
     return () => {
       document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("touchstart", handleMouseDown);
       document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("touchend", handleMouseUp);
     };
   }, []);
 
@@ -193,7 +198,6 @@ const Message = ({
       messageIndex,
       startResponse,
       stopResponse,
-      setIsGenerating,
     });
   };
 

@@ -28,7 +28,6 @@ export const sendPromptHandler = async ({
   stopResponse,
   addPopupMessage = false,
   AIpopupMessage = null, 
-  setIsGenerating
 }) => {
   if (addPopupMessage) {
     const userPrompt = {
@@ -220,7 +219,7 @@ export const sendPromptHandler = async ({
         fetchUsersChats();
       }
 
-      setIsGenerating(false);
+      stopResponse();
       setIsLoading(false);
       isProcessing = false;
 
@@ -303,7 +302,7 @@ export const sendPromptHandler = async ({
   } finally {
     setIsLoading(false);
     try {
-      if (stopResponse) stopResponse();
+      stopResponse();
     } catch (e) {}
     isProcessing = false;
   }
