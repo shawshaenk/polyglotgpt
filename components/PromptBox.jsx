@@ -262,7 +262,7 @@ const PromptBox = ({ setIsLoading }) => {
                 sendPrompt(fakeEvent);
               }
             }}
-            className={` ${prompt || isGenerating ? "bg-primary" : "bg-[#3a3a3a]"}
+            className={` ${prompt || isGenerating ? "bg-primary" : "bg-[#2e2e2e]"}
                   rounded-full p-2 cursor-pointer`}
           >
             <Image
