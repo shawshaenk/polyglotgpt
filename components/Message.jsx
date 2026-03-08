@@ -7,7 +7,7 @@ import { sendPromptHandler } from "@/app/utils/sendPromptHandler";
 
 import copy_icon from "@/assets/copy_icon.svg";
 import rename_icon from "@/assets/rename_icon.svg";
-import translate_icon from "@/assets/translate_icon.svg";
+import polyglotgpt_chat_icon from "@/assets/polyglotgpt_logo.png";
 import regenerate_icon from "@/assets/regenerate_icon.svg";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -15,7 +15,7 @@ import axios from "axios";
 const assets = {
   copy_icon,
   rename_icon,
-  translate_icon,
+  polyglotgpt_chat_icon,
   regenerate_icon,
 };
 
@@ -513,7 +513,7 @@ const Message = ({
           ) : (
             <>
               <Image
-                src={assets.translate_icon}
+                src={assets.polyglotgpt_chat_icon}
                 alt=""
                 className="h-9 w-9 p-1 border border-white/15 rounded-full select-none"
               />

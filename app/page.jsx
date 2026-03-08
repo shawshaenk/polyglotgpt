@@ -11,14 +11,14 @@ import { toast } from "react-hot-toast";
 
 import menu_icon from "@/assets/menu_icon.svg";
 import chat_icon from "@/assets/chat_icon.svg";
-import translate_icon from "@/assets/translate_icon.svg";
+import polyglotgpt_chat_icon from "@/assets/polyglotgpt_chat_icon.svg";
 import broom_icon from "@/assets/broom_icon.svg";
 import polyglotgpt_logo from "@/assets/polyglotgpt_logo.png";
 
 const assets = {
   menu_icon,
   chat_icon,
-  translate_icon,
+  polyglotgpt_chat_icon,
   polyglotgpt_logo,
   broom_icon,
 };
@@ -186,7 +186,7 @@ export default function Home() {
                 <div className="flex gap-4 max-w-3xl w-full py-3">
                   <Image
                     className="h-9 w-9 p-1 border border-white/15 rounded-full select-none"
-                    src={assets.translate_icon}
+                    src={assets.polyglotgpt_chat_icon}
                     alt="Logo"
                   />
                   <div className="loader flex justify-center items-center gap-1">
