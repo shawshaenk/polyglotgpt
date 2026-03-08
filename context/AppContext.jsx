@@ -121,6 +121,11 @@ export const AppContextProvider = ({ children }) => {
   const createNewChat = async () => {
     let toastId;
 
+    if (isGenerating) {
+      toast.error("Wait until Generation is Complete");
+      return;
+    }
+
     if (!userJustSignedUpRef.current) {
       toastId = toast.loading("Creating New Chat...");
     }
