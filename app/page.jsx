@@ -11,7 +11,7 @@ import { toast } from "react-hot-toast";
 
 import menu_icon from "@/assets/menu_icon.svg";
 import chat_icon from "@/assets/chat_icon.svg";
-import polyglotgpt_chat_icon from "@/assets/polyglotgpt_chat_icon.svg";
+import polyglotgpt_chat_icon from "@/assets/polyglotgpt_logo.png";
 import broom_icon from "@/assets/broom_icon.svg";
 import polyglotgpt_logo from "@/assets/polyglotgpt_logo.png";
 
