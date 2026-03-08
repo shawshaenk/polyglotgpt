@@ -17,6 +17,7 @@ export async function POST(req) {
     //Prepare chat database and create new chat
     const chat = await Chat.findOne({ userId, _id: chatId });
     chat.messages = [];
+    chat.name = "New Chat";
     await chat.save();
 
     return NextResponse.json({ success: true, message: "Chat Cleared" });

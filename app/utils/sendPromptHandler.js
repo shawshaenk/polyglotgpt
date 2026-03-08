@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 let isProcessing = false;
+let needToNameChat = false;
 
 export const sendPromptHandler = async ({
   e,
@@ -27,6 +28,7 @@ export const sendPromptHandler = async ({
   stopResponse,
   addPopupMessage = false,
   AIpopupMessage = null, 
+  setIsGenerating
 }) => {
   if (addPopupMessage) {
     const userPrompt = {
@@ -83,6 +85,10 @@ export const sendPromptHandler = async ({
   }
 
   if (!prompt && !regenerate) return toast.error("Enter a Prompt");
+
+  if (selectedChat.messages.length === 0) {
+    needToNameChat = true;
+  }
 
   if (isProcessing) {
     toast.error("Another Message in Progress");
@@ -212,6 +218,38 @@ export const sendPromptHandler = async ({
 
       if (user) {
         fetchUsersChats();
+      }
+
+      setIsGenerating(false);
+      setIsLoading(false);
+      isProcessing = false;
+
+      if (needToNameChat) {
+        needToNameChat = false;
+        let { data: nameData } = await axios.post("/api/chat/autoNameChat", {
+          prompt: promptCopy,
+        });
+        if (nameData.success) {
+          let newChatName = nameData.response
+          setSelectedChat((prev) => ({ ...prev, name: newChatName }));
+          setChats((prevChats) =>
+            prevChats.map((chat) =>
+              chat._id === selectedChat._id
+                ? { ...chat, name: newChatName }
+                : chat
+            )
+          );
+          if (user) {
+            const { data: renameData } = await axios.post("/api/chat/rename", {
+              chatId: selectedChat._id,
+              name: newChatName,
+            });
+
+            if (renameData.success) {
+              fetchUsersChats(false);
+            }
+          }
+        }
       }
     } else {
       toast.error(data.message);

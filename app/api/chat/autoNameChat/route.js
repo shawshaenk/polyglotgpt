@@ -1,0 +1,30 @@
+import dotenv from "dotenv";
+import { NextResponse } from "next/server";
+import { GoogleGenAI } from "@google/genai";
+
+dotenv.config();
+
+const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
+
+export async function POST(req) {
+  const { prompt } = await req.json();
+
+  const systemPrompt = `
+  Create a simple description of the topic of any message given to you. The description should be a maximum of 4 words. Do not add periods to your descriptions. Make the descriptions casual.
+  For Example: If the message says "Hi," the description should be "Introduction and Greeting".
+  `;
+
+  const result = await ai.models.generateContent({
+    model: "gemini-2.5-flash-lite",
+    contents: prompt,
+    config: {
+      systemInstruction: systemPrompt,
+    },
+  });
+  console.dir(result, { depth: null });
+
+  const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!aiReply) throw new Error("No reply from Gemini");
+
+  return NextResponse.json({ success: true, response: aiReply });
+}

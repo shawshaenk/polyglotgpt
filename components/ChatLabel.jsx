@@ -86,7 +86,7 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
           : ""
       }`}
     >
-      <p className="group-hover:max-w-5/6 truncate cursor-pointer transition-colors duration-100 select-none">{name}</p>
+      <p title={name} className="group-hover:max-w-5/6 truncate cursor-pointer transition-colors duration-100 select-none">{name}</p>
       {user && (
         <div
           ref={menuRef}

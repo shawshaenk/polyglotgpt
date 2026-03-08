@@ -170,7 +170,7 @@ export const AppContextProvider = ({ children }) => {
       // GUEST / LOCAL chat
       const tempChat = {
         _id: selectedChat._id,
-        name: selectedChat.name,
+        name: "New Chat",
         messages: [],
         nativeLang,
         targetLang,
@@ -203,10 +203,10 @@ export const AppContextProvider = ({ children }) => {
 
       console.log("Chat Cleared:", data);
 
-      setSelectedChat((prev) => ({ ...prev, messages: [] }));
+      setSelectedChat((prev) => ({ ...prev, messages: [], name: "New Chat" }));
       setChats((prev) =>
         prev.map((chat) =>
-          chat._id === selectedChat._id ? { ...chat, messages: [] } : chat
+          chat._id === selectedChat._id ? { ...chat, messages: [], name: "New Chat" } : chat
         )
       );
 
@@ -334,6 +334,7 @@ export const AppContextProvider = ({ children }) => {
     user,
     chats,
     isGenerating,
+    setIsGenerating,
     startResponse,
     stopResponse,
     setChats,

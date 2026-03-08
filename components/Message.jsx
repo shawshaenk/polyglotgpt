@@ -59,6 +59,7 @@ const Message = ({
     setEditingMessageIndex,
     startResponse,
     stopResponse,
+    setIsGenerating,
   } = useAppContext();
 
   useEffect(() => {
@@ -192,6 +193,7 @@ const Message = ({
       messageIndex,
       startResponse,
       stopResponse,
+      setIsGenerating,
     });
   };
 
