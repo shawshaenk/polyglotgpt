@@ -41,6 +41,7 @@ const Message = ({
   const messageWrapperRef = useRef(null);
   const selectionTextRef = useRef("");
   const isDismissingRef = useRef(false);
+  const abortControllerRef = useRef(null);
 
   const {
     user,
@@ -76,6 +77,9 @@ const Message = ({
         selectionTextRef.current && 
         event.detail < 3
       ) {
+        if (abortControllerRef.current) {
+          abortControllerRef.current.abort();
+        }
         isDismissingRef.current = true;
         setSelectionText("");
         setPopupMode("default");
@@ -227,44 +231,66 @@ const Message = ({
   };
 
   const translateTextPopup = async () => {
-    Prism.highlightAll();
-    setPopupMode("processing");
-    setPopupAction("translate")
-
     const translatedTextCopy = "Taking this into context: " + content + "\n\nTranslate this: " + selectionText;
 
-    const { data } = await axios.post("/api/chat/translate", {
-      translatedTextCopy,
-      nativeLang,
-      targetLang
-    });
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
 
-    if (data.success) {
-      setPopupResult(selectionText + " ➔ " + data.response);
-      setPopupMode("result");
-    } else {
-      toast.error(data.message);
+    Prism.highlightAll();
+    setPopupMode("processing");
+    setPopupAction("translate");
+    setPopupResult("");
+
+    try {
+      const { data } = await axios.post("/api/chat/translate", {
+        translatedTextCopy,
+        nativeLang,
+        targetLang
+      }, { signal: abortControllerRef.current.signal });
+
+      if (data.success) {
+        setPopupResult(selectionText + " ➔ " + data.response);
+        setPopupMode("result");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      if (axios.isCancel(err)) return; // aborted — do nothing
+      toast.error("Translation failed");
     }
   }
 
   const explainTextPopup = async () => {
+    const explanationTextCopy = "Taking this into context: " + content + "\n\nExplain this: " + selectionText;
+
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
+
     Prism.highlightAll();
     setPopupMode("processing");
-    setPopupAction("explain")
+    setPopupAction("explain");
+    setPopupResult("");
 
-    const translatedTextCopy = "Taking this into context: " + content + "\n\nExplain this: " + selectionText;
+    try {
+      const { data } = await axios.post("/api/chat/explain", {
+        explanationTextCopy,
+        nativeLang,
+        targetLang
+      }, { signal: abortControllerRef.current.signal });
 
-    const { data } = await axios.post("/api/chat/explain", {
-      translatedTextCopy,
-      nativeLang,
-      targetLang
-    });
-
-    if (data.success) {
-      setPopupResult(data.response);
-      setPopupMode("result");
-    } else {
-      toast.error(data.message);
+      if (data.success) {
+        setPopupResult(data.response);
+        setPopupMode("result");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      if (axios.isCancel(err)) return;
+      toast.error("Explanation failed");
     }
   }
 

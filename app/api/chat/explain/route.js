@@ -7,7 +7,7 @@ dotenv.config();
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
 export async function POST(req) {
-  const { translatedTextCopy, nativeLang, targetLang } = await req.json();
+  const { explanationTextCopy, nativeLang, targetLang } = await req.json();
 
   const systemPrompt = `
     You are an EXTREMELY PRECISE text processing system. Your SOLE purpose is to explain the provided input text that's in ${targetLang} in ${nativeLang}
@@ -24,7 +24,7 @@ export async function POST(req) {
 
   const result = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
-    contents: translatedTextCopy,
+    contents: explanationTextCopy,
     config: {
       temperature: 0,
       thinkingConfig: {
