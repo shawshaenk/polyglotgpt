@@ -122,7 +122,7 @@ export async function POST(req) {
         config: {
           temperature: 2.0,
           thinkingConfig: { 
-            thinkingBudget: 4000,
+            thinkingBudget: 2000,
           },
           systemInstruction: systemPrompt,
         },

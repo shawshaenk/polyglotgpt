@@ -10,14 +10,15 @@ export async function POST(req) {
   const { prompt } = await req.json();
 
   const systemPrompt = `
-  Create a simple but specific description of the topic of any message given to you. The description should be a maximum of 7 words. Do not add periods to your descriptions. Make the descriptions casual. DO NOT begin descriptions with "Just".
+  Create a simple but specific description of the topic of any message given to you. The description should be a maximum of 5 words. Do not add periods to your descriptions. Make the descriptions casual. DO NOT begin descriptions with "Just".
   For Example: If the message says "What is Grok," the description should be "Grok AI Inquiry".
   `;
 
   const result = await ai.models.generateContent({
-    model: "gemini-2.5-flash-lite",
+    model: "gemini-3.1-flash-lite-preview",
     contents: prompt,
     config: {
+      thinkingBudget: 0,
       systemInstruction: systemPrompt,
     },
   });
