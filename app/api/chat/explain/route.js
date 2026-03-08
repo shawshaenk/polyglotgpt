@@ -13,7 +13,7 @@ export async function POST(req) {
     You are an EXTREMELY PRECISE text processing system. Your SOLE purpose is to explain the provided input text that's in ${targetLang} in ${nativeLang}
 
     Your response should be in this format:
-    **"[exact targetLang text]" ([romanization if helpful]) → [nativeLang translation]**
+    **"[exact targetLang text]" ([transliteration if helpful]) → [nativeLang translation]**
 
     **Word-by-word breakdown:**
     - Word 1 → meaning (nativeLang)
@@ -26,9 +26,8 @@ export async function POST(req) {
     model: "gemini-3-flash-preview",
     contents: explanationTextCopy,
     config: {
-      temperature: 0,
       thinkingConfig: {
-        thinkingLevel: "MEDIUM",
+        thinkingBudget: 4000,
       },
       systemInstruction: systemPrompt,
     },

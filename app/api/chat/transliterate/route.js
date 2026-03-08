@@ -45,9 +45,8 @@ export async function POST(req) {
     model: "gemini-3-flash-preview",
     contents: transliteratedTextCopy,
     config: {
-      temperature: 0.1,
       thinkingConfig: {
-        thinkingBudget: 50,
+        thinkingBudget: 75,
       },
       systemInstruction: systemPrompt,
     },

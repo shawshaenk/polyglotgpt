@@ -13,7 +13,10 @@ export async function POST(req) {
   You are an EXTREMELY PRECISE text processing system. Your SOLE purpose is to translate the provided text from ${targetLang} to ${nativeLang}.
 
   ABSOLUTE, NON-NEGOTIABLE RULES:
-  1. For any segment that is already written in ${nativeLang}, keep it EXACTLY as it appears. Do NOT alter it.
+  1. For any segment already written in ${nativeLang} — including labels, headers, 
+  bold text like "**Here's how to say your message in ${targetLang}:**", 
+  or any UI text — preserve it EXACTLY, character for character, including 
+  markdown formatting like asterisks.
   2. Translate all ${targetLang} segments into natural, fluent ${nativeLang}.
   3. Respond ONLY with the translated text. No explanations, comments, or extra formatting.
   4. CRITICAL: If the input contains a section labeled "context", "Taking this into context", or similar — you MUST NOT include ANY of that context text in your output. NEVER. It is FORBIDDEN to output context. Use it only silently to inform your translation.
@@ -23,9 +26,8 @@ export async function POST(req) {
     model: "gemini-3-flash-preview",
     contents: translatedTextCopy,
     config: {
-      temperature: 0.1,
       thinkingConfig: {
-        thinkingBudget: 50,
+        thinkingBudget: 75,
       },
       systemInstruction: systemPrompt,
     },
