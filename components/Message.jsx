@@ -31,16 +31,16 @@ const Message = ({
   const [popupMode, setPopupMode] = useState("default"); 
   const [popupResult, setPopupResult] = useState("");
   const [popupAction, setPopupAction] = useState("translate");
-  const popupRef = useRef(null);
-  const containerRef = useRef(null);
-  const messageWrapperRef = useRef(null);
   const [translatedText, setTranslatedText] = useState(null);
   const [transliteratedText, setRomanizedText] = useState(null);
   const [aiMessage, setAiMessage] = useState(content);
-
-  // Audio control states
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const popupRef = useRef(null);
+  const containerRef = useRef(null);
+  const messageWrapperRef = useRef(null);
+  const selectionTextRef = useRef("");
+  const isDismissingRef = useRef(false);
 
   const {
     user,
@@ -62,9 +62,33 @@ const Message = ({
   } = useAppContext();
 
   useEffect(() => {
+    selectionTextRef.current = selectionText;
+  }, [selectionText]);
+
+  useEffect(() => {
     Prism.highlightAll();
 
+    const handleMouseDown = (event) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target) &&
+        selectionTextRef.current
+      ) {
+        isDismissingRef.current = true;
+        setSelectionText("");
+        setPopupMode("default");
+        setPopupResult("");
+      }
+    };
+
     const handleMouseUp = (event) => {
+      if (popupRef.current && popupRef.current.contains(event.target)) return;
+
+      if (isDismissingRef.current) {
+        isDismissingRef.current = false;
+        return;
+      }
+
       const selection = window.getSelection();
       const selectedText = selection.toString().trim();
 
@@ -93,7 +117,6 @@ const Message = ({
         setSelectionText(selectedText);
         setPopupPos({ x: newX, y: newY });
       } else {
-        // Only hide popup if the click wasn't inside the popup
         if (popupRef.current && !popupRef.current.contains(event.target)) {
           setSelectionText("");
           setPopupMode("default");
@@ -102,29 +125,12 @@ const Message = ({
       }
     };
 
-    const handleClickOutside = (event) => {
-      if (
-        popupRef.current &&
-        !popupRef.current.contains(event.target) &&
-        containerRef.current &&
-        !containerRef.current.contains(event.target)
-      ) {
-        setSelectionText("");
-        setPopupMode("default");
-        setPopupResult("");
-      }
-    };
-
+    document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("touchend", handleMouseUp);
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchend", handleClickOutside);
 
     return () => {
+      document.removeEventListener("mousedown", handleMouseDown);
       document.removeEventListener("mouseup", handleMouseUp);
-      document.removeEventListener("touchend", handleMouseUp);
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchend", handleClickOutside);
     };
   }, []);
 
