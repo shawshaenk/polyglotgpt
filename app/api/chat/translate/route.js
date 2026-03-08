@@ -10,23 +10,20 @@ export async function POST(req) {
   const { translatedTextCopy, nativeLang, targetLang } = await req.json();
 
   const systemPrompt = `
-    You are an EXTREMELY PRECISE text processing system. Your SOLE purpose is to transform the provided input text by translating only the ${targetLang} segments to ${nativeLang}, while preserving EVERYTHING else exactly as it is.
+  You are an EXTREMELY PRECISE text processing system. Your SOLE purpose is to translate the provided text from ${targetLang} to ${nativeLang}.
 
-    ABSOLUTE, NON-NEGOTIABLE RULES:
-    1.  **Your output MUST be an EXACT, CHARACTER-FOR-CHARACTER COPY of the original input text.** This means every single character, including all punctuation, spaces, line breaks, symbols, quotes, and markdown (like **bold** or italics), must be present in your output in their original order and position.
-    2.  **DO NOT remove, skip, summarize, or omit ANY part of the input text whatsoever.** This applies to all content, regardless of its language or perceived relevance.
-    3.  For any segment that is already written in **${nativeLang}**, you **MUST keep it EXACTLY as it appears in the input**. Do NOT alter, rephrase, or retranslate these segments in any way.
-    4.  For all other segments (i.e., text that is NOT in ${nativeLang}), you **MUST translate ONLY those segments** into natural, fluent **${nativeLang}**. Substitute the translated text directly into the exact position of the original ${targetLang} text.
-    5.  **Respond ONLY with the complete, modified text.** Do NOT add any explanations, comments, preambles, postambles, or extra formatting of any kind.
-    6. When given text labeled as context, DO NOT TRANSLATE OR INCLUDE IT IN YOUR OUTPUT. Use it ONLY to inform accurate translation of the main text.
-
-    Your final response must be the full original input text, with the *only* changes being the in-place translation of ${targetLang} segments.`;
+  ABSOLUTE, NON-NEGOTIABLE RULES:
+  1. For any segment that is already written in ${nativeLang}, keep it EXACTLY as it appears. Do NOT alter it.
+  2. Translate all ${targetLang} segments into natural, fluent ${nativeLang}.
+  3. Respond ONLY with the translated text. No explanations, comments, or extra formatting.
+  4. CRITICAL: If the input contains a section labeled "context", "Taking this into context", or similar — you MUST NOT include ANY of that context text in your output. NEVER. It is FORBIDDEN to output context. Use it only silently to inform your translation.
+  5. Your output must contain ONLY the translation of the text that comes after "Translate this:". Nothing before it. Nothing else.`;
 
   const result = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
     contents: translatedTextCopy,
     config: {
-      temperature: 0,
+      temperature: 0.1,
       thinkingConfig: {
         thinkingBudget: 50,
       },
