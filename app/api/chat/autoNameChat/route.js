@@ -10,7 +10,7 @@ export async function POST(req) {
   const { prompt } = await req.json();
 
   const systemPrompt = `
-  Create a simple but specific description of the topic of any message given to you. The description should be a maximum of 4 words. Do not add periods to your descriptions. Make the descriptions casual.
+  Create a simple but specific description of the topic of any message given to you. The description should be a maximum of 7 words. Do not add periods to your descriptions. Make the descriptions casual. DO NOT begin descriptions with "Just".
   For Example: If the message says "What is Grok," the description should be "Grok AI Inquiry".
   `;
 

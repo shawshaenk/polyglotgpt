@@ -16,6 +16,10 @@ const assets = {
 };
 
 const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
+  const {
+    isGenerating
+  } = useAppContext();
+
   const menuRef = useRef(null);
   const { user } = useUser();
 
@@ -35,6 +39,10 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
     useAppContext();
 
   const selectChat = () => {
+    if (isGenerating) {
+      toast.error("Wait until Generation is Complete");
+      return;
+    }
     const chatData = chats.find((chat) => chat._id === id);
     setSelectedChat(chatData);
     console.log(chatData);
