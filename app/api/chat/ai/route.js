@@ -120,7 +120,6 @@ export async function POST(req) {
         model: "gemini-3-flash-preview",
         contents: formattedMessages,
         config: {
-          temperature: 2.0,
           thinkingConfig: { 
             thinkingBudget: 2000,
           },
