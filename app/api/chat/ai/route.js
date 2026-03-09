@@ -121,7 +121,7 @@ export async function POST(req) {
         contents: formattedMessages,
         config: {
           thinkingConfig: { 
-            thinkingBudget: 5000,
+            thinkingBudget: 2000,
           },
           systemInstruction: systemPrompt,
         },
