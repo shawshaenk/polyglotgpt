@@ -28,7 +28,12 @@ export const sendPromptHandler = async ({
   stopResponse,
   addPopupMessage = false,
   AIpopupMessage = null, 
+  loadingChatsRef
 }) => {
+  if (loadingChatsRef.current) {
+    toast.error("Wait Until Chats are Loaded")
+  }
+
   if (addPopupMessage) {
     const userPrompt = {
       role: "user",

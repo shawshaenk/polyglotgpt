@@ -34,6 +34,7 @@ export const AppContextProvider = ({ children }) => {
   // Abort controller & generation state for "Stop Response"
   const [isGenerating, setIsGenerating] = useState(false);
   const generationControllerRef = useRef(null);
+  const loadingChatsRef = useRef(null);
 
   const allChatIds = chats.map((chat) => chat._id);
 
@@ -226,6 +227,7 @@ export const AppContextProvider = ({ children }) => {
     let toastId;
 
     if (!userJustSignedUpRef.current && showLoading) {
+      loadingChatsRef.current = true;
       toastId = toast.loading("Loading Chats...");
     }
 
@@ -257,7 +259,9 @@ export const AppContextProvider = ({ children }) => {
       } else {
         toast.error(data.message);
       }
+      loadingChatsRef.current = false;
     } catch (error) {
+      loadingChatsRef.current = false;
       toast.error(error.message);
     }
   };
@@ -367,6 +371,7 @@ export const AppContextProvider = ({ children }) => {
     setEditingMessage,
     editingMessageIndex,
     setEditingMessageIndex,
+    loadingChatsRef
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
