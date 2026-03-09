@@ -31,7 +31,8 @@ export const sendPromptHandler = async ({
   loadingChatsRef
 }) => {
   if (loadingChatsRef.current) {
-    toast.error("Wait Until Chats are Loaded")
+    toast.error("Wait Until Chats are Loaded");
+    return;
   }
 
   if (addPopupMessage) {
