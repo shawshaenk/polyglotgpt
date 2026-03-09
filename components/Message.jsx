@@ -231,7 +231,7 @@ const Message = ({
   };
 
   const translateTextPopup = async () => {
-    const translatedTextCopy = "Taking this into context: " + content + "\n\nTranslate this: " + selectionText;
+    const translatedTextCopy = "MINI TRANSLATION\n\nTaking this into context: " + content + "\n\nTranslate this: " + selectionText;
 
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -251,7 +251,7 @@ const Message = ({
       }, { signal: abortControllerRef.current.signal });
 
       if (data.success) {
-        setPopupResult(selectionText + " ➔ " + data.response);
+        setPopupResult(data.response);
         setPopupMode("result");
       } else {
         toast.error(data.message);
