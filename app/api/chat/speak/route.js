@@ -11,13 +11,15 @@ const googleTTSLanguageMap = {
   bn: "bn-IN", // Bengali
   bg: "bg-BG", // Bulgarian
   ca: "ca-ES", // Catalan
-  "zh-CN": "cmn-CN", // Chinese (Mandarin Simplified)
-  "zh-TW": "cmn-TW", // Chinese (Mandarin Traditional)
+  "zh-CN": "cmn-CN", // Chinese (Simplified)
+  "zh-TW": "cmn-TW", // Chinese (Traditional)
   hr: "hr-HR", // Croatian
   cs: "cs-CZ", // Czech
   da: "da-DK", // Danish
   nl: "nl-NL", // Dutch
   en: "en-US", // English
+  et: "et-EE", // Estonian
+  fil: "fil-PH", // Filipino
   fi: "fi-FI", // Finnish
   fr: "fr-FR", // French
   gl: "gl-ES", // Galician
@@ -41,6 +43,7 @@ const googleTTSLanguageMap = {
   no: "nb-NO", // Norwegian
   pl: "pl-PL", // Polish
   pt: "pt-PT", // Portuguese
+  pa: "pa-IN", // Punjabi
   ro: "ro-RO", // Romanian
   ru: "ru-RU", // Russian
   sr: "sr-RS", // Serbian
@@ -53,10 +56,8 @@ const googleTTSLanguageMap = {
   th: "th-TH", // Thai
   tr: "tr-TR", // Turkish
   uk: "uk-UA", // Ukrainian
-  vi: "vi-VN", // Vietnamese
-  yue: "yue-HK", // Cantonese
-  fil: "fil-PH", // Filipino
-  pa: "pa-IN" // Punjabi
+  ur: "ur-PK", // Urdu
+  vi: "vi-VN" // Vietnamese
 };
 
 export function getTTSLanguageCode(code) {

@@ -51,6 +51,8 @@ export const AppContextProvider = ({ children }) => {
     { code: "da", label: "Danish" },
     { code: "nl", label: "Dutch" },
     { code: "en", label: "English" },
+    { code: "et", label: "Estonian" },
+    { code: "fil", label: "Filipino" },
     { code: "fi", label: "Finnish" },
     { code: "fr", label: "French" },
     { code: "gl", label: "Galician" },
@@ -74,6 +76,7 @@ export const AppContextProvider = ({ children }) => {
     { code: "no", label: "Norwegian" },
     { code: "pl", label: "Polish" },
     { code: "pt", label: "Portuguese" },
+    { code: "pa", label: "Punjabi" },
     { code: "ro", label: "Romanian" },
     { code: "ru", label: "Russian" },
     { code: "sr", label: "Serbian" },
@@ -86,10 +89,8 @@ export const AppContextProvider = ({ children }) => {
     { code: "th", label: "Thai" },
     { code: "tr", label: "Turkish" },
     { code: "uk", label: "Ukrainian" },
-    { code: "vi", label: "Vietnamese" },
-    { code: "yue", label: "Cantonese" },
-    { code: "fil", label: "Filipino" },
-    { code: "pa", label: "Punjabi" }
+    { code: "ur", label: "Urdu" },
+    { code: "vi", label: "Vietnamese" }
   ];
 
   const { isSignedIn } = useAuth();
