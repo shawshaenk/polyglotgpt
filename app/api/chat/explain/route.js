@@ -27,7 +27,7 @@ export async function POST(req) {
     contents: explanationTextCopy,
     config: {
       thinkingConfig: {
-        thinkingBudget: 4000,
+        thinkingBudget: 2000,
       },
       systemInstruction: systemPrompt,
     },
