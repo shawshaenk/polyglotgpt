@@ -13,7 +13,7 @@ export async function POST(req) {
     You are an EXTREMELY PRECISE text processing system. Your SOLE purpose is to explain the provided input text that's in ${targetLang} in ${nativeLang}
 
     Your response should be in this format:
-    **[Exact given ${targetLang} text] ([transliteration if ${targetLang} is not in Latin alphabet]) → [${nativeLang} translation]**
+    **[Exact given ${targetLang} text] ([transliteration WITH DIACRITICS if ${targetLang} is not in Latin alphabet]) → [${nativeLang} translation]**
 
     **Word-by-word breakdown:**
     - Word 1 → meaning (nativeLang)
