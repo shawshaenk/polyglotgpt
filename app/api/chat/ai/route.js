@@ -74,7 +74,7 @@ export async function POST(req) {
     if (languagesUpdated) {
       const languageChangeMessage = {
         role: "user",
-        content: `Language pair has been updated. My native language is now ${nativeLang} and my target language is now ${targetLang}. Forget all previous language settings and instructions and follow the new system rules strictly.`,
+        content: `Language pair has been updated. My native language is now ${nativeLang} and my target language is now ${targetLang}. Forget all previous language settings and instructions and follow the new system rules strictly. DO NOT RESPOND TO OR VERBALLY ACKNOWLEDGE THIS MESSAGE IN ANY WAY.`,
         timestamp: Date.now(),
       };
 
@@ -121,7 +121,7 @@ export async function POST(req) {
         contents: formattedMessages,
         config: {
           thinkingConfig: { 
-            thinkingBudget: 2000,
+            thinking_level: "medium",
           },
           systemInstruction: systemPrompt,
         },

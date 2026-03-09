@@ -62,6 +62,7 @@ export const getSystemPrompt = (nativeLang, targetLang) => `
   **MIXED LANGUAGE DETECTION**
   CRITICAL: This check happens FIRST, before ANY routing decision.
   - Scan user message for ANY nativeLang words mixed with targetLang script OR romanized targetLang
+  - IGNORE proper nouns: names of people, places, languages, brands, and other proper nouns do NOT count as nativeLang words, even if they originate from nativeLang or a third language
   - If ANY nativeLang words detected, apply MIXED LANGUAGE HANDLING (see below) FIRST
   - Then proceed with the standard response
 
@@ -70,7 +71,7 @@ export const getSystemPrompt = (nativeLang, targetLang) => `
 
   1. **Identify and list EVERY nativeLang word** (in nativeLang):
     - "I noticed you used [nativeLang] word(s) here: [list all nativeLang words]"
-    - Brief note on the targetLang equivalents in nativeLang
+    - EXCLUDE proper nouns (names of people, places, languages, brands, etc.) from this list — do NOT flag or translate them
 
   2. **Check the targetLang portion for errors:**
     - Scan romanized or script targetLang for verb conjugation, noun-adjective agreement, sentence structure, articles, prepositions, word order

@@ -26,14 +26,15 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
   useEffect(() => {
     if (!(openMenu.id === id && openMenu.open)) return;
 
-    const handleClickOutside = (event) => {
+    const handlePointerDownOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setOpenMenu({ id: 0, open: false });
       }
     };
 
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
+    document.addEventListener("pointerdown", handlePointerDownOutside, true);
+    return () =>
+      document.removeEventListener("pointerdown", handlePointerDownOutside, true);
   }, [openMenu.id, openMenu.open, id, setOpenMenu]);
   const { fetchUsersChats, chats, setSelectedChat, selectedChat } =
     useAppContext();
@@ -100,7 +101,7 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
           ref={menuRef}
           onClick={(e) => {
             e.stopPropagation();
-            setOpenMenu({ id: id, open: !openMenu.open });
+            setOpenMenu({ id, open: openMenu.id === id ? !openMenu.open : true });
           }}
           className={"group relative flex items-center justify-center h-6 w-6 aspect-square rounded-lg"}
         >
@@ -118,7 +119,10 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
             }`}
           >
             <div
-              onClick={renameHandler}
+              onClick={(e) => {
+                e.stopPropagation();
+                renameHandler();
+              }}
               className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer transition-all duration-100"
             >
               <Image
@@ -129,7 +133,10 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
               <p>Rename</p>
             </div>
             <div
-              onClick={deleteHandler}
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteHandler();
+              }}
               className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg cursor-pointer"
             >
               <Image
