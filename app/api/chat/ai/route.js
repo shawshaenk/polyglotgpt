@@ -74,7 +74,7 @@ export async function POST(req) {
     if (languagesUpdated) {
       const languageChangeMessage = {
         role: "user",
-        content: `Language pair has been updated. My native language is now ${nativeLang} and my target language is now ${targetLang}. Forget all previous language settings and instructions and follow the new system rules strictly. DO NOT RESPOND TO OR VERBALLY ACKNOWLEDGE THIS MESSAGE IN ANY WAY.`,
+        content: `Language pair has been updated. My native language is now ${nativeLang} and my target language is now ${targetLang}. Forget all previous language settings and instructions and follow the new system rules strictly.`,
         timestamp: Date.now(),
       };
 
@@ -134,8 +134,10 @@ export async function POST(req) {
       throw new Error("Request aborted by client");
     }
 
-    const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!aiReply) throw new Error("No reply from Gemini");
+    let aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!aiReply) {
+      aiReply = "*An error occurred. Please try again.*"
+    }
 
     // Save only for logged in mode
     if (!isLocal && userId && chatDoc) {
