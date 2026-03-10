@@ -17,7 +17,8 @@ const assets = {
 
 const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
   const {
-    isGenerating
+    isGenerating,
+    preventMessageSendRef
   } = useAppContext();
 
   const menuRef = useRef(null);
@@ -75,13 +76,16 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
         "Are you sure you want to delete this chat?"
       );
       if (!confirm) return;
+      preventMessageSendRef.current = true;
       const { data } = await axios.post("/api/chat/delete", { chatId: id });
       if (data.success) {
         fetchUsersChats(false);
         setOpenMenu({ id: 0, open: false });
+        preventMessageSendRef.current = false;
         toast.success(data.message);
       }
     } catch (error) {
+      preventMessageSendRef.current = false;
       toast.error(error.message);
     }
   };

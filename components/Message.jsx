@@ -60,7 +60,7 @@ const Message = ({
     setEditingMessageIndex,
     startResponse,
     stopResponse,
-    loadingChatsRef,
+    preventMessageSendRef,
   } = useAppContext();
 
   useEffect(() => {
@@ -202,7 +202,7 @@ const Message = ({
       messageIndex,
       startResponse,
       stopResponse,
-      loadingChatsRef
+      preventMessageSendRef
     });
   };
 
@@ -444,7 +444,7 @@ const Message = ({
       user,
       addPopupMessage: true,
       AIpopupMessage: popupResult,
-      loadingChatsRef
+      preventMessageSendRef
     });
   };
 

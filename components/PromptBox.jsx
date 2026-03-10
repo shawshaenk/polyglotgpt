@@ -40,7 +40,7 @@ const PromptBox = ({ setIsLoading }) => {
     isGenerating,
     startResponse,
     stopResponse,
-    loadingChatsRef,
+    preventMessageSendRef,
   } = useAppContext();
   const textareaRef = useRef(null);
 
@@ -95,7 +95,7 @@ const PromptBox = ({ setIsLoading }) => {
       messageIndex: editingMessageIndex,
       startResponse,
       stopResponse,
-      loadingChatsRef
+      preventMessageSendRef
     });
 
     setEditingMessage(false);

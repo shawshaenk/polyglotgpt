@@ -34,7 +34,7 @@ export const AppContextProvider = ({ children }) => {
   // Abort controller & generation state for "Stop Response"
   const [isGenerating, setIsGenerating] = useState(false);
   const generationControllerRef = useRef(null);
-  const loadingChatsRef = useRef(null);
+  const preventMessageSendRef = useRef(null);
 
   const allChatIds = chats.map((chat) => chat._id);
 
@@ -171,6 +171,7 @@ export const AppContextProvider = ({ children }) => {
   const clearChat = async () => {
     let toastId;
 
+    preventMessageSendRef.current = true;
     toastId = toast.loading("Clearing Chat...");
 
     if (!isSignedIn) {
@@ -191,6 +192,7 @@ export const AppContextProvider = ({ children }) => {
         return [...prev, tempChat];
       });
       setSelectedChat(tempChat);
+      preventMessageSendRef.current = false;
       toast.success("Chat Cleared!", { id: toastId });
       return;
     }
@@ -218,7 +220,9 @@ export const AppContextProvider = ({ children }) => {
       );
 
       toast.success("Chat Cleared!", { id: toastId });
+      preventMessageSendRef.current = false;
     } catch (error) {
+      preventMessageSendRef.current = false;
       toast.error(error.message);
     }
   };
@@ -227,7 +231,7 @@ export const AppContextProvider = ({ children }) => {
     let toastId;
 
     if (!userJustSignedUpRef.current && showLoading) {
-      loadingChatsRef.current = true;
+      preventMessageSendRef.current = true;
       toastId = toast.loading("Loading Chats...");
     }
 
@@ -259,9 +263,9 @@ export const AppContextProvider = ({ children }) => {
       } else {
         toast.error(data.message);
       }
-      loadingChatsRef.current = false;
+      preventMessageSendRef.current = false;
     } catch (error) {
-      loadingChatsRef.current = false;
+      preventMessageSendRef.current = false;
       toast.error(error.message);
     }
   };
@@ -371,7 +375,7 @@ export const AppContextProvider = ({ children }) => {
     setEditingMessage,
     editingMessageIndex,
     setEditingMessageIndex,
-    loadingChatsRef
+    preventMessageSendRef
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

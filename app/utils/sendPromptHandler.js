@@ -28,10 +28,10 @@ export const sendPromptHandler = async ({
   stopResponse,
   addPopupMessage = false,
   AIpopupMessage = null, 
-  loadingChatsRef
+  preventMessageSendRef
 }) => {
-  if (loadingChatsRef.current) {
-    toast.error("Wait Until Chats are Loaded");
+  if (preventMessageSendRef.current) {
+    toast.error("Wait for Operation to Complete");
     return;
   }
 

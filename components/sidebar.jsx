@@ -31,13 +31,17 @@ const Sidebar = ({ expand, setExpand }) => {
     fetchUsersChats,
     allChatIds,
     isGenerating,
+    preventMessageSendRef
   } = useAppContext();
   const [openMenu, setOpenMenu] = useState({ id: 0, open: false });
   const sidebarRef = useRef(null);
 
   const deleteAllChats = async () => {
+    preventMessageSendRef.current = true;
+
     if (isGenerating) {
       toast.error("Response in Progress");
+      preventMessageSendRef.current = false;
       return;
     }
 
@@ -56,8 +60,10 @@ const Sidebar = ({ expand, setExpand }) => {
 
       fetchUsersChats(false);
       setOpenMenu({ id: 0, open: false });
+      preventMessageSendRef.current = false;
       toast.success("All Chats Deleted!", { id: toastId });
     } catch (error) {
+      preventMessageSendRef.current = false;
       toast.error(error.message);
     }
   };
