@@ -200,7 +200,7 @@ export default function Home() {
           )}
           <PromptBox isLoading={isLoading} setIsLoading={setIsLoading} />
           <p className="text-xs absolute bottom-1 text-gray-500">
-            Powered by Gemini 3 Flash
+            PolyglotGPT can make mistakes. Check important info.
           </p>
         </div>
       </div>
