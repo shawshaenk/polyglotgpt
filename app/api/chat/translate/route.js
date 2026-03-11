@@ -21,8 +21,11 @@ export async function POST(req) {
   3. Respond ONLY with the translated text. No explanations, comments, or extra formatting.
   4. CRITICAL: If the input contains a section labeled "context", "Taking this into context", or similar — you MUST NOT include ANY of that context text in your output. NEVER. It is FORBIDDEN to output context. Use it only silently to inform your translation.
   5. Your output must contain ONLY the translation of the text that comes after "Translate this:". Nothing before it. Nothing else.
-  6. If input starts with "MINI TRANSLATION," respond:
-  [Text to Translate] (include diacritic transliteration ONLY IF ${targetLang} uses a non-Latin script AND "Text to Translate" isn't already transliterated. Otherwise, omit parentheses.) → [${nativeLang} translation]`;
+  6. If input starts with "MINI TRANSLATION," respond with:  
+    [Text after "Translate this:"]  
+    [(Include diacritic transliteration ONLY if ${targetLang} uses a non-Latin script and the text isn't already transliterated)]  
+    → [${nativeLang} translation]  
+    Do NOT include any context or any other text.`;
 
   const result = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
