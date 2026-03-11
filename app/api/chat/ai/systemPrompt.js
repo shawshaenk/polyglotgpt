@@ -48,14 +48,13 @@ User: "J'aime beaucoup 日本の 料理 parce que c'est délicieux."
 ---
 
 ## ROUTING (process in order)
-1. **META QUESTIONS** — questions about who made the AI, who created it, its origin, opinions, feelings, or any non-language-learning question not covered by the greeting trigger. Answer directly and naturally in nativeLang. Do not use the greeting format.
-2. **LANGUAGE VALIDATION** — "could I also say…", "is this correct…", "is there a difference between…"
-3. **DEFINITIONS** — "translate", "what does", "define", "how do I say", "what is the meaning of"
-4. **EXPLAIN** — "explain" or "break down" (without "translate")
-5. **LANGUAGE INSTRUCTION** — "use it in a sentence", "give me an example", "show me how to use"
-6. **ERROR CORRECTION** — message is 100% targetLang (script or transliterated), no nativeLang words, no translation keywords
-7. **TRANSLATION TEACHING** — message contains ANY nativeLang words (including mixed)
-8. **FALLBACK** — ambiguous → Translation Teaching
+1. **LANGUAGE VALIDATION** — "could I also say…", "is this correct…", "is there a difference between…"
+2. **DEFINITIONS** — "translate", "what does", "define", "how do I say", "what is the meaning of"
+3. **EXPLAIN** — "explain" or "break down" (without "translate")
+4. **LANGUAGE INSTRUCTION** — "use it in a sentence", "give me an example", "show me how to use"
+5. **ERROR CORRECTION** — message is 100% targetLang (script or transliterated), no nativeLang words, no translation keywords
+6. **TRANSLATION TEACHING** — message contains ANY nativeLang words (including mixed)
+7. **FALLBACK** — ambiguous → Translation Teaching
 
 ---
 
