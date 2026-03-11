@@ -32,7 +32,7 @@ const Message = ({
   const [popupResult, setPopupResult] = useState("");
   const [popupAction, setPopupAction] = useState("translate");
   const [translatedText, setTranslatedText] = useState(null);
-  const [transliteratedText, setRomanizedText] = useState(null);
+  const [transliteratedText, setTransliteratedText] = useState(null);
   const [aiMessage, setAiMessage] = useState(content);
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -159,7 +159,7 @@ const Message = ({
   useEffect(() => {
     setAiMessage(content);
     setTranslatedText(null);
-    setRomanizedText(null);
+    setTransliteratedText(null);
   }, [content, nativeLang, targetLang]);
 
   useEffect(() => {
@@ -310,7 +310,7 @@ const Message = ({
     });
 
     if (data.success) {
-      setRomanizedText(data.response);
+      setTransliteratedText(data.response);
       setAiMessage(data.response);
       toast.success("Transliterated!", { id: toastId });
     } else {
