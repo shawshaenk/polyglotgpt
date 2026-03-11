@@ -329,6 +329,12 @@ const Message = ({
   };
 
   const speakText = async () => {
+    if (aiMessage === transliteratedText) {
+      toast.error("Cannot Speak Transliterated Text.");
+      toast.error("Switch to Original Text.");
+      return;
+    }
+    
     if (currentAudio) {
       stopSpeaking();
       return;
@@ -376,6 +382,12 @@ const Message = ({
   };
 
   const speakTextHighlighted = async () => {
+    if (aiMessage === transliteratedText) {
+      toast.error("Cannot Speak Transliterated Text.");
+      toast.error("Switch to Original Text.");
+      return;
+    }
+
     if (currentAudio) {
       stopSpeaking();
       return;
