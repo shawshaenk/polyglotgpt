@@ -36,6 +36,7 @@ const Message = ({
   const [aiMessage, setAiMessage] = useState(content);
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const transliteratedRef = useRef(null);
   const popupRef = useRef(null);
   const containerRef = useRef(null);
   const messageWrapperRef = useRef(null);
@@ -132,7 +133,7 @@ const Message = ({
     };
 
     document.addEventListener("mousedown", handleMouseDown);
-    document.addEventListener("touchetart", handleMouseDown);
+    document.addEventListener("touchstart", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("touchend", handleMouseUp);
 
@@ -160,6 +161,7 @@ const Message = ({
     setAiMessage(content);
     setTranslatedText(null);
     setTransliteratedText(null);
+    transliteratedRef.current = false;
   }, [content, nativeLang, targetLang]);
 
   useEffect(() => {
@@ -298,6 +300,7 @@ const Message = ({
   const transliterateText = async () => {
     if (transliteratedText) {
       setAiMessage(transliteratedText);
+      transliteratedRef.current = true;
       toast.success("Transliterated!");
       return;
     }
@@ -312,6 +315,7 @@ const Message = ({
     if (data.success) {
       setTransliteratedText(data.response);
       setAiMessage(data.response);
+      transliteratedRef.current = true;
       toast.success("Transliterated!", { id: toastId });
     } else {
       toast.error(data.message);
@@ -381,7 +385,7 @@ const Message = ({
   };
 
   const speakTextHighlighted = async () => {
-    if (aiMessage === transliteratedText) {
+    if (transliteratedRef.current === true && content !== transliteratedText) {
       toast.error("Cannot Speak Transliterated Text. Switch to Original Text.");
       return;
     }
@@ -432,6 +436,7 @@ const Message = ({
   };
 
   const showOriginalContent = () => {
+    transliteratedRef.current = false;
     setAiMessage(content);
     toast.success("Original Message Restored");
   };
