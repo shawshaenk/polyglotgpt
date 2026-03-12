@@ -33,7 +33,6 @@ export async function POST(req) {
       native-script form BEFORE the transliteration. Wrap the transliteration in parentheses.  
       The output must follow this exact format:  
       native script (transliteration) → translation  
-      Example: ఆంధ్రప్రదేశ్‌లో (Āndhra Pradēś-lō) → In Andhra Pradesh  
     5. Add an arrow → and then the translation into ${nativeLang}.  
     6. Output nothing else — no extra text, headers, or context.`;
 
