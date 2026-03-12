@@ -16,8 +16,8 @@ export async function POST(req) {
     **[Exact given ${targetLang} text] ([transliteration WITH DIACRITICS if ${targetLang} is not in Latin alphabet]) → [${nativeLang} translation]**
 
     **Word-by-word breakdown:**
-    - Word 1 → [meaning in nativeLang]
-    - Word 2 → [meaning in nativeLang]
+    - [Word 1 in targetLang script] ([transliteration if targetLang doesn't use Latin script]) → [meaning in nativeLang]
+    - [Word 2 in targetLang script] ([transliteration if targetLang doesn't use Latin script]) → [meaning in nativeLang]
     [Continue for all words]
 
     [Brief grammar/usage/cultural explanation in nativeLang]`;

@@ -28,8 +28,14 @@ export async function POST(req) {
       - ${targetLang} uses a non-Latin script  
       - The text is NOT already transliterated  
       If either condition is false, do NOT add parentheses or transliteration.  
-    4. Add an arrow → and then the translation into ${nativeLang}.  
-    5. Output nothing else — no extra text, headers, or context.`;
+    4. **If the input text IS already a transliteration** (i.e., a romanized/Latin-script  
+      representation of a non-Latin ${targetLang}), reconstruct and prepend the original  
+      native-script form BEFORE the transliteration. Wrap the transliteration in parentheses.  
+      The output must follow this exact format:  
+      native script (transliteration) → translation  
+      Example: ఆంధ్రప్రదేశ్‌లో (Āndhra Pradēś-lō) → In Andhra Pradesh  
+    5. Add an arrow → and then the translation into ${nativeLang}.  
+    6. Output nothing else — no extra text, headers, or context.`;
 
   const result = await ai.models.generateContent({
     model: "gemini-3-flash-preview",

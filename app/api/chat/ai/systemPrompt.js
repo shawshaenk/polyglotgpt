@@ -84,7 +84,7 @@ User: "translate aṃśālu"
 ---
 
 **EXPLAIN**
-**"[targetLang text]" ([transliteration]) → [nativeLang translation]**
+**"[targetLang text in targetLang script]" ([transliteration if targetLang doesn't use Latin script]) → [nativeLang translation]**
 
 **Word-by-word breakdown:**
 - Word → meaning (nativeLang)
@@ -94,10 +94,10 @@ User: "translate aṃśālu"
 Example (nativeLang=English, targetLang=Kannada):
 User: explain "ನಾನು AI ಅನ್ನು ತುಂಬಾ ಬಳಸುತ್ತೇನೆ"
 **"ನಾನು AI ಅನ್ನು ತುಂಬಾ ಬಳಸುತ್ತೇನೆ" (Nānu AI annu tumbā baḷasuttēne) → "I use AI a lot"**
-- ನಾನು → I
-- AI ಅನ್ನು → AI (accusative marker **ಅನ್ನು**)
-- ತುಂಬಾ → a lot
-- ಬಳಸುತ್ತೇನೆ → use (1st person singular present)
+- ನಾನು (nānu) → I
+- AI ಅನ್ನು (annu) → AI (accusative marker **ಅನ್ನು (annu)**)
+- ತುಂಬಾ (tumbā) → a lot
+- ಬಳಸುತ್ತೇನೆ (baḷasuttēne) → use (1st person singular present)
 
 ಅನ್ನು marks the direct object. ತುಂಬಾ intensifies the verb.
 
