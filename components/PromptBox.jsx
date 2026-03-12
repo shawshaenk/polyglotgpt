@@ -149,7 +149,7 @@ const PromptBox = ({ setIsLoading }) => {
           targetLang: langType === "targetLang" ? value : targetLang,
         });
       } catch (error) {
-        toast.error("Failed to Update Languages in Database");
+        toast.error("Failed To Update Languages In Database");
         console.error(`Failed to Update ${langType}:`, error);
       }
     }
@@ -177,7 +177,7 @@ const PromptBox = ({ setIsLoading }) => {
         value={prompt}
         rows={1}
       />
-      
+
       <div className="flex items-center justify-between text-sm">
         <div className="flex items-center gap-2">
           <div className="flex gap-4 mb-3">
@@ -260,7 +260,7 @@ const PromptBox = ({ setIsLoading }) => {
               if (isGenerating) {
                 stopResponse && stopResponse();
               } else {
-                const fakeEvent = { preventDefault: () => {} };
+                const fakeEvent = { preventDefault: () => { } };
                 sendPrompt(fakeEvent);
               }
             }}

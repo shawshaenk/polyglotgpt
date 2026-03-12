@@ -7,7 +7,7 @@ let needToNameChat = false;
 export const sendPromptHandler = async ({
   e,
   prompt,
-  setPrompt = () => {},
+  setPrompt = () => { },
   setIsLoading,
   setChats,
   setSelectedChat,
@@ -27,11 +27,11 @@ export const sendPromptHandler = async ({
   startResponse,
   stopResponse,
   addPopupMessage = false,
-  AIpopupMessage = null, 
+  AIpopupMessage = null,
   preventMessageSendRef
 }) => {
   if (preventMessageSendRef.current) {
-    toast.error("Wait for Operation to Complete");
+    toast.error("Wait For Operation To Complete");
     return;
   }
 
@@ -77,7 +77,7 @@ export const sendPromptHandler = async ({
     if (user) {
       const payload = {
         chatId: selectedChat._id,
-        userPrompt, 
+        userPrompt,
         fullAssistantMessage
       };
       const { data } = await axios.post("/api/chat/addPopupMessage", payload);
@@ -96,7 +96,7 @@ export const sendPromptHandler = async ({
   }
 
   if (isProcessing) {
-    toast.error("Another Message in Progress");
+    toast.error("Another Message In Progress");
     return;
   }
   isProcessing = true;
@@ -309,7 +309,7 @@ export const sendPromptHandler = async ({
     setIsLoading(false);
     try {
       stopResponse();
-    } catch (e) {}
+    } catch (e) { }
     isProcessing = false;
   }
 };

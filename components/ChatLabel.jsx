@@ -18,7 +18,8 @@ const assets = {
 const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
   const {
     isGenerating,
-    preventMessageSendRef
+    preventMessageSendRef,
+    fetchChatDetails
   } = useAppContext();
 
   const menuRef = useRef(null);
@@ -40,12 +41,19 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
   const { fetchUsersChats, chats, setSelectedChat, selectedChat } =
     useAppContext();
 
-  const selectChat = () => {
+  const selectChat = async () => {
     if (isGenerating) {
-      toast.error("Wait until Generation is Complete");
+      toast.error("Wait Until Generation Is Complete");
       return;
     }
-    const chatData = chats.find((chat) => chat._id === id);
+    let chatData = chats.find((chat) => chat._id === id);
+
+    // Lazy load messages if they aren't present
+    if (chatData && (!chatData.messages || (chatData.messages.length === 0 && user))) {
+      const fullChat = await fetchChatDetails(id);
+      if (fullChat) chatData = fullChat;
+    }
+
     setSelectedChat(chatData);
     console.log(chatData);
   };
@@ -93,11 +101,10 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
   return (
     <div
       onClick={selectChat}
-      className={`flex items-center justify-between p-2 text-white/80 hover:bg-white/10 rounded-lg text-sm cursor-pointer mb-2 transition-colors duration-100 ${
-        (openMenu.id === id && openMenu.open) || selectedChat?._id === id
-          ? "bg-white/10"
-          : ""
-      }`}
+      className={`flex items-center justify-between p-2 text-white/80 hover:bg-white/10 rounded-lg text-sm cursor-pointer mb-2 transition-colors duration-100 ${(openMenu.id === id && openMenu.open) || selectedChat?._id === id
+        ? "bg-white/10"
+        : ""
+        }`}
     >
       <p title={name} className="group-hover:max-w-5/6 truncate cursor-pointer transition-colors duration-100 select-none">{name}</p>
       {user && (
@@ -116,11 +123,10 @@ const ChatLabel = ({ openMenu, setOpenMenu, id, name }) => {
           />
 
           <div
-            className={`absolute -right-0 top-6 bg-[#121212] rounded-xl w-max p-2 z-10 transition-opacity duration-100 ${
-              openMenu.id === id && openMenu.open
-                ? "opacity-100 pointer-events-auto"
-                : "opacity-0 pointer-events-none"
-            }`}
+            className={`absolute -right-0 top-6 bg-[#121212] rounded-xl w-max p-2 z-10 transition-opacity duration-100 ${openMenu.id === id && openMenu.open
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+              }`}
           >
             <div
               onClick={(e) => {

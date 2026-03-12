@@ -28,7 +28,7 @@ const Message = ({
 }) => {
   const [selectionText, setSelectionText] = useState("");
   const [popupPos, setPopupPos] = useState({ x: 0, y: 0 });
-  const [popupMode, setPopupMode] = useState("default"); 
+  const [popupMode, setPopupMode] = useState("default");
   const [popupResult, setPopupResult] = useState("");
   const [popupAction, setPopupAction] = useState("translate");
   const [translatedText, setTranslatedText] = useState(null);
@@ -75,7 +75,7 @@ const Message = ({
       if (
         popupRef.current &&
         !popupRef.current.contains(event.target) &&
-        selectionTextRef.current && 
+        selectionTextRef.current &&
         event.detail < 3
       ) {
         if (abortControllerRef.current) {
@@ -334,10 +334,10 @@ const Message = ({
 
   const speakText = async () => {
     if (aiMessage === transliteratedText) {
-      toast.error("Cannot Speak Transliterated Text. Switch to Original Text.");
+      toast.error("Cannot Speak Transliterated Text. Switch To Original Text.");
       return;
     }
-    
+
     if (currentAudio) {
       stopSpeaking();
       return;
@@ -386,7 +386,7 @@ const Message = ({
 
   const speakTextHighlighted = async () => {
     if (transliteratedRef.current === true && content !== transliteratedText) {
-      toast.error("Cannot Speak Transliterated Text. Switch to Original Text.");
+      toast.error("Cannot Speak Transliterated Text. Switch To Original Text.");
       return;
     }
 
@@ -466,28 +466,24 @@ const Message = ({
   return (
     <div
       ref={messageWrapperRef}
-      className={`relative flex flex-col items-center w-full max-w-3xl text-base ${
-        role === "user" ? "mb-5 mt-5" : "mb-5 mt-5"
-      }`}
+      className={`relative flex flex-col items-center w-full max-w-3xl text-base ${role === "user" ? "mb-5 mt-5" : "mb-5 mt-5"
+        }`}
     >
       <div
-        className={`flex flex-col w-full mb-8 ${
-          role === "user" && "items-end"
-        }`}
+        className={`flex flex-col w-full mb-8 ${role === "user" && "items-end"
+          }`}
       >
         <div
-          className={`group relative flex max-w-2xl py-3 rounded-xl ${
-            role === "user"
+          className={`group relative flex max-w-2xl py-3 rounded-xl ${role === "user"
               ? "bg-[#1e1e1e] px-5 mt-2 max-w-[75vw] sm:max-w-[30vw]"
               : "-mt-6 gap-3"
-          }`}
+            }`}
         >
           <div
-            className={`absolute -left-12 ${
-              role === "user"
+            className={`absolute -left-12 ${role === "user"
                 ? "top-1/2 -translate-y-1/2"
                 : "left-12.5 -bottom-3.5"
-            }`}
+              }`}
           >
             <div className="flex items-center gap-2 opacity-70">
               {role === "user" ? (
@@ -548,9 +544,8 @@ const Message = ({
                     Transliterate
                   </button>
                   <button
-                    className={`text-xs sm:text-sm cursor-pointer hover:underline select-none ${
-                      isPlaying ? "text-red-400" : ""
-                    }`}
+                    className={`text-xs sm:text-sm cursor-pointer hover:underline select-none ${isPlaying ? "text-red-400" : ""
+                      }`}
                     onClick={() => {
                       speakText();
                     }}
@@ -588,63 +583,63 @@ const Message = ({
           className="absolute z-50 bg-[#1e1e1e] text-white text-sm px-3 py-2 rounded-lg shadow-lg flex gap-2"
           style={{ top: popupPos.y, left: popupPos.x, maxHeight: "250px", overflowY: "auto" }}
         >
-        
-        {popupMode === "default" && (
+
+          {popupMode === "default" && (
             <>
-            <button
-              onClick={translateTextPopup}
-              className="hover:underline cursor-pointer"
-            >
-              Translate
-            </button>
-            <button
-              onClick={explainTextPopup}
-              className="hover:underline cursor-pointer"
-            >
-              Explain
-            </button>
-            <button
-              onClick={() => speakTextHighlighted()}
-              className="hover:underline cursor-pointer"
-            >
-              Speak
-            </button>
+              <button
+                onClick={translateTextPopup}
+                className="hover:underline cursor-pointer"
+              >
+                Translate
+              </button>
+              <button
+                onClick={explainTextPopup}
+                className="hover:underline cursor-pointer"
+              >
+                Explain
+              </button>
+              <button
+                onClick={() => speakTextHighlighted()}
+                className="hover:underline cursor-pointer"
+              >
+                Speak
+              </button>
             </>
-        )}
+          )}
 
-        {popupMode === "processing" && (
-          <div className="loader flex justify-center items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
-            <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
-            <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
-          </div>
-        )}
-
-        {popupMode === "result" && (
-          <div className="flex flex-col gap-2 max-w-[250px] overflow-y-auto">
-            <Markdown>
-              {popupResult}
-            </Markdown>
-
-            <hr className="border-t border-gray-300 my-0.5" />
-
-            <div className="flex gap-3 justify-center">
-              <button
-                onClick={copyPopup}
-                className="hover:underline cursor-pointer"
-              >
-                Copy
-              </button>
-
-              <button
-                onClick={(e) => sendPrompt(e)}
-                className="hover:underline cursor-pointer"
-              >
-                Add to Chat
-              </button>
+          {popupMode === "processing" && (
+            <div className="loader flex justify-center items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+              <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+              <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
             </div>
-          </div>
-        )}
+          )}
+
+          {popupMode === "result" && (
+            <div className="flex flex-col gap-2 max-w-[250px] overflow-y-auto">
+              <Markdown>
+                {popupResult}
+              </Markdown>
+
+              <hr className="border-t border-gray-300 my-0.5" />
+
+              <div className="flex gap-3 justify-center">
+                <button
+                  onClick={copyPopup}
+                  className="hover:underline cursor-pointer"
+                >
+                  Copy
+                </button>
+
+                <button
+                  onClick={(e) => sendPrompt(e)}
+                  className="hover:underline cursor-pointer"
+                >
+                  Add to Chat
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

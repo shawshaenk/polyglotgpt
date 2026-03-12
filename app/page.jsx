@@ -90,7 +90,7 @@ export default function Home() {
 
   const clearMessages = async () => {
     if (isGenerating) {
-      toast.error("Response in Progress");
+      toast.error("Response In Progress");
       return;
     }
     if (!selectedChat) return;
@@ -110,9 +110,8 @@ export default function Home() {
         <Sidebar expand={expand} setExpand={setExpand} />
         {/* background color for website */}
         <div
-          className={`flex-1 flex flex-col items-center ${
-            messages.length === 0 ? "justify-center" : "justify-start"
-          } px-4 pb-8 bg-[#121212] text-white relative`}
+          className={`flex-1 flex flex-col items-center ${messages.length === 0 ? "justify-center" : "justify-start"
+            } px-4 pb-8 bg-[#121212] text-white relative`}
         >
           <div className="md:hidden absolute px-4 top-6 flex items-center justify-between w-full">
             <Image

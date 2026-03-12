@@ -99,13 +99,13 @@ export const AppContextProvider = ({ children }) => {
 
   const chatButtonAction = () => {
     if (!isSignedIn && clerk) {
-      toast.error("Login to Create New Chat");
+      toast.error("Login To Create New Chat");
       clerk.openSignIn();
       return;
     }
 
     if (selectedChat.messages.length === 0) {
-      toast.error("Already on New Chat");
+      toast.error("Already On New Chat");
       return;
     }
     createNewChat();
@@ -124,7 +124,7 @@ export const AppContextProvider = ({ children }) => {
     let toastId;
 
     if (isGenerating) {
-      toast.error("Wait until Generation is Complete");
+      toast.error("Wait Until Generation Is Complete");
       return;
     }
 
@@ -227,6 +227,28 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  const fetchChatDetails = async (chatId) => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.post("/api/chat/get-details", { chatId }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (data.success) {
+        setChats((prev) =>
+          prev.map((c) => (c._id === chatId ? data.data : c))
+        );
+        return data.data;
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const fetchUsersChats = async (showLoading = false) => {
     let toastId;
 
@@ -254,7 +276,12 @@ export const AppContextProvider = ({ children }) => {
           (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
         );
         setChats(sorted);
-        setSelectedChat(sorted[0]);
+
+        // Fetch details for the first chat automatically
+        const firstChat = sorted[0];
+        const fullFirstChat = await fetchChatDetails(firstChat._id);
+        setSelectedChat(fullFirstChat || firstChat);
+
         console.log("Chats loaded:", sorted[0]);
 
         if (toastId) {
@@ -297,6 +324,7 @@ export const AppContextProvider = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
+    //Update languages based on selected chat settings
     if (selectedChat) {
       setNativeLang(selectedChat.nativeLang);
       setTargetLang(selectedChat.targetLang);
@@ -310,7 +338,7 @@ export const AppContextProvider = ({ children }) => {
     if (generationControllerRef.current) {
       try {
         generationControllerRef.current.abort();
-      } catch (e) {}
+      } catch (e) { }
     }
     const controller = new AbortController();
     generationControllerRef.current = controller;
@@ -323,14 +351,14 @@ export const AppContextProvider = ({ children }) => {
     if (generationControllerRef.current) {
       try {
         generationControllerRef.current.abort();
-      } catch (e) {}
+      } catch (e) { }
       generationControllerRef.current = null;
     }
     setIsGenerating(false);
     // optionally clear loading toasts
     try {
       toast.dismiss();
-    } catch (e) {}
+    } catch (e) { }
   };
 
   // cleanup on unmount
@@ -339,7 +367,7 @@ export const AppContextProvider = ({ children }) => {
       if (generationControllerRef.current) {
         try {
           generationControllerRef.current.abort();
-        } catch (e) {}
+        } catch (e) { }
       }
     };
   }, []);
@@ -355,6 +383,7 @@ export const AppContextProvider = ({ children }) => {
     selectedChat,
     setSelectedChat,
     fetchUsersChats,
+    fetchChatDetails,
     createNewChat,
     clearChat,
     chatButtonAction,

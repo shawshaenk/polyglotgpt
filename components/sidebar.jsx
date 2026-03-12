@@ -40,7 +40,7 @@ const Sidebar = ({ expand, setExpand }) => {
     preventMessageSendRef.current = true;
 
     if (isGenerating) {
-      toast.error("Response in Progress");
+      toast.error("Response In Progress");
       preventMessageSendRef.current = false;
       return;
     }
@@ -51,7 +51,7 @@ const Sidebar = ({ expand, setExpand }) => {
       );
       if (!confirm) return;
 
-      if (!allChatIds.length) return toast.error("No Chats to Delete");
+      if (!allChatIds.length) return toast.error("No Chats To Delete");
 
       const toastId = toast.loading("Deleting Chats...");
       for (const chatId of allChatIds) {
@@ -71,15 +71,13 @@ const Sidebar = ({ expand, setExpand }) => {
   return (
     <div
       ref={sidebarRef}
-      className={`flex flex-col justify-between bg-[#1e1e1e] pt-7 transition-all z-50 max-md:absolute max-md:h-screen ${
-        expand ? "p-4 w-64" : "md:w-20 w-0 max-md:overflow-hidden"
-      }`}
+      className={`flex flex-col justify-between bg-[#1e1e1e] pt-7 transition-all z-50 max-md:absolute max-md:h-screen ${expand ? "p-4 w-64" : "md:w-20 w-0 max-md:overflow-hidden"
+        }`}
     >
       <div>
         <div
-          className={`flex ${
-            expand ? "flex-row justify-end px-4" : "flex-col items-center gap-8"
-          }`}
+          className={`flex ${expand ? "flex-row justify-end px-4" : "flex-col items-center gap-8"
+            }`}
         >
           {/* <Image className={expand ? "w-36" : "w-10"} src={expand ? assets.logo_text : assets.logo_icon} alt="Logo" /> */}
 
@@ -98,9 +96,8 @@ const Sidebar = ({ expand, setExpand }) => {
               className="hidden md:block w-7 select-none"
             />
             <div
-              className={`absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none ${
-                expand ? "w-30" : "w-29"
-              }`}
+              className={`absolute left-full ml-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none ${expand ? "w-30" : "w-29"
+                }`}
             >
               {expand ? "Close Sidebar" : "Open Sidebar"}
               <div className="w-3 h-3 absolute bg-black rotate-45 left-1.5 -translate-x-full top-1/2 -translate-y-1/2"></div>
@@ -110,11 +107,10 @@ const Sidebar = ({ expand, setExpand }) => {
 
         <button
           onClick={chatButtonAction}
-          className={`${
-            expand
+          className={`${expand
               ? "absolute top-5.5 left-7 bg-primary hover:opacity-80 transition-opacity duration-200 rounded-xl gap-2 p-2.5"
               : "mt-6 left-6 group relative flex items-center justify-center hover:bg-gray-500 h-9 w-9 aspect-square rounded-lg cursor-pointer"
-          } flex items-center cursor-pointer`}
+            } flex items-center cursor-pointer`}
         >
           <Image
             className={expand ? "w-6 select-none" : "w-7 select-none"}
@@ -133,9 +129,8 @@ const Sidebar = ({ expand, setExpand }) => {
 
       {/* Chat list section - takes up remaining space */}
       <div
-        className={`flex-1 mt-4 text-white/25 text-sm ${
-          expand ? "block" : "hidden"
-        } overflow-y-auto min-h-0`}
+        className={`flex-1 mt-4 text-white/25 text-sm ${expand ? "block" : "hidden"
+          } overflow-y-auto min-h-0`}
       >
         <p className="my-1 mb-2 select-none">Chats</p>
         {chats.map((chat, index) => (
@@ -153,11 +148,10 @@ const Sidebar = ({ expand, setExpand }) => {
       <div className="flex-shrink-0 pb-4">
         <div
           onClick={user ? null : openSignIn}
-          className={`flex items-center ${
-            expand
+          className={`flex items-center ${expand
               ? "hover:bg-white/10 rounded-lg -mb-4 select-none"
               : "justify-center w-full"
-          } ${user ? "" : "cursor-pointer"} gap-3 text-white/60 text-sm p-2 transition-colors duration-100`}
+            } ${user ? "" : "cursor-pointer"} gap-3 text-white/60 text-sm p-2 transition-colors duration-100`}
         >
           {user ? (
             <UserButton />
