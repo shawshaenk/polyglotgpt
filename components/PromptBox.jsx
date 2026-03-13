@@ -56,12 +56,6 @@ const PromptBox = ({ setIsLoading }) => {
   };
 
   useEffect(() => {
-    if (prompt === "" && textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-    }
-  }, [prompt]);
-
-  useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
@@ -75,6 +69,9 @@ const PromptBox = ({ setIsLoading }) => {
   }
 
   const sendPrompt = (e) => {
+    if (textareaRef.current) {
+      textareaRef.current.blur();
+    }
     sendPromptHandler({
       e,
       prompt,
@@ -103,10 +100,10 @@ const PromptBox = ({ setIsLoading }) => {
   };
 
   useEffect(() => {
-    if (textareaRef.current) {
+    if (editingMessage && textareaRef.current) {
       textareaRef.current.focus();
     }
-  }, [prompt]);
+  }, [editingMessage]);
 
   async function updateChatLanguages({
     langType,
