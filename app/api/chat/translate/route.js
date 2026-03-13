@@ -24,7 +24,7 @@ export async function POST(req) {
   6. If input starts with "MINI TRANSLATION," respond with:  
     1. Extract only the text after "Translate this:". Ignore all context and any other text.  
     2. Begin output with the original text exactly as it appears.  
-    3. Append a diacritic transliteration in parentheses **only if BOTH conditions are true**:  
+    3. Append a transliteration WITH DIACRITICS in parentheses **only if BOTH conditions are true**:  
       - ${targetLang} uses a non-Latin script  
       - The text is NOT already transliterated  
       If either condition is false, do NOT add parentheses or transliteration.  
