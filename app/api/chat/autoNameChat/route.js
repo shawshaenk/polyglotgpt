@@ -18,7 +18,7 @@ export async function POST(req) {
     model: "gemini-2.5-flash-lite",
     contents: prompt,
     config: {
-      thinking_level: "minimal",
+      thinkingBudget: 0,
       systemInstruction: systemPrompt,
     },
   });
