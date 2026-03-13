@@ -240,7 +240,7 @@ const PromptBox = ({ setIsLoading }) => {
               type="button"
               title="Cancel Editing"
               onClick={cancelEditing}
-              className={"bg-primary rounded-full p-2 cursor-pointer"}
+              className={"bg-primary rounded-full p-2 sm:p-1 cursor-pointer"}
             >
               <Image
                 className="w-3.5 aspect-square select-none"
