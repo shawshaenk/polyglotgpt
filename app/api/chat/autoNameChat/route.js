@@ -15,7 +15,7 @@ export async function POST(req) {
   `;
 
   const result = await ai.models.generateContent({
-    model: "gemini-3.1-flash-lite-preview",
+    model: "gemini-2.5-flash-lite",
     contents: prompt,
     config: {
       thinking_level: "minimal",
