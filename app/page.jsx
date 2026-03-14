@@ -262,7 +262,7 @@ export default function Home() {
               )}
             </div>
           )}
-          <button className={`${numOfMessages === 0 ? "absolute z-50 bg-[#1e1e1e] transition-opacity duration-200 text-white text-sm px-3 py-2 mt-165 rounded-lg shadow-lg flex gap-2" : "hidden"} ${generateTopicButtonMode === "default" ? "hover:opacity-80 cursor-pointer" : ""}`} onClick={generateTopic}>
+          <button className={`${numOfMessages === 0 ? "absolute z-50 bg-[#1e1e1e] transition-opacity duration-200 text-white text-sm px-3 py-2 bottom-40 rounded-lg shadow-lg flex gap-2" : "hidden"} ${generateTopicButtonMode === "default" ? "hover:opacity-80 cursor-pointer" : ""}`} onClick={generateTopic}>
             {generateTopicButtonMode === "default" && (
               <>
                 <Image
