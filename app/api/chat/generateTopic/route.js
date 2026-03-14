@@ -20,17 +20,16 @@ export async function POST(req) {
     - Do NOT include lesson-like preambles ("Today we will practice...") or meta-commentary about the topic.
     - Do NOT ask multiple questions at once. Pose a single, clear conversation opener.
     - The tone should be warm, curious, and natural — like a conversation, not a quiz.
+    - Be creative and unpredictable. Every prompt should feel fresh and specific. Avoid talking about seasons, hobbies, things to do on free days, or "Where would you visit" questions.
 
     ## Topic Pool
 
-    Draw randomly from one of these categories each time:
+    Draw randomly from one of these categories each time. Be creative and unpredictable:
     - Food & drink
-    - Daily routine
     - Family & relationships
     - Home & living spaces
     - Travel & places
     - Shopping & money
-    - Weather & seasons
     - Health & body
     - Work & school
     - Hobbies & free time

@@ -121,10 +121,12 @@ export const AppContextProvider = ({ children }) => {
   }, [user]);
 
   const createNewChat = async () => {
+    preventMessageSendRef.current = true;
     let toastId;
 
     if (isGenerating) {
       toast.error("Wait Until Generation Is Complete");
+      preventMessageSendRef.current = false;
       return;
     }
 
@@ -144,6 +146,7 @@ export const AppContextProvider = ({ children }) => {
       };
       setChats((prev) => [...prev, tempChat]);
       setSelectedChat(tempChat);
+      preventMessageSendRef.current = false;
       return;
     }
 
@@ -162,8 +165,10 @@ export const AppContextProvider = ({ children }) => {
       console.log("Chat created:", data);
 
       await fetchUsersChats();
+      preventMessageSendRef.current = false;
       toast.success("New Chat Created!", { id: toastId });
     } catch (error) {
+      preventMessageSendRef.current = false;
       toast.error(error.message);
     }
   };
