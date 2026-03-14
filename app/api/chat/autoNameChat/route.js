@@ -18,8 +18,11 @@ export async function POST(req) {
     model: "gemini-2.5-flash-lite",
     contents: prompt,
     config: {
-      thinkingBudget: 0,
+      thinkingConfig: {
+        thinkingBudget: 0,
+      },
       systemInstruction: systemPrompt,
+      temperature: 2.0
     },
   });
   console.dir(result, { depth: null });

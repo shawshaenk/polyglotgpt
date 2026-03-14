@@ -20,14 +20,14 @@ export async function POST(req) {
     - [Word 2 in targetLang script] ([transliteration if targetLang doesn't use Latin script]) → [meaning in nativeLang]
     [Continue for all words]
 
-    [Brief grammar/usage/cultural explanation in nativeLang]`;
+    [Brief grammar/usage/cultural explanation in nativeLang, max 3 sentences]`;
 
   const result = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
     contents: explanationTextCopy,
     config: {
       thinkingConfig: {
-        thinking_level: "medium",
+        thinking_level: "minimal",
       },
       systemInstruction: systemPrompt,
     },

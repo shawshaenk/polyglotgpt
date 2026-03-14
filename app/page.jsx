@@ -130,6 +130,7 @@ export default function Home() {
     setGenerateTopicButtonMode("processing");
     const { data } = await axios.post("/api/chat/generateTopic", {
       nativeLang,
+      targetLang
     });
 
     let prompt;
