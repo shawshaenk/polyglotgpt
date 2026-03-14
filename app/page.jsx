@@ -1,19 +1,22 @@
 "use client";
 import Sidebar from "@/components/sidebar";
 import PromptBox from "@/components/PromptBox";
+import { sendPromptHandler } from "@/app/utils/sendPromptHandler";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import Message from "@/components/Message";
 import { useAppContext } from "@/context/AppContext";
 import { Analytics } from "@vercel/analytics/next";
-import { useAuth, useClerk } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { toast } from "react-hot-toast";
+import axios from "axios";
 
 import menu_icon from "@/assets/menu_icon.svg";
 import chat_icon from "@/assets/chat_icon.svg";
 import polyglotgpt_chat_icon from "@/assets/polyglotgpt_logo.png";
 import broom_icon from "@/assets/broom_icon.svg";
 import polyglotgpt_logo from "@/assets/polyglotgpt_logo.png";
+import wand_sparkles from "@/assets/wand_sparkles.svg";
 
 const assets = {
   menu_icon,
@@ -21,19 +24,39 @@ const assets = {
   polyglotgpt_chat_icon,
   polyglotgpt_logo,
   broom_icon,
+  wand_sparkles
 };
 
 export default function Home() {
   const [expand, setExpand] = useState(true);
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { selectedChat, chatButtonAction, clearChat, isGenerating } =
-    useAppContext();
+  const [generateTopicButtonMode, setGenerateTopicButtonMode] = useState("default");
+  const {
+    selectedChat,
+    chatButtonAction,
+    clearChat,
+    isGenerating,
+    user,
+    setSelectedChat,
+    setChats,
+    fetchUsersChats,
+    nativeLang,
+    targetLang,
+    startResponse,
+    stopResponse,
+    prevNativeLang,
+    setPrevNativeLang,
+    prevTargetLang,
+    setPrevTargetLang,
+    preventMessageSendRef,
+    setPrompt
+  } = useAppContext();
   const containerRef = useRef(null);
+  const numOfMessages = selectedChat?.messages?.length ?? 0;
 
   const { isSignedIn, isLoaded } = useAuth();
   const prevSignedInRef = useRef(null);
-  const clerk = useClerk();
 
   useEffect(() => {
     const handleResize = () => {
@@ -101,6 +124,48 @@ export default function Home() {
     if (!confirmed) return;
 
     clearChat();
+  };
+
+  const generateTopic = async (e) => {
+    if (isGenerating) {
+      toast.error("Response In Progress");
+      return;
+    }
+    setGenerateTopicButtonMode("processing");
+    const { data } = await axios.post("/api/chat/generateTopic", {
+      nativeLang,
+    });
+
+    let prompt;
+    if (data.success) {
+      prompt = data.response;
+    } else {
+      toast.error("Couldn't Generate Topic");
+      setGenerateTopicButtonMode("default");
+      return;
+    }
+
+    setGenerateTopicButtonMode("default");
+    sendPromptHandler({
+      e,
+      prompt,
+      setPrompt,
+      setIsLoading,
+      setChats,
+      setSelectedChat,
+      selectedChat,
+      user,
+      prevNativeLang,
+      prevTargetLang,
+      setPrevNativeLang,
+      setPrevTargetLang,
+      nativeLang,
+      targetLang,
+      fetchUsersChats,
+      startResponse,
+      stopResponse,
+      preventMessageSendRef
+    });
   };
 
   return (
@@ -197,6 +262,25 @@ export default function Home() {
               )}
             </div>
           )}
+          <button className={`${numOfMessages === 0 ? "absolute z-50 bg-[#1e1e1e] transition-opacity duration-200 text-white text-sm px-3 py-2 mt-165 rounded-lg shadow-lg flex gap-2" : "hidden"} ${generateTopicButtonMode === "default" ? "hover:opacity-80 cursor-pointer" : ""}`} onClick={generateTopic}>
+            {generateTopicButtonMode === "default" && (
+              <>
+                <Image
+                src={assets.wand_sparkles}
+                alt=""
+                />
+                Generate Topic
+              </>
+            )}
+
+            {generateTopicButtonMode === "processing" && (
+              <div className="loader flex justify-center items-center gap-1 px-3 py-2">
+                <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+                <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+                <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+              </div>
+            )}
+          </button>
           <PromptBox isLoading={isLoading} setIsLoading={setIsLoading} />
           <p className="text-xs absolute bottom-1 text-gray-500">
             PolyglotGPT can make mistakes. Check important info.
