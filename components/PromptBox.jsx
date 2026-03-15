@@ -155,8 +155,7 @@ const PromptBox = ({ setIsLoading }) => {
   return (
     <form
       onSubmit={sendPrompt}
-      className={`fixed w-full z-10 bottom-7 max-w-2xl
-    bg-[#1e1e1e] p-4 pb-2 rounded-3xl mt-4 transition-all shadow-2xl`}
+      className={`w-full bg-[#1e1e1e] p-4 pb-2 rounded-3xl mt-4 transition-all shadow-2xl`}
     >
       <textarea
         ref={textareaRef}

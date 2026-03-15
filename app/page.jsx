@@ -37,19 +37,8 @@ export default function Home() {
     chatButtonAction,
     clearChat,
     isGenerating,
-    user,
-    setSelectedChat,
-    setChats,
-    fetchUsersChats,
     nativeLang,
     targetLang,
-    startResponse,
-    stopResponse,
-    prevNativeLang,
-    setPrevNativeLang,
-    prevTargetLang,
-    setPrevTargetLang,
-    preventMessageSendRef,
     setPrompt
   } = useAppContext();
   const containerRef = useRef(null);
@@ -126,48 +115,23 @@ export default function Home() {
     clearChat();
   };
 
-  const generateTopic = async (e) => {
-    if (preventMessageSendRef.current) {
-      toast.error("Wait For Operation To Complete");
-      return;
-    }
-
+  const generateTopic = async () => {
     setGenerateTopicButtonMode("processing");
+    setPrompt("");
+    
     const { data } = await axios.post("/api/chat/generateTopic", {
       nativeLang,
       targetLang
     });
 
-    let prompt;
     if (data.success) {
-      prompt = data.response;
+      setPrompt(data.response);
+      setGenerateTopicButtonMode("default");
     } else {
       toast.error("Couldn't Generate Topic");
       setGenerateTopicButtonMode("default");
       return;
     }
-
-    setGenerateTopicButtonMode("default");
-    sendPromptHandler({
-      e,
-      prompt,
-      setPrompt,
-      setIsLoading,
-      setChats,
-      setSelectedChat,
-      selectedChat,
-      user,
-      prevNativeLang,
-      prevTargetLang,
-      setPrevNativeLang,
-      setPrevTargetLang,
-      nativeLang,
-      targetLang,
-      fetchUsersChats,
-      startResponse,
-      stopResponse,
-      preventMessageSendRef
-    });
   };
 
   return (
@@ -264,26 +228,28 @@ export default function Home() {
               )}
             </div>
           )}
-          <button className={`${numOfMessages === 0 ? "absolute bg-[#1e1e1e] transition-opacity duration-200 text-white text-sm px-3 py-2 bottom-40 rounded-lg shadow-lg flex gap-2" : "hidden"} ${generateTopicButtonMode === "default" ? "hover:opacity-80 cursor-pointer" : ""}`} onClick={generateTopic}>
-            {generateTopicButtonMode === "default" && (
-              <>
-                <Image
-                src={assets.wand_sparkles}
-                alt=""
-                />
-                Generate Topic
-              </>
-            )}
+          <div className="absolute bottom-7 left-1/2 -translate-x-1/2 w-full max-w-2xl flex flex-col items-center z-10 px-4">
+            <button className={`${numOfMessages === 0 ? "flex bg-[#1e1e1e] transition-opacity duration-200 text-white text-sm px-3 py-2 mb-0 rounded-lg shadow-lg gap-2" : "hidden"} ${generateTopicButtonMode === "default" ? "hover:opacity-80 cursor-pointer" : "disabled"}`} onClick={generateTopic}>
+              {generateTopicButtonMode === "default" && (
+                <>
+                  <Image
+                  src={assets.wand_sparkles}
+                  alt=""
+                  />
+                  Generate Topic
+                </>
+              )}
 
-            {generateTopicButtonMode === "processing" && (
-              <div className="loader flex justify-center items-center gap-1 px-3 py-2">
-                <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
-                <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
-                <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
-              </div>
-            )}
-          </button>
-          <PromptBox isLoading={isLoading} setIsLoading={setIsLoading} />
+              {generateTopicButtonMode === "processing" && (
+                <div className="loader flex justify-center items-center gap-1 px-3 py-2">
+                  <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+                  <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+                  <div className="w-2 h-2 rounded-full bg-white animate-bounce"></div>
+                </div>
+              )}
+            </button>
+            <PromptBox isLoading={isLoading} setIsLoading={setIsLoading} />
+          </div>
           <p className="text-xs absolute bottom-1 text-gray-500">
             PolyglotGPT can make mistakes. Check important info.
           </p>
