@@ -37,6 +37,7 @@ const Message = ({
   const [currentAudio, setCurrentAudio] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const transliteratedRef = useRef(null);
+  const translatedRef = useRef(null);
   const popupRef = useRef(null);
   const containerRef = useRef(null);
   const messageWrapperRef = useRef(null);
@@ -211,6 +212,7 @@ const Message = ({
   const translateText = async () => {
     if (translatedText) {
       setAiMessage(translatedText);
+      translatedRef.current = true;
       toast.success("Translated!");
       return;
     }
@@ -227,8 +229,10 @@ const Message = ({
     if (data.success) {
       setTranslatedText(data.response);
       setAiMessage(data.response);
+      translatedRef.current = true;
       toast.success("Translated!", { id: toastId });
     } else {
+      translatedRef.current = false;
       toast.error(data.message);
     }
   };
@@ -318,6 +322,7 @@ const Message = ({
       transliteratedRef.current = true;
       toast.success("Transliterated!", { id: toastId });
     } else {
+      transliteratedRef.current = false;
       toast.error(data.message);
     }
   };
@@ -333,7 +338,7 @@ const Message = ({
   };
 
   const speakText = async () => {
-    if (aiMessage === transliteratedText) {
+    if (aiMessage === transliteratedText || aiMessage === translatedText) {
       toast.error("Cannot Speak Transliterated Text. Switch To Original Text.");
       return;
     }
@@ -385,8 +390,8 @@ const Message = ({
   };
 
   const speakTextHighlighted = async () => {
-    if (transliteratedRef.current === true && content !== transliteratedText) {
-      toast.error("Cannot Speak Transliterated Text. Switch To Original Text.");
+    if ((transliteratedRef.current === true && content !== transliteratedText) || (translatedRef.current === true && content !== translatedText)) {
+      toast.error("Cannot Speak Transliterated Or Translated Text. Switch To Original Text.");
       return;
     }
 
@@ -437,6 +442,7 @@ const Message = ({
 
   const showOriginalContent = () => {
     transliteratedRef.current = false;
+    translatedRef.current = false;
     setAiMessage(content);
     toast.success("Original Message Restored");
   };
