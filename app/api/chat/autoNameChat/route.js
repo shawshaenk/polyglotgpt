@@ -15,11 +15,11 @@ export async function POST(req) {
   `;
 
   const result = await ai.models.generateContent({
-    model: "gemini-2.5-flash-lite",
+    model: "gemini-3.1-flash-lite-preview",
     contents: prompt,
     config: {
       thinkingConfig: {
-        thinkingBudget: 0,
+        thinking_level: "minimal",
       },
       systemInstruction: systemPrompt,
       temperature: 2.0
