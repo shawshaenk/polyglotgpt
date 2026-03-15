@@ -229,7 +229,7 @@ export default function Home() {
             </div>
           )}
           <div className="absolute bottom-7 left-1/2 -translate-x-1/2 w-full max-w-2xl flex flex-col items-center z-10 px-4">
-            <button className={`${numOfMessages === 0 ? "flex bg-[#1e1e1e] transition-opacity duration-200 text-white text-sm px-3 py-2 mb-0 rounded-lg shadow-lg gap-2" : "hidden"} ${generateTopicButtonMode === "default" ? "hover:opacity-80 cursor-pointer" : "disabled"}`} onClick={generateTopic}>
+            <button className={`${numOfMessages === 0 ? "flex bg-[#1e1e1e] transition-opacity duration-200 text-white text-sm px-3 py-2 mb-0 rounded-lg shadow-lg gap-2 cursor-pointer" : "hidden"}`} onClick={generateTopic} disabled={generateTopicButtonMode !== "default"}>
               {generateTopicButtonMode === "default" && (
                 <>
                   <Image
