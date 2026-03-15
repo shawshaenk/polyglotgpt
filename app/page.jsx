@@ -127,6 +127,11 @@ export default function Home() {
   };
 
   const generateTopic = async (e) => {
+    if (preventMessageSendRef.current) {
+      toast.error("Wait For Operation To Complete");
+      return;
+    }
+
     setGenerateTopicButtonMode("processing");
     const { data } = await axios.post("/api/chat/generateTopic", {
       nativeLang,
