@@ -1,7 +1,6 @@
 "use client";
 import Sidebar from "@/components/sidebar";
 import PromptBox from "@/components/PromptBox";
-import { sendPromptHandler } from "@/app/utils/sendPromptHandler";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import Message from "@/components/Message";
