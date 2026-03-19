@@ -27,7 +27,7 @@ export async function POST(req) {
     contents: explanationTextCopy,
     config: {
       thinkingConfig: {
-        thinking_level: "minimal",
+        thinking_level: "low",
       },
       systemInstruction: systemPrompt,
     },
