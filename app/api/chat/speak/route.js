@@ -61,7 +61,7 @@ const googleTTSLanguageMap = {
 };
 
 export function getTTSLanguageCode(code) {
-  return googleTTSLanguageMap[code] || "en-US"; // fallback
+  return googleTTSLanguageMap[code] || ""; // fallback
 }
 
 function getGoogleCredentials() {
@@ -92,6 +92,12 @@ export async function POST(req) {
 
   const text = speakTextCopy.replace(/[*_~`#>[\]()→-]/g, "");
   const languageCode = getTTSLanguageCode(targetLang);
+  if (languageCode === "") {
+    return NextResponse.json({
+      success: false,
+      message: "Speak Not Supported For This Language",
+    });
+  }
 
   const request = {
     input: { text },
