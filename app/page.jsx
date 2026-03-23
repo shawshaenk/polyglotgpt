@@ -138,6 +138,13 @@ export default function Home() {
       <Analytics />
       <div className="flex h-screen">
         <Sidebar expand={expand} setExpand={setExpand} />
+        {/* Sidebar Backdrop for Mobile */}
+        {expand && (
+          <div
+            onClick={() => setExpand(false)}
+            className="md:hidden fixed inset-0 bg-black/50 z-40"
+          ></div>
+        )}
         {/* background color for website */}
         <div
           className={`flex-1 flex flex-col items-center ${messages.length === 0 ? "justify-center" : "justify-start"
@@ -186,7 +193,7 @@ export default function Home() {
               ref={containerRef}
             >
               <div className="fixed top-8 flex items-center gap-2">
-                <p className="border border-transparent py-1 px-2 rounded-lg font-semibold">
+                <p className="border border-transparent py-1 px-2 rounded-lg font-semibold overflow-hidden truncate min-w-0 max-w-[200px] sm:max-w-[350px] md:max-w-[500px]">
                   {selectedChat.name}
                 </p>
                 <Image
