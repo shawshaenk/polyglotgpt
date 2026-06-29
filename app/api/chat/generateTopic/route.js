@@ -77,7 +77,7 @@ export async function POST(req) {
     **Output**: ¿Te gustaría celebrar el Chuseok con una familia coreana?`;
 
   const result = await ai.models.generateContent({
-    model: "gemini-3.1-flash-lite-preview",
+    model: "gemini-3.1-flash-lite",
     contents: `nativeLang: ${nativeLang}, targetLang: ${targetLang}`,
     config: {
       thinkingConfig: {
