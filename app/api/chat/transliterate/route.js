@@ -33,11 +33,11 @@ export async function POST(req) {
     8. When in doubt, follow the **internationally recognized or ISO transliteration standard for the language** to ensure diacritics correctly represent the original sounds.`;
 
   const result = await ai.models.generateContent({
-    model: "gemini-3.5-flash",
+    model: "gemini-3.8-flash",
     contents: transliteratedTextCopy,
     config: {
       thinkingConfig: {
-        thinking_level: "minimal",
+        thinking_level: "low",
       },
       systemInstruction: systemPrompt,
     },

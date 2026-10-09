@@ -1,5 +1,6 @@
 "use client";
 import Sidebar from "@/components/sidebar";
+import SavedSidebar from "@/components/SavedSidebar";
 import PromptBox from "@/components/PromptBox";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
@@ -16,6 +17,7 @@ import polyglotgpt_chat_icon from "@/assets/polyglotgpt_logo.png";
 import broom_icon from "@/assets/broom_icon.svg";
 import polyglotgpt_logo from "@/assets/polyglotgpt_logo.png";
 import wand_sparkles from "@/assets/wand_sparkles.svg";
+import bookmark_icon from "@/assets/bookmark_icon.svg";
 
 const assets = {
   menu_icon,
@@ -23,7 +25,8 @@ const assets = {
   polyglotgpt_chat_icon,
   polyglotgpt_logo,
   broom_icon,
-  wand_sparkles
+  wand_sparkles,
+  bookmark_icon
 };
 
 export default function Home() {
@@ -38,10 +41,13 @@ export default function Home() {
     isGenerating,
     nativeLang,
     targetLang,
-    setPrompt
+    setPrompt,
+    savedSidebarExpand,
+    setSavedSidebarExpand
   } = useAppContext();
   const containerRef = useRef(null);
-  const numOfMessages = selectedChat?.messages?.length ?? 0;
+  const bottomControlsRef = useRef(null);
+  const [bottomPadding, setBottomPadding] = useState(140);
 
   const { isSignedIn, isLoaded } = useAuth();
   const prevSignedInRef = useRef(null);
@@ -99,6 +105,28 @@ export default function Home() {
     }
   }, [messages]);
 
+  // Reserve exactly enough space below the last message for the floating
+  // generate/prompt controls, plus the same visual gap used between messages
+  // (72px baseline from Message.jsx's own margins + 8px for a user bubble's
+  // mt-2 = 80px), so it feels like the next message in the conversation.
+  useEffect(() => {
+    const el = bottomControlsRef.current;
+    if (!el) return;
+
+    const BOTTOM_OFFSET = 28; // matches bottom-7 on the controls container
+    const MESSAGE_GAP = 1;
+
+    const updatePadding = () => {
+      setBottomPadding(el.offsetHeight + BOTTOM_OFFSET + MESSAGE_GAP);
+    };
+
+    updatePadding();
+    const observer = new ResizeObserver(updatePadding);
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
+
   const clearMessages = async () => {
     if (isGenerating) {
       toast.error("Response In Progress");
@@ -114,10 +142,12 @@ export default function Home() {
     clearChat();
   };
 
+  const hasMessages = (selectedChat?.messages?.length ?? 0) > 0;
+
   const generateTopic = async () => {
     setGenerateTopicButtonMode("processing");
     setPrompt("");
-    
+
     const { data } = await axios.post("/api/chat/generateTopic", {
       nativeLang,
       targetLang
@@ -128,6 +158,26 @@ export default function Home() {
       setGenerateTopicButtonMode("default");
     } else {
       toast.error("Couldn't Generate Topic");
+      setGenerateTopicButtonMode("default");
+      return;
+    }
+  };
+
+  const generateResponse = async () => {
+    setGenerateTopicButtonMode("processing");
+    setPrompt("");
+
+    const { data } = await axios.post("/api/chat/generateResponse", {
+      messages: selectedChat?.messages ?? [],
+      nativeLang,
+      targetLang
+    });
+
+    if (data.success) {
+      setPrompt(data.response);
+      setGenerateTopicButtonMode("default");
+    } else {
+      toast.error("Couldn't Generate Response");
       setGenerateTopicButtonMode("default");
       return;
     }
@@ -157,12 +207,22 @@ export default function Home() {
               src={assets.menu_icon}
               alt=""
             />
-            <Image
-              onClick={chatButtonAction}
-              className="opacity-70 select-none"
-              src={assets.chat_icon}
-              alt=""
-            />
+            <div className="flex items-center gap-3">
+              <Image
+                onClick={() =>
+                  setSavedSidebarExpand(!savedSidebarExpand)
+                }
+                className="opacity-70 select-none"
+                src={assets.bookmark_icon}
+                alt=""
+              />
+              <Image
+                onClick={chatButtonAction}
+                className="opacity-70 select-none"
+                src={assets.chat_icon}
+                alt=""
+              />
+            </div>
           </div>
 
           {messages.length === 0 ? (
@@ -184,12 +244,13 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="text-base mt-2 underline mt-1"
               >
-                Demo Video
+                Demo
               </a>
             </div>
           ) : (
             <div
-              className="relative flex flex-col items-center justify-start w-full mt-20 max-h-screen overflow-y-auto pb-35"
+              className="relative flex flex-col items-center justify-start w-full mt-20 max-h-screen overflow-y-auto"
+              style={{ paddingBottom: bottomPadding }}
               ref={containerRef}
             >
               <div className="fixed top-8 flex items-center gap-2">
@@ -234,15 +295,18 @@ export default function Home() {
               )}
             </div>
           )}
-          <div className="absolute bottom-7 left-1/2 -translate-x-1/2 w-full max-w-2xl flex flex-col items-center z-10 px-4">
-            <button className={`${numOfMessages === 0 ? "flex bg-[#1e1e1e] transition-opacity duration-200 text-white text-sm px-3 py-2 mb-0 rounded-lg shadow-lg gap-2 cursor-pointer select-none" : "hidden"}`} onClick={generateTopic} disabled={generateTopicButtonMode !== "default"}>
+          <div
+            ref={bottomControlsRef}
+            className="absolute bottom-7 left-1/2 -translate-x-1/2 w-full max-w-2xl flex flex-col items-center z-10 px-4"
+          >
+            <button className="flex bg-[#1e1e1e] transition-opacity duration-200 text-white text-sm px-3 py-2 mb-0 rounded-lg shadow-lg gap-2 cursor-pointer select-none" onClick={hasMessages ? generateResponse : generateTopic} disabled={generateTopicButtonMode !== "default"}>
               {generateTopicButtonMode === "default" && (
                 <>
                   <Image
                   src={assets.wand_sparkles}
                   alt=""
                   />
-                  Generate Topic
+                  {hasMessages ? "Generate Response" : "Generate Topic"}
                 </>
               )}
 
@@ -260,6 +324,17 @@ export default function Home() {
             PolyglotGPT can make mistakes. Check important info.
           </p>
         </div>
+        {/* Saved Sidebar Backdrop for Mobile */}
+        {savedSidebarExpand && (
+          <div
+            onClick={() => setSavedSidebarExpand(false)}
+            className="md:hidden fixed inset-0 bg-black/50 z-40"
+          ></div>
+        )}
+        <SavedSidebar
+          expand={savedSidebarExpand}
+          setExpand={setSavedSidebarExpand}
+        />
       </div>
     </div>
   );

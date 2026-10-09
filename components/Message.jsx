@@ -63,6 +63,8 @@ const Message = ({
     startResponse,
     stopResponse,
     preventMessageSendRef,
+    saveItem,
+    saveHighlightedSelection,
   } = useAppContext();
 
   useEffect(() => {
@@ -177,6 +179,14 @@ const Message = ({
   const copyPopup = () => {
     navigator.clipboard.writeText(popupResult);
     toast.success("Popup Copied to Clipboard");
+  };
+
+  const savePopupSelection = () => {
+    saveItem(selectionText);
+  };
+
+  const saveHighlightedText = () => {
+    saveHighlightedSelection(selectionText, content);
   };
 
   const editMessage = () => {
@@ -610,6 +620,12 @@ const Message = ({
               >
                 Speak
               </button>
+              <button
+                onClick={saveHighlightedText}
+                className="hover:underline cursor-pointer"
+              >
+                Save
+              </button>
             </>
           )}
 
@@ -635,6 +651,13 @@ const Message = ({
                   className="hover:underline cursor-pointer"
                 >
                   Copy
+                </button>
+
+                <button
+                  onClick={savePopupSelection}
+                  className="hover:underline cursor-pointer"
+                >
+                  Save
                 </button>
 
                 <button

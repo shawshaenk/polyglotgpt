@@ -37,11 +37,11 @@ export async function POST(req) {
     6. Output nothing else — no extra text, headers, or context.`;
 
   const result = await ai.models.generateContent({
-    model: "gemini-3.5-flash",
+    model: "gemini-3.8-flash",
     contents: translatedTextCopy,
     config: {
       thinkingConfig: {
-        thinking_level: "minimal",
+        thinking_level: "low",
       },
       systemInstruction: systemPrompt,
     },

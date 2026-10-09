@@ -36,6 +36,9 @@ export const AppContextProvider = ({ children }) => {
   const generationControllerRef = useRef(null);
   const preventMessageSendRef = useRef(null);
 
+  const [savedItems, setSavedItems] = useState([]);
+  const [savedSidebarExpand, setSavedSidebarExpand] = useState(false);
+
   const allChatIds = chats.map((chat) => chat._id);
 
   const languageList = [
@@ -321,6 +324,129 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  const fetchSavedItems = async () => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.get("/api/saved/get", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (data.success) {
+        setSavedItems(data.data);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const saveItem = async (text) => {
+    const trimmedText = text.trim();
+    if (!trimmedText) return;
+
+    const alreadySaved = savedItems.some(
+      (item) => item.text.toLowerCase() === trimmedText.toLowerCase()
+    );
+    if (alreadySaved) {
+      toast.error("Already Saved");
+      return;
+    }
+
+    const toastId = toast.loading("Saving...");
+    try {
+      const token = await getToken();
+      const { data } = await axios.post(
+        "/api/saved/create",
+        { text: trimmedText, nativeLang, targetLang },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        setSavedItems((prev) => [data.item, ...prev]);
+        toast.success("Saved!", { id: toastId });
+      } else {
+        toast.error(data.message, { id: toastId });
+      }
+    } catch (error) {
+      toast.error(error.message, { id: toastId });
+    }
+  };
+
+  const saveHighlightedSelection = async (text, context) => {
+    const trimmedText = text.trim();
+    if (!trimmedText) return;
+
+    const alreadySaved = savedItems.some(
+      (item) => item.text.toLowerCase() === trimmedText.toLowerCase()
+    );
+    if (alreadySaved) {
+      toast.error("Already Saved");
+      return;
+    }
+
+    const toastId = toast.loading("Saving...");
+    try {
+      const explanationTextCopy =
+        "Taking this into context: " + context + "\n\nExplain this: " + trimmedText;
+
+      const { data: explainData } = await axios.post("/api/chat/explain", {
+        explanationTextCopy,
+        nativeLang,
+        targetLang,
+      });
+
+      if (!explainData.success) {
+        toast.error(explainData.message || "Explanation failed", { id: toastId });
+        return;
+      }
+
+      const token = await getToken();
+      const { data } = await axios.post(
+        "/api/saved/create",
+        {
+          text: trimmedText,
+          nativeLang,
+          targetLang,
+          overview: explainData.response,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        setSavedItems((prev) => [data.item, ...prev]);
+        toast.success("Saved!", { id: toastId });
+      } else {
+        toast.error(data.message, { id: toastId });
+      }
+    } catch (error) {
+      toast.error(error.message, { id: toastId });
+    }
+  };
+
+  const deleteSavedItem = async (id) => {
+    setSavedItems((prev) => prev.filter((item) => item._id !== id));
+
+    if (!isSignedIn || id.startsWith("temp-saved-")) return;
+
+    try {
+      const { data } = await axios.post("/api/saved/delete", { id });
+      if (!data.success) {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     if (!isSignedIn) {
       setIsLocalMode(true);
@@ -344,6 +470,7 @@ export const AppContextProvider = ({ children }) => {
   useEffect(() => {
     if (user) {
       fetchUsersChats(true);
+      fetchSavedItems();
     }
   }, [user]);
 
@@ -428,7 +555,14 @@ export const AppContextProvider = ({ children }) => {
     setEditingMessage,
     editingMessageIndex,
     setEditingMessageIndex,
-    preventMessageSendRef
+    preventMessageSendRef,
+    savedItems,
+    saveItem,
+    saveHighlightedSelection,
+    deleteSavedItem,
+    fetchSavedItems,
+    savedSidebarExpand,
+    setSavedSidebarExpand
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
